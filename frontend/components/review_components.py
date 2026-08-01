@@ -316,23 +316,40 @@ def evidence_panel(
 # ============================================================================
 
 def browser_comparison() -> None:
-    """Display browser screenshot with annotations."""
+    """Display browser screenshot with full interactions."""
+    # Browser Controls
+    col1, col2, col3, col4, col5, col6, col7 = st.columns([1, 1, 1, 2, 1, 1, 1])
+    
+    with col1:
+        st.button("⬅️ Back", use_container_width=True)
+    with col2:
+        st.button("➡️ Forward", use_container_width=True)
+    with col3:
+        st.button("🔄 Refresh", use_container_width=True)
+    with col4:
+        st.selectbox("Zoom", ["50%", "75%", "100%", "125%", "150%"], label_visibility="collapsed")
+    with col5:
+        st.selectbox("Device", ["Desktop", "Tablet", "Mobile"], label_visibility="collapsed")
+    with col6:
+        st.button("⛶ Fullscreen", use_container_width=True)
+    with col7:
+        st.button("📐 Annotate", use_container_width=True)
+    
+    # Current URL Display
     st.markdown(
         """
         <div style="
-            background: linear-gradient(135deg, rgba(30, 30, 63, 0.95) 0%, rgba(99, 102, 241, 0.1) 100%);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 16px;
-            padding: 1.5rem;
+            background: rgba(30, 30, 63, 0.8);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         ">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h4 style="color: #F1F5F9; margin: 0; font-size: 1rem;">🖥️ Browser View</h4>
-                <div style="display: flex; gap: 0.5rem;">
-                    <span style="color: #64748B; font-size: 0.75rem; cursor: pointer;">🔍 Zoom</span>
-                    <span style="color: #64748B; font-size: 0.75rem; cursor: pointer;">📐 Annotate</span>
-                    <span style="color: #64748B; font-size: 0.75rem; cursor: pointer;">⇆ Compare</span>
-                </div>
-            </div>
+            <span style="color: #64748B;">🔒</span>
+            <span style="color: #F1F5F9; font-family: monospace;">https://demo.app/dashboard</span>
         </div>
         """,
         unsafe_allow_html=True,
@@ -395,6 +412,7 @@ def browser_comparison() -> None:
                     border-radius: 8px;
                     padding: 1rem 2rem;
                     box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+                    animation: pulse 2s infinite;
                 ">
                     <span style="color: white; font-weight: 600;">Sidebar Menu</span>
                 </div>
@@ -416,7 +434,75 @@ def browser_comparison() -> None:
             </div>
         </div>
         
-        <!-- Annotation Legend -->
+        <style>
+            @keyframes pulse {
+                0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+                50% { box-shadow: 0 0 0 15px rgba(99, 102, 241, 0); }
+            }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+    
+    # Interaction Timeline
+    st.markdown("<h4 style='color: #F1F5F9; margin: 1.5rem 0 1rem;'>🔄 AI Actions</h4>", unsafe_allow_html=True)
+    
+    actions = [
+        {"icon": "📍", "name": "Highlight Element", "detail": "Locating sidebar navigation", "status": "completed", "color": "#6366F1"},
+        {"icon": "🖱️", "name": "AI Click", "detail": "Clicking sidebar toggle", "status": "completed", "color": "#10B981"},
+        {"icon": "⌨️", "name": "Typing", "detail": "Entering search query", "status": "running", "color": "#22D3EE"},
+        {"icon": "📜", "name": "Scroll", "detail": "Scrolling to bottom", "status": "pending", "color": "#64748B"},
+        {"icon": "✅", "name": "Assertion", "detail": "Verifying element visible", "status": "pending", "color": "#64748B"},
+    ]
+    
+    for action in actions:
+        is_running = action["status"] == "running"
+        st.markdown(
+            f"""
+            <div style="
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                padding: 0.75rem 1rem;
+                background: rgba(30, 30, 63, 0.8);
+                border: 1px solid rgba(99, 102, 241, 0.2);
+                border-radius: 8px;
+                margin-bottom: 0.5rem;
+                {'animation: glow 2s infinite;' if is_running else ''}
+            ">
+                <div style="
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 8px;
+                    background: {action['color']}20;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.25rem;
+                ">{action['icon']}</div>
+                <div style="flex: 1;">
+                    <p style="color: #F1F5F9; margin: 0; font-size: 0.9rem; font-weight: 500;">{action['name']}</p>
+                    <p style="color: #64748B; margin: 0.25rem 0 0; font-size: 0.75rem;">{action['detail']}</p>
+                </div>
+                <span style="
+                    padding: 0.25rem 0.75rem;
+                    border-radius: 4px;
+                    font-size: 0.75rem;
+                    background: {action['color']}20;
+                    color: {action['color']};
+                ">
+                    {'⟳ Running' if is_running else '✓' if action['status'] == 'completed' else '○'}
+                </span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+    
+    st.markdown("<style>@keyframes glow { 0%, 100% { box-shadow: 0 0 5px rgba(34, 211, 238, 0.3); } 50% { box-shadow: 0 0 15px rgba(34, 211, 238, 0.6); } }</style>", unsafe_allow_html=True)
+    
+    # Annotation Legend
+    st.markdown(
+        """
         <div style="display: flex; gap: 1rem; margin-top: 1rem; padding: 0.75rem; background: rgba(51, 65, 85, 0.5); border-radius: 8px;">
             <div style="display: flex; align-items: center; gap: 0.5rem;">
                 <div style="width: 12px; height: 12px; border: 2px solid #6366F1; border-radius: 2px;"></div>
