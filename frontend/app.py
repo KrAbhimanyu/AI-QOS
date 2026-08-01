@@ -55,6 +55,7 @@ def sidebar_navigation() -> str:
             "🔬 Intelligence Center": "intelligence_center",
             "🚀 Live Execution": "execution_center",
             "🔍 Human Review": "human_review_center",
+            "💬 AI Chat": "ai_chat_workspace",
             "📋 Missions": "missions",
             "🤖 Agents": "agents",
             "⚡ Executions": "executions",
@@ -120,6 +121,9 @@ def main() -> None:
     elif current_page == "human_review_center":
         from pages.human_review_center import render_human_review_center
         render_human_review_center()
+    elif current_page == "ai_chat_workspace":
+        from pages.ai_chat_workspace import render_ai_chat_workspace
+        render_ai_chat_workspace()
     elif current_page == "missions":
         from pages.missions import render_missions
         render_missions()
