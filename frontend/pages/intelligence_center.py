@@ -60,6 +60,9 @@ def render_intelligence_center() -> None:
     # Discovered pages table
     st.markdown("<hr style='margin: 1.5rem 0; border-color: #334155;'>", unsafe_allow_html=True)
     render_discovered_pages()
+    
+    # Side Drawer for Page Details
+    render_page_drawer()
 
 
 def render_page_header() -> None:
@@ -116,7 +119,7 @@ def render_page_header() -> None:
     )
     
     # Action buttons row
-    col1, col2, col3, col4, col5, col6 = st.columns([1, 1, 1, 1, 1, 1])
+    col1, col2, col3, col4, col5, col6, col7 = st.columns([1, 1, 1, 1, 1, 1, 1])
     
     with col1:
         if st.button("⏸️ Pause", use_container_width=True):
@@ -134,12 +137,17 @@ def render_page_header() -> None:
             st.rerun()
     
     with col4:
-        st.button("📥 Export Blueprint", use_container_width=True)
+        if st.button("📥 Export Blueprint", use_container_width=True):
+            st.success("📥 Blueprint exported successfully!")
     
     with col5:
         st.button("📊 Generate Report", use_container_width=True)
     
     with col6:
+        if st.button("❓ Help", use_container_width=True):
+            set_intel_data("show_help", not get_intel_data("show_help", False))
+    
+    with col7:
         if st.button("🤖 Continue to Automation →", type="primary", use_container_width=True):
             st.info("🚀 Moving to Automation Phase...")
 
@@ -606,3 +614,241 @@ def reset_intelligence() -> None:
         "dropdowns": 0,
         "api_endpoints": 0,
     })
+
+
+def render_page_drawer() -> None:
+    """Render side drawer for page details."""
+    # Initialize selected page state
+    if "selected_page" not in st.session_state:
+        st.session_state.selected_page = None
+    
+    # Page selector in sidebar
+    with st.sidebar:
+        st.markdown("---")
+        st.markdown(
+            """
+            <div style="
+                background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(30, 30, 63, 0.9) 100%);
+                border: 1px solid rgba(99, 102, 241, 0.3);
+                border-radius: 12px;
+                padding: 1rem;
+            ">
+                <h4 style="color: #F1F5F9; margin: 0 0 0.75rem; font-size: 0.95rem;">📄 Page Explorer</h4>
+                <p style="color: #94A3B8; margin: 0 0 1rem; font-size: 0.75rem;">Click a page to view details</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        
+        # Page selection
+        page_names = [p["name"] for p in MOCK_DISCOVERED_PAGES]
+        selected = st.selectbox("Select Page", ["(Select a page)"] + page_names, key="page_selector")
+        
+        if selected != "(Select a page)":
+            st.session_state.selected_page = selected
+    
+    # Show drawer if page selected
+    if st.session_state.selected_page:
+        selected_page_data = next((p for p in MOCK_DISCOVERED_PAGES if p["name"] == st.session_state.selected_page), None)
+        
+        if selected_page_data:
+            with st.expander("📋 Page Details: " + st.session_state.selected_page, expanded=True):
+                # Page Header
+                st.markdown(
+                    f"""
+                    <div style="
+                        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(30, 30, 63, 0.95) 100%);
+                        border-radius: 12px;
+                        padding: 1.25rem;
+                        margin-bottom: 1rem;
+                    ">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="
+                                width: 48px;
+                                height: 48px;
+                                border-radius: 12px;
+                                background: linear-gradient(135deg, #6366F1, #8B5CF6);
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 1.5rem;
+                            ">📄</div>
+                            <div>
+                                <h3 style="color: #F1F5F9; margin: 0;">{selected_page_data['name']}</h3>
+                                <p style="color: #94A3B8; margin: 0.25rem 0 0; font-size: 0.85rem;">{selected_page_data['url']}</p>
+                            </div>
+                        </div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+                
+                # Detected Components
+                st.markdown("### 🔍 Detected Components")
+                components = {
+                    "Forms": selected_page_data["forms"],
+                    "Buttons": selected_page_data["buttons"],
+                    "Tables": selected_page_data["tables"],
+                    "Dropdowns": 3,
+                    "Links": 24,
+                    "Images": 8,
+                }
+                
+                for comp, count in components.items():
+                    st.markdown(
+                        f"""
+                        <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #334155;">
+                            <span style="color: #94A3B8;">{comp}</span>
+                            <span style="color: #F1F5F9; font-weight: 500;">{count}</span>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
+                
+                st.markdown("### 📐 DOM Summary")
+                dom_elements = {
+                    "Total Elements": 356,
+                    "Interactive Elements": 42,
+                    "Input Fields": selected_page_data["forms"] * 4,
+                    "Hidden Elements": 12,
+                }
+                
+                for elem, count in dom_elements.items():
+                    st.markdown(
+                        f"""
+                        <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #334155;">
+                            <span style="color: #94A3B8;">{elem}</span>
+                            <span style="color: #F1F5F9; font-weight: 500;">{count}</span>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
+                
+                st.markdown("### ✅ Suggested Test Cases")
+                test_cases = [
+                    ("Verify page loads correctly", "High"),
+                    ("Test all form validations", "High"),
+                    ("Check button click handlers", "Medium"),
+                    ("Validate table data rendering", "Medium"),
+                    ("Test navigation links", "Low"),
+                ]
+                
+                for case, priority in test_cases:
+                    priority_color = {"High": "#EF4444", "Medium": "#F59E0B", "Low": "#10B981"}.get(priority, "#64748B")
+                    st.markdown(
+                        f"""
+                        <div style="
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            padding: 0.5rem;
+                            background: rgba(51, 65, 85, 0.3);
+                            border-radius: 6px;
+                            margin-bottom: 0.5rem;
+                        ">
+                            <span style="color: #F1F5F9; font-size: 0.85rem;">{case}</span>
+                            <span style="color: {priority_color}; font-size: 0.75rem;">{priority}</span>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
+                
+                st.markdown("### ⚠️ Potential Risks")
+                risks = [
+                    "Dynamic content loading may affect test stability",
+                    "Third-party scripts could cause flakiness",
+                    "Complex nested modals detected",
+                ]
+                
+                for risk in risks:
+                    st.markdown(
+                        f"""
+                        <div style="
+                            padding: 0.5rem 0.75rem;
+                            background: rgba(245, 158, 11, 0.1);
+                            border-left: 3px solid #F59E0B;
+                            margin-bottom: 0.5rem;
+                        ">
+                            <span style="color: #F59E0B; font-size: 0.8rem;">⚠️ {risk}</span>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
+                
+                st.markdown("### ♿ Accessibility Notes")
+                a11y_notes = [
+                    "Missing ARIA labels on 3 buttons",
+                    "Color contrast ratio: 4.2:1 (Good)",
+                    "Keyboard navigation: Fully supported",
+                    "Screen reader: Partially supported",
+                ]
+                
+                for note in a11y_notes:
+                    status_color = "#10B981" if "Good" in note or "Fully" in note else "#F59E0B"
+                    st.markdown(
+                        f"""
+                        <div style="
+                            padding: 0.5rem 0;
+                            border-bottom: 1px solid #334155;
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                        ">
+                            <span style="color: {status_color};">{'✅' if 'Good' in note or 'Fully' in note else '⚠️'}</span>
+                            <span style="color: #94A3B8; font-size: 0.8rem;">{note}</span>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
+                
+                # Coverage
+                st.markdown("---")
+                coverage = int(selected_page_data["coverage"].replace("%", ""))
+                st.markdown(
+                    f"""
+                    <div style="
+                        background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(30, 30, 63, 0.9) 100%);
+                        border: 1px solid rgba(16, 185, 129, 0.3);
+                        border-radius: 12px;
+                        padding: 1rem;
+                        text-align: center;
+                    ">
+                        <p style="color: #94A3B8; margin: 0 0 0.5rem; font-size: 0.8rem;">Estimated Coverage</p>
+                        <p style="color: #10B981; margin: 0; font-size: 2rem; font-weight: 700;">{coverage}%</p>
+                        <div style="height: 6px; background: #334155; border-radius: 3px; margin-top: 0.5rem;">
+                            <div style="width: {coverage}%; height: 100%; background: #10B981; border-radius: 3px;"></div>
+                        </div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+    
+    # Show help panel if requested
+    if get_intel_data("show_help", False):
+        with st.expander("❓ Help & Tips", expanded=True):
+            st.markdown(
+                """
+                <div style="
+                    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(30, 30, 63, 0.9) 100%);
+                    border-radius: 12px;
+                    padding: 1.5rem;
+                ">
+                    <h4 style="color: #F1F5F9; margin: 0 0 1rem;">🚀 Getting Started</h4>
+                    <ol style="color: #94A3B8; padding-left: 1.25rem; font-size: 0.85rem;">
+                        <li style="margin-bottom: 0.5rem;">The AI is currently studying your application</li>
+                        <li style="margin-bottom: 0.5rem;">Each phase analyzes different aspects of your app</li>
+                        <li style="margin-bottom: 0.5rem;">Click on any page to see detailed analysis</li>
+                        <li style="margin-bottom: 0.5rem;">Review suggested test cases for each page</li>
+                        <li>Click "Continue to Automation" when ready</li>
+                    </ol>
+                    
+                    <h4 style="color: #F1F5F9; margin: 1.5rem 0 1rem;">💡 Tips</h4>
+                    <ul style="color: #94A3B8; padding-left: 1.25rem; font-size: 0.85rem;">
+                        <li style="margin-bottom: 0.5rem;">Use "Pause" to stop analysis temporarily</li>
+                        <li style="margin-bottom: 0.5rem;">"Export Blueprint" saves the app map</li>
+                        <li>Higher confidence = better test generation</li>
+                    </ul>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
