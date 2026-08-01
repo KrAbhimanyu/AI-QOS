@@ -164,10 +164,10 @@ def review_header(
 
 def review_action_buttons() -> None:
     """Display review action buttons."""
-    col1, col2, col3, col4, col5, col6 = st.columns([1, 1, 1, 1, 1, 1])
+    col1, col2, col3, col4, col5, col6, col7 = st.columns([1, 1, 1, 1, 1, 1, 1])
     
     with col1:
-        if st.button("✅ Approve & Continue", type="primary", use_container_width=True):
+        if st.button("✅ Approve", type="primary", use_container_width=True):
             set_review_data("review_decision", "approved")
             st.success("✅ Test approved! Continuing execution...")
             st.rerun()
@@ -179,21 +179,27 @@ def review_action_buttons() -> None:
             st.rerun()
     
     with col3:
+        if st.button("❌ Fail", use_container_width=True):
+            set_review_data("review_decision", "failed")
+            st.error("❌ Test marked as failed")
+            st.rerun()
+    
+    with col4:
         if st.button("✏️ Modify", use_container_width=True):
             set_review_data("show_modify_panel", True)
     
-    with col4:
-        if st.button("🐛 Generate Bug", use_container_width=True):
+    with col5:
+        if st.button("🐛 Bug", use_container_width=True):
             set_review_data("show_bug_panel", True)
     
-    with col5:
+    with col6:
         if st.button("⏭️ Skip", use_container_width=True):
             set_review_data("review_decision", "skipped")
             st.info("⏭️ Test skipped")
             st.rerun()
     
-    with col6:
-        if st.button("⏸️ Pause Mission", use_container_width=True):
+    with col7:
+        if st.button("⏸️ Pause", use_container_width=True):
             st.warning("⏸️ Mission paused by user")
 
 
@@ -686,19 +692,26 @@ def modification_panel() -> None:
     )
     
     # Edit Locator
-    st.markdown("**Edit Locator:**")
+    st.markdown("**🎯 Edit Locator:**")
     st.text_input("New XPath", value="//button[@id='sidebar-toggle']", label_visibility="collapsed")
     
     # Add Assertion
-    st.markdown("**Add Assertion:**")
+    st.markdown("**➕ Add Assertion:**")
     st.text_input("Assertion Name", placeholder="e.g., Verify sidebar visible", label_visibility="collapsed")
     
+    # Remove Assertion
+    st.markdown("**➖ Remove Assertion:**")
+    assertions_list = ["Page Title Contains 'Dashboard'", "User Name Displayed", "Logout Button Visible", "Sidebar Navigation Present"]
+    selected_assertion = st.selectbox("Select to remove", ["(Select assertion)"] + assertions_list, label_visibility="collapsed")
+    if selected_assertion != "(Select assertion)":
+        st.warning(f"❌ Will remove: {selected_assertion}")
+    
     # Change Validation
-    st.markdown("**Change Validation:**")
+    st.markdown("**🔄 Change Validation:**")
     st.selectbox("Validation Type", ["Equals", "Contains", "Exists", "Matches Regex"], label_visibility="collapsed")
     
     # Add Note
-    st.markdown("**Add Note:**")
+    st.markdown("**📝 Add Note:**")
     st.text_area("Note", placeholder="Add a note for the team...", height=60, label_visibility="collapsed")
     
     st.markdown("---")
@@ -718,7 +731,7 @@ def modification_panel() -> None:
 
 def review_tabs() -> None:
     """Display review tabs."""
-    tabs = st.tabs(["📋 Overview", "🖥️ Browser", "📐 DOM", "🌐 Network", "💻 Console", "📷 Screenshots", "♿ Accessibility"])
+    tabs = st.tabs(["📋 Overview", "🖥️ Browser", "📐 DOM", "🌐 Network", "💻 Console", "📝 Logs", "📷 Screenshots", "🎥 Video", "♿ Accessibility", "⚡ Performance"])
     
     with tabs[0]:
         st.markdown("### Test Overview")
@@ -772,19 +785,99 @@ def review_tabs() -> None:
         """, language="bash")
     
     with tabs[5]:
-        st.markdown("### Screenshots")
+        st.markdown("### Execution Logs")
+        st.markdown(
+            """
+            <div style="background: #0a0a0f; border-radius: 8px; padding: 1rem; font-family: monospace; font-size: 0.8rem;">
+                <p style="color: #64748B; margin: 0;">[10:00:25] Test started</p>
+                <p style="color: #64748B; margin: 0;">[10:00:26] Navigating to /login</p>
+                <p style="color: #10B981; margin: 0;">[10:00:27] Login page loaded</p>
+                <p style="color: #64748B; margin: 0;">[10:00:28] Entering credentials</p>
+                <p style="color: #10B981; margin: 0;">[10:00:29] Authentication successful</p>
+                <p style="color: #64748B; margin: 0;">[10:00:30] Navigating to /dashboard</p>
+                <p style="color: #10B981; margin: 0;">[10:00:32] Dashboard loaded</p>
+                <p style="color: #F59E0B; margin: 0;">[10:00:33] WARNING: Sidebar not visible</p>
+                <p style="color: #EF4444; margin: 0;">[10:00:34] ASSERTION FAILED: sidebar.visible</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
         col1, col2 = st.columns(2)
         with col1:
-            st.image("https://via.placeholder.com/400x300/1E1E3F/6366F1?text=Before")
-            st.caption("Before")
+            st.button("📥 Download Logs", use_container_width=True)
         with col2:
-            st.image("https://via.placeholder.com/400x300/1E1E3F/10B981?text=After")
-            st.caption("After")
+            st.button("🗑️ Clear Logs", use_container_width=True)
     
     with tabs[6]:
+        st.markdown("### Screenshots")
+        col1, col2, col3 = st.columns(3)
+        screenshots = [
+            ("Before Login", "10:00:27"),
+            ("After Login", "10:00:30"),
+            ("Dashboard", "10:00:35"),
+        ]
+        for col, (name, time) in zip([col1, col2, col3], screenshots):
+            with col:
+                st.image(f"https://via.placeholder.com/200x150/1E1E3F/6366F1?text={name.replace(' ', '+')}")
+                st.caption(f"{name} - {time}")
+        st.markdown("**Screenshot Comparison:**")
+        st.checkbox("Show side-by-side comparison")
+        st.checkbox("Highlight differences")
+    
+    with tabs[7]:
+        st.markdown("### Video Recording")
+        st.markdown(
+            """
+            <div style="background: rgba(30, 30, 63, 0.8); border-radius: 12px; padding: 2rem; text-align: center;">
+                <span style="font-size: 4rem;">🎥</span>
+                <p style="color: #F1F5F9; margin: 1rem 0;">Video Recording Available</p>
+                <p style="color: #64748B; margin: 0;">Duration: 00:34 seconds</p>
+                <p style="color: #64748B; margin: 0;">Size: 2.4 MB</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.button("▶️ Play", use_container_width=True)
+        with col2:
+            st.button("📥 Download", use_container_width=True)
+        with col3:
+            st.button("🔗 Share", use_container_width=True)
+    
+    with tabs[8]:
         st.markdown("### Accessibility")
         st.table({
-            "Check": ["Contrast Ratio", "ARIA Labels", "Keyboard Nav"],
-            "Status": ["✅ Pass", "⚠️ Warning", "✅ Pass"],
-            "Details": ["4.5:1", "Missing on 2 elements", "Fully supported"],
+            "Check": ["Contrast Ratio", "ARIA Labels", "Keyboard Nav", "Focus Order", "Screen Reader"],
+            "Status": ["✅ Pass", "⚠️ Warning", "✅ Pass", "✅ Pass", "⚠️ Warning"],
+            "Details": ["4.5:1", "Missing on 2 elements", "Fully supported", "Correct order", "Partial support"],
         })
+        st.markdown("**Missing ARIA Labels:**")
+        st.markdown("- `#sidebar-toggle` button")
+        st.markdown("- `.metrics-card` container")
+    
+    with tabs[9]:
+        st.markdown("### Performance Metrics")
+        col1, col2, col3, col4 = st.columns(4)
+        metrics = [
+            ("⏱️ Load Time", "1.2s", "#10B981"),
+            ("📊 Page Size", "2.4 MB", "#6366F1"),
+            ("🖼️ Requests", "24", "#22D3EE"),
+            ("⚡ Score", "94", "#10B981"),
+        ]
+        for col, (label, value, color) in zip([col1, col2, col3, col4], metrics):
+            with col:
+                st.markdown(
+                    f"""
+                    <div style="text-align: center; padding: 1rem; background: rgba(30, 30, 63, 0.8); border-radius: 8px;">
+                        <p style="color: #64748B; margin: 0; font-size: 0.75rem;">{label}</p>
+                        <p style="color: {color}; margin: 0.5rem 0 0; font-size: 1.5rem; font-weight: 600;">{value}</p>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+        st.markdown("**Resource Breakdown:**")
+        st.progress(0.45, text="JavaScript: 45%")
+        st.progress(0.30, text="Images: 30%")
+        st.progress(0.15, text="CSS: 15%")
+        st.progress(0.10, text="HTML: 10%")
