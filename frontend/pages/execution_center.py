@@ -96,6 +96,16 @@ def render_execution_center() -> None:
     with right_col:
         render_right_panel()
     
+    # Left Drawer - Test Details
+    render_test_details_drawer()
+    
+    # DOM Inspector Panel
+    left_col2, right_col2 = st.columns(2)
+    with left_col2:
+        render_dom_inspector()
+    with right_col2:
+        render_ai_explanation_panel()
+    
     # Bottom Timeline
     st.markdown("<hr style='margin: 1.5rem 0; border-color: #334155;'>", unsafe_allow_html=True)
     render_bottom_section()
@@ -348,6 +358,189 @@ def reset_execution() -> None:
     set_exec_data("exec_failed", 0)
     set_exec_data("exec_skipped", 0)
     set_exec_data("exec_elapsed", 0)
+
+
+def render_test_details_drawer() -> None:
+    """Render left drawer with test case details."""
+    with st.sidebar:
+        with st.expander("📋 Test Case Details", expanded=False):
+            st.markdown(
+                """
+                <div style="
+                    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(30, 30, 63, 0.9) 100%);
+                    border: 1px solid rgba(99, 102, 241, 0.3);
+                    border-radius: 12px;
+                    padding: 1rem;
+                ">
+                    <h4 style="color: #F1F5F9; margin: 0 0 1rem;">Current Test Case</h4>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+            
+            test_case = {
+                "scenario": "User Login and Dashboard Access",
+                "priority": "High",
+                "expected": "User successfully logs in and is redirected to dashboard",
+                "actual": "User logged in successfully, redirected to dashboard at /dashboard",
+                "evidence": "Screenshot captured at 10:00:35",
+                "requirement": "REQ-001: User Authentication",
+            }
+            
+            st.markdown("**Scenario:**")
+            st.code(test_case["scenario"], language=None)
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                st.markdown("**Priority:**")
+                st.markdown(f"<span style='color: #EF4444;'>🔴 {test_case['priority']}</span>", unsafe_allow_html=True)
+            with col2:
+                st.markdown("**Status:**")
+                st.markdown("<span style='color: #10B981;'>✅ In Progress</span>", unsafe_allow_html=True)
+            
+            st.markdown("---")
+            st.markdown("**Expected Result:**")
+            st.info(test_case["expected"])
+            
+            st.markdown("**Actual Result:**")
+            st.success(test_case["actual"])
+            
+            st.markdown("**Evidence:**")
+            st.markdown(f"<span style='color: #94A3B8;'>📷 {test_case['evidence']}</span>", unsafe_allow_html=True)
+            
+            st.markdown("**Related Requirement:**")
+            st.markdown(f"<span style='color: #6366F1;'>📋 {test_case['requirement']}</span>", unsafe_allow_html=True)
+
+
+def render_dom_inspector() -> None:
+    """Render DOM inspector panel."""
+    st.markdown("<h4 style='color: #F1F5F9; margin: 1.5rem 0 1rem;'>🔍 DOM Inspector</h4>", unsafe_allow_html=True)
+    
+    st.markdown(
+        """
+        <div style="
+            background: rgba(30, 30, 63, 0.8);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+        ">
+            <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 0.95rem;">Current Element</h4>
+        """,
+        unsafe_allow_html=True,
+    )
+    
+    dom_info = [
+        ("Tag", "button"),
+        ("ID", "login-btn"),
+        ("Class", "btn-primary submit-btn"),
+        ("XPath", "//button[@id='login-btn']"),
+        ("CSS", "button#login-btn.btn-primary"),
+        ("Role", "button"),
+        ("Text", "Sign In"),
+        ("Type", "submit"),
+        ("Disabled", "false"),
+    ]
+    
+    for label, value in dom_info:
+        st.markdown(
+            f"""
+            <div style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid rgba(51, 65, 85, 0.5);">
+                <span style="color: #64748B; font-size: 0.8rem;">{label}</span>
+                <span style="color: #F1F5F9; font-size: 0.8rem; font-family: monospace;">{value}</span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+    
+    # Attributes
+    st.markdown("<h5 style='color: #F1F5F9; margin: 1rem 0 0.5rem;'>Attributes</h5>", unsafe_allow_html=True)
+    
+    attributes = [
+        ("data-testid", "login-submit"),
+        ("aria-label", "Submit login form"),
+        ("data-cy", "login-button"),
+        ("onclick", "submitForm()"),
+    ]
+    
+    for attr, value in attributes:
+        st.markdown(
+            f"""
+            <div style="display: flex; gap: 0.5rem; padding: 0.3rem 0; font-size: 0.75rem;">
+                <span style="color: #22D3EE;">{attr}</span>
+                <span style="color: #64748B;">=</span>
+                <span style="color: #10B981;">"{value}"</span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+    
+    # Confidence
+    st.markdown(
+        """
+        <div style="margin-top: 1rem; padding: 0.75rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="color: #94A3B8; font-size: 0.8rem;">Locator Confidence</span>
+                <span style="color: #10B981; font-weight: 600;">98%</span>
+            </div>
+            <div style="height: 4px; background: #334155; border-radius: 2px; margin-top: 0.5rem;">
+                <div style="width: 98%; height: 100%; background: #10B981; border-radius: 2px;"></div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_ai_explanation_panel() -> None:
+    """Render AI explanation for current step."""
+    st.markdown("<h4 style='color: #F1F5F9; margin: 1.5rem 0 1rem;'>🤖 AI Explanation</h4>", unsafe_allow_html=True)
+    
+    explanations = [
+        {
+            "title": "Why this step?",
+            "content": "Verifying user authentication by clicking the login button",
+            "color": "#6366F1",
+        },
+        {
+            "title": "Evidence",
+            "content": "Found button with id='login-btn' and text='Sign In' matching expected element",
+            "color": "#22D3EE",
+        },
+        {
+            "title": "Confidence",
+            "content": "98% - High confidence based on multiple locator strategies",
+            "color": "#10B981",
+        },
+        {
+            "title": "Alternative",
+            "content": "Fallback: button[type='submit'] if primary locator fails",
+            "color": "#F59E0B",
+        },
+        {
+            "title": "Next Action",
+            "content": "Wait for page navigation and verify dashboard loads",
+            "color": "#8B5CF6",
+        },
+    ]
+    
+    for exp in explanations:
+        st.markdown(
+            f"""
+            <div style="
+                padding: 0.75rem;
+                background: rgba(30, 30, 63, 0.5);
+                border-left: 3px solid {exp['color']};
+                border-radius: 0 8px 8px 0;
+                margin-bottom: 0.75rem;
+            ">
+                <p style="color: {exp['color']}; margin: 0 0 0.25rem; font-size: 0.75rem; font-weight: 500;">{exp['title']}</p>
+                <p style="color: #94A3B8; margin: 0; font-size: 0.8rem;">{exp['content']}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
     set_exec_data("exec_start_time", datetime.now())
     set_exec_data("exec_confidence", 0)
 
