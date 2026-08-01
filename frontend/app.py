@@ -54,6 +54,7 @@ def sidebar_navigation() -> str:
             "🎯 Mission Planner": "mission_planner",
             "🔬 Intelligence Center": "intelligence_center",
             "🚀 Live Execution": "execution_center",
+            "🔍 Human Review": "human_review_center",
             "📋 Missions": "missions",
             "🤖 Agents": "agents",
             "⚡ Executions": "executions",
@@ -116,6 +117,9 @@ def main() -> None:
     elif current_page == "execution_center":
         from pages.execution_center import render_execution_center
         render_execution_center()
+    elif current_page == "human_review_center":
+        from pages.human_review_center import render_human_review_center
+        render_human_review_center()
     elif current_page == "missions":
         from pages.missions import render_missions
         render_missions()
