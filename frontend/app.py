@@ -51,7 +51,8 @@ def sidebar_navigation() -> str:
         
         menu_items = {
             "📊 Dashboard": "dashboard",
-            "🎯 Missions": "missions",
+            "🎯 Mission Planner": "mission_planner",
+            "📋 Missions": "missions",
             "🤖 Agents": "agents",
             "⚡ Executions": "executions",
             "📡 Monitoring": "monitoring",
@@ -104,6 +105,9 @@ def main() -> None:
     if current_page == "dashboard":
         from pages.dashboard import render_dashboard
         render_dashboard()
+    elif current_page == "mission_planner":
+        from pages.mission_planner import render_mission_planner
+        render_mission_planner()
     elif current_page == "missions":
         from pages.missions import render_missions
         render_missions()
