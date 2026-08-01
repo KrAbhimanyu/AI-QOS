@@ -41,6 +41,8 @@ MOCK_AGENTS = [
         "id": "req_agent",
         "name": "Requirement Agent",
         "icon": "📋",
+        "version": "2.1.0",
+        "role": "Intelligence",
         "category": "Intelligence",
         "status": "running",
         "mission": "E2E Regression v2.1",
@@ -54,11 +56,21 @@ MOCK_AGENTS = [
         "model": "GPT-4",
         "exec_time": "2m 15s",
         "messages": 156,
+        "capabilities": ["Requirements Analysis", "Test Planning", "User Story Mapping"],
+        "permissions": ["Read Project", "Write Tests"],
+        "current_prompt": "Analyze login flow requirements...",
+        "memory_usage": "1.2 GB",
+        "tools": ["Parser", "Analyzer", "Planner"],
+        "dependencies": ["DOM Agent", "App Agent"],
+        "owner": "AI-QOS Team",
+        "last_updated": "2 min ago",
     },
     {
         "id": "app_intel",
         "name": "Application Intelligence",
         "icon": "🔍",
+        "version": "2.0.5",
+        "role": "Intelligence",
         "category": "Intelligence",
         "status": "running",
         "mission": "E2E Regression v2.1",
@@ -72,11 +84,21 @@ MOCK_AGENTS = [
         "model": "Claude-3",
         "exec_time": "1m 48s",
         "messages": 89,
+        "capabilities": ["Web Scraping", "Navigation Analysis", "Technology Detection"],
+        "permissions": ["Read App", "Capture Screenshots"],
+        "current_prompt": "Scan application structure...",
+        "memory_usage": "2.4 GB",
+        "tools": ["WebScanner", "TechnologyDetector", "SitemapGenerator"],
+        "dependencies": ["DOM Agent"],
+        "owner": "AI-QOS Team",
+        "last_updated": "1 min ago",
     },
     {
         "id": "dom_intel",
         "name": "DOM Intelligence",
         "icon": "📐",
+        "version": "1.8.2",
+        "role": "Intelligence",
         "category": "Intelligence",
         "status": "running",
         "mission": "E2E Regression v2.1",
@@ -90,11 +112,21 @@ MOCK_AGENTS = [
         "model": "GPT-4",
         "exec_time": "1m 32s",
         "messages": 67,
+        "capabilities": ["DOM Parsing", "Element Extraction", "Structure Analysis"],
+        "permissions": ["Read DOM", "Analyze Elements"],
+        "current_prompt": "Extract all form elements...",
+        "memory_usage": "1.8 GB",
+        "tools": ["DOMParser", "ElementExtractor", "AttributeAnalyzer"],
+        "dependencies": [],
+        "owner": "AI-QOS Team",
+        "last_updated": "30s ago",
     },
     {
         "id": "locator",
         "name": "Locator Intelligence",
         "icon": "🎯",
+        "version": "2.3.1",
+        "role": "Intelligence",
         "category": "Intelligence",
         "status": "running",
         "mission": "E2E Regression v2.1",
@@ -108,11 +140,21 @@ MOCK_AGENTS = [
         "model": "Gemini-Pro",
         "exec_time": "1m 15s",
         "messages": 45,
+        "capabilities": ["XPath Generation", "CSS Selectors", "Locator Optimization"],
+        "permissions": ["Read DOM", "Generate Locators"],
+        "current_prompt": "Generate stable locators...",
+        "memory_usage": "0.9 GB",
+        "tools": ["XPathGenerator", "CSSGenerator", "LocatorOptimizer"],
+        "dependencies": ["DOM Agent"],
+        "owner": "AI-QOS Team",
+        "last_updated": "15s ago",
     },
     {
         "id": "frontend_test",
         "name": "Frontend Testing",
         "icon": "🖥️",
+        "version": "3.0.0",
+        "role": "Testing",
         "category": "Testing",
         "status": "running",
         "mission": "E2E Regression v2.1",
@@ -126,11 +168,21 @@ MOCK_AGENTS = [
         "model": "DeepSeek-Coder",
         "exec_time": "2m 05s",
         "messages": 134,
+        "capabilities": ["Browser Automation", "UI Testing", "Visual Comparisons"],
+        "permissions": ["Browser Control", "Screenshot Capture"],
+        "current_prompt": "Execute login flow test...",
+        "memory_usage": "3.2 GB",
+        "tools": ["Playwright", "PixelMatch", "VisualComparator"],
+        "dependencies": ["Locator Agent", "App Agent"],
+        "owner": "AI-QOS Team",
+        "last_updated": "10s ago",
     },
     {
         "id": "backend_test",
         "name": "Backend Testing",
         "icon": "⚙️",
+        "version": "2.1.3",
+        "role": "Testing",
         "category": "Testing",
         "status": "idle",
         "mission": "E2E Regression v2.1",
@@ -144,11 +196,21 @@ MOCK_AGENTS = [
         "model": "GPT-4",
         "exec_time": "0s",
         "messages": 12,
+        "capabilities": ["API Testing", "Request Validation", "Response Checking"],
+        "permissions": ["HTTP Requests", "Read Responses"],
+        "current_prompt": "Idle - waiting for tasks",
+        "memory_usage": "0.5 GB",
+        "tools": ["RestAssured", "HTTPClient", "ResponseValidator"],
+        "dependencies": [],
+        "owner": "AI-QOS Team",
+        "last_updated": "5 min ago",
     },
     {
         "id": "api_test",
         "name": "API Testing",
         "icon": "🔗",
+        "version": "2.5.0",
+        "role": "Testing",
         "category": "Testing",
         "status": "running",
         "mission": "E2E Regression v2.1",
@@ -162,11 +224,21 @@ MOCK_AGENTS = [
         "model": "Qwen-2",
         "exec_time": "45s",
         "messages": 56,
+        "capabilities": ["REST API Testing", "GraphQL Testing", "Schema Validation"],
+        "permissions": ["API Access", "Token Management"],
+        "current_prompt": "Validate authentication endpoints...",
+        "memory_usage": "1.1 GB",
+        "tools": ["RESTClient", "GraphQLClient", "SchemaValidator"],
+        "dependencies": [],
+        "owner": "AI-QOS Team",
+        "last_updated": "20s ago",
     },
     {
         "id": "db_test",
         "name": "Database Testing",
         "icon": "🗄️",
+        "version": "1.9.0",
+        "role": "Testing",
         "category": "Testing",
         "status": "idle",
         "mission": "E2E Regression v2.1",
@@ -180,11 +252,21 @@ MOCK_AGENTS = [
         "model": "GPT-4",
         "exec_time": "0s",
         "messages": 8,
+        "capabilities": ["SQL Validation", "Data Comparison", "Schema Testing"],
+        "permissions": ["Database Read", "Query Execution"],
+        "current_prompt": "Idle - waiting for tasks",
+        "memory_usage": "0.8 GB",
+        "tools": ["SQLValidator", "DataComparator", "SchemaTester"],
+        "dependencies": [],
+        "owner": "AI-QOS Team",
+        "last_updated": "8 min ago",
     },
     {
         "id": "security",
         "name": "Security Testing",
         "icon": "🔐",
+        "version": "2.2.0",
+        "role": "Security",
         "category": "Security",
         "status": "idle",
         "mission": "E2E Regression v2.1",
@@ -198,11 +280,21 @@ MOCK_AGENTS = [
         "model": "Claude-3",
         "exec_time": "0s",
         "messages": 5,
+        "capabilities": ["Vulnerability Scanning", "XSS Detection", "SQL Injection Testing"],
+        "permissions": ["Security Analysis"],
+        "current_prompt": "Idle - waiting for tasks",
+        "memory_usage": "1.5 GB",
+        "tools": ["SecurityScanner", "XSSDetector", "SQLInjectionTester"],
+        "dependencies": ["API Agent"],
+        "owner": "AI-QOS Team",
+        "last_updated": "12 min ago",
     },
     {
         "id": "perf_test",
         "name": "Performance Testing",
         "icon": "⚡",
+        "version": "1.7.5",
+        "role": "Testing",
         "category": "Testing",
         "status": "idle",
         "mission": "E2E Regression v2.1",
@@ -216,11 +308,21 @@ MOCK_AGENTS = [
         "model": "GPT-4",
         "exec_time": "0s",
         "messages": 3,
+        "capabilities": ["Load Testing", "Response Time Analysis", "Throughput Testing"],
+        "permissions": ["Performance Monitoring"],
+        "current_prompt": "Idle - waiting for tasks",
+        "memory_usage": "1.0 GB",
+        "tools": ["PerfMonitor", "LoadTester", "ResponseAnalyzer"],
+        "dependencies": [],
+        "owner": "AI-QOS Team",
+        "last_updated": "15 min ago",
     },
     {
         "id": "a11y",
         "name": "Accessibility Agent",
         "icon": "♿",
+        "version": "1.5.2",
+        "role": "Testing",
         "category": "Testing",
         "status": "idle",
         "mission": "E2E Regression v2.1",
@@ -234,11 +336,21 @@ MOCK_AGENTS = [
         "model": "GPT-4",
         "exec_time": "0s",
         "messages": 2,
+        "capabilities": ["WCAG Compliance", "Screen Reader Testing", "Keyboard Navigation"],
+        "permissions": ["Accessibility Analysis"],
+        "current_prompt": "Idle - waiting for tasks",
+        "memory_usage": "0.9 GB",
+        "tools": ["AxeCore", "ScreenReaderTester", "KeyboardNavigator"],
+        "dependencies": ["Frontend Agent"],
+        "owner": "AI-QOS Team",
+        "last_updated": "20 min ago",
     },
     {
         "id": "visual_test",
         "name": "Visual Testing",
         "icon": "👁️",
+        "version": "2.0.0",
+        "role": "Testing",
         "category": "Testing",
         "status": "idle",
         "mission": "E2E Regression v2.1",
@@ -252,11 +364,21 @@ MOCK_AGENTS = [
         "model": "GPT-4",
         "exec_time": "0s",
         "messages": 4,
+        "capabilities": ["Visual Regression", "Screenshot Comparison", "Layout Testing"],
+        "permissions": ["Visual Analysis"],
+        "current_prompt": "Idle - waiting for tasks",
+        "memory_usage": "2.1 GB",
+        "tools": ["PixelMatch", "ScreenshotComparator", "LayoutAnalyzer"],
+        "dependencies": ["Frontend Agent"],
+        "owner": "AI-QOS Team",
+        "last_updated": "18 min ago",
     },
     {
         "id": "docs",
         "name": "Documentation Agent",
         "icon": "📝",
+        "version": "1.3.0",
+        "role": "Documentation",
         "category": "Documentation",
         "status": "idle",
         "mission": "E2E Regression v2.1",
@@ -270,11 +392,21 @@ MOCK_AGENTS = [
         "model": "GPT-4",
         "exec_time": "0s",
         "messages": 15,
+        "capabilities": ["Test Documentation", "Report Generation", "API Docs"],
+        "permissions": ["Write Documentation"],
+        "current_prompt": "Idle - waiting for tasks",
+        "memory_usage": "0.6 GB",
+        "tools": ["DocGenerator", "ReportBuilder", "MarkdownFormatter"],
+        "dependencies": [],
+        "owner": "AI-QOS Team",
+        "last_updated": "25 min ago",
     },
     {
         "id": "bug_analysis",
         "name": "Bug Analysis Agent",
         "icon": "🐛",
+        "version": "2.4.0",
+        "role": "Intelligence",
         "category": "Intelligence",
         "status": "running",
         "mission": "E2E Regression v2.1",
@@ -288,11 +420,21 @@ MOCK_AGENTS = [
         "model": "Claude-3",
         "exec_time": "3m 22s",
         "messages": 201,
+        "capabilities": ["Bug Classification", "Root Cause Analysis", "Fix Suggestions"],
+        "permissions": ["Read Logs", "Analyze Failures"],
+        "current_prompt": "Analyze sidebar visibility issue...",
+        "memory_usage": "2.8 GB",
+        "tools": ["BugAnalyzer", "LogParser", "RootCauseFinder"],
+        "dependencies": ["DOM Agent", "Frontend Agent"],
+        "owner": "AI-QOS Team",
+        "last_updated": "5s ago",
     },
     {
         "id": "release",
         "name": "Release Advisor",
         "icon": "🚀",
+        "version": "1.2.0",
+        "role": "Support",
         "category": "Support",
         "status": "idle",
         "mission": "E2E Regression v2.1",
@@ -306,11 +448,21 @@ MOCK_AGENTS = [
         "model": "GPT-4",
         "exec_time": "0s",
         "messages": 1,
+        "capabilities": ["Release Assessment", "Risk Analysis", "Go/No-Go Decisions"],
+        "permissions": ["Read Metrics", "Generate Recommendations"],
+        "current_prompt": "Idle - waiting for tasks",
+        "memory_usage": "0.4 GB",
+        "tools": ["ReleaseAdvisor", "RiskAnalyzer", "MetricChecker"],
+        "dependencies": [],
+        "owner": "AI-QOS Team",
+        "last_updated": "1 hour ago",
     },
     {
         "id": "learning",
         "name": "Learning Agent",
         "icon": "🧠",
+        "version": "1.6.0",
+        "role": "Learning",
         "category": "Learning",
         "status": "running",
         "mission": "E2E Regression v2.1",
@@ -324,6 +476,14 @@ MOCK_AGENTS = [
         "model": "DeepSeek",
         "exec_time": "45s",
         "messages": 78,
+        "capabilities": ["Pattern Recognition", "Test Optimization", "Locators Learning"],
+        "permissions": ["Learn Patterns", "Optimize Tests"],
+        "current_prompt": "Learn from recent test executions...",
+        "memory_usage": "1.7 GB",
+        "tools": ["PatternLearner", "TestOptimizer", "LocatorLearner"],
+        "dependencies": ["Locator Agent", "Frontend Agent"],
+        "owner": "AI-QOS Team",
+        "last_updated": "8s ago",
     },
 ]
 
@@ -423,7 +583,7 @@ def agent_header(
 # ============================================================================
 
 def agent_card(agent: Dict) -> None:
-    """Display an agent card."""
+    """Display an agent card with all fields."""
     status_colors = {
         "running": "#10B981",
         "idle": "#64748B",
@@ -468,8 +628,20 @@ def agent_card(agent: Dict) -> None:
                             background: {status_color};
                         "></span>
                     </div>
-                    <p style="color: #64748B; margin: 0.25rem 0 0; font-size: 0.75rem;">{agent['task']}</p>
+                    <p style="color: #64748B; margin: 0.25rem 0 0; font-size: 0.75rem;">v{agent.get('version', '1.0.0')} • {agent.get('role', 'Agent')}</p>
                 </div>
+            </div>
+            
+            <!-- Current Task -->
+            <div style="margin-bottom: 0.75rem; padding: 0.5rem; background: rgba(51, 65, 85, 0.5); border-radius: 6px;">
+                <p style="color: #64748B; margin: 0 0 0.25rem; font-size: 0.65rem;">Current Task</p>
+                <p style="color: #F1F5F9; margin: 0; font-size: 0.8rem;">{agent['task']}</p>
+            </div>
+            
+            <!-- Current Prompt -->
+            <div style="margin-bottom: 0.75rem;">
+                <p style="color: #64748B; margin: 0 0 0.25rem; font-size: 0.65rem;">Current Prompt</p>
+                <p style="color: #22D3EE; margin: 0; font-size: 0.75rem; font-style: italic;">"{agent.get('current_prompt', 'N/A')[:40]}..."</p>
             </div>
             
             <!-- Progress -->
@@ -505,8 +677,8 @@ def agent_card(agent: Dict) -> None:
             
             <!-- Footer -->
             <div style="display: flex; justify-content: space-between; padding-top: 0.5rem; border-top: 1px solid #334155;">
-                <span style="color: #64748B; font-size: 0.7rem;">{agent['tool']}</span>
-                <span style="color: #64748B; font-size: 0.7rem;">{agent['exec_time']}</span>
+                <span style="color: #64748B; font-size: 0.65rem;">Model: {agent['model']}</span>
+                <span style="color: #64748B; font-size: 0.65rem;">{agent['exec_time']}</span>
             </div>
         </div>
         <style>
@@ -966,9 +1138,9 @@ def mission_health() -> None:
 # ============================================================================
 
 def agent_drawer(agent: Dict) -> None:
-    """Display detailed agent drawer."""
+    """Display detailed agent drawer with all fields."""
     with st.expander(f"🤖 {agent['name']} Details", expanded=True):
-        # Agent DNA
+        # Agent Header
         st.markdown(
             f"""
             <div style="
@@ -980,31 +1152,66 @@ def agent_drawer(agent: Dict) -> None:
             ">
                 <span style="font-size: 4rem; display: block; margin-bottom: 1rem;">{agent['icon']}</span>
                 <h3 style="color: #F1F5F9; margin: 0;">{agent['name']}</h3>
-                <p style="color: #64748B; margin: 0.5rem 0 0;">Agent DNA</p>
+                <p style="color: #64748B; margin: 0.5rem 0 0;">Agent DNA • v{agent.get('version', '1.0.0')}</p>
             </div>
             """,
             unsafe_allow_html=True,
         )
         
+        # Basic Info
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown(f"**Role:** {agent.get('role', 'Agent')}")
+            st.markdown(f"**Version:** {agent.get('version', '1.0.0')}")
+            st.markdown(f"**Status:** {agent['status'].title()}")
+        with col2:
+            st.markdown(f"**Owner:** {agent.get('owner', 'AI-QOS Team')}")
+            st.markdown(f"**Last Updated:** {agent.get('last_updated', 'N/A')}")
+            st.markdown(f"**Health Score:** {agent['health']}%")
+        
         # Capabilities
         st.markdown("**🎯 Capabilities:**")
-        capabilities = ["Web Scraping", "DOM Analysis", "Locator Generation", "Pattern Recognition"]
+        capabilities = agent.get('capabilities', ['No capabilities defined'])
         for cap in capabilities:
             st.markdown(f"- {cap}")
         
+        # Permissions
+        st.markdown("**🔐 Permissions:**")
+        permissions = agent.get('permissions', ['Read'])
+        for perm in permissions:
+            st.markdown(f"- {perm}")
+        
+        # Tools
+        st.markdown("**🛠️ Tools:**")
+        tools = agent.get('tools', [agent.get('tool', 'N/A')])
+        for tool in tools:
+            st.markdown(f"- {tool}")
+        
+        # Dependencies
+        st.markdown("**🔗 Dependencies:**")
+        deps = agent.get('dependencies', [])
+        if deps:
+            for dep in deps:
+                st.markdown(f"- {dep}")
+        else:
+            st.markdown("- No dependencies")
+        
         # Current Context
         st.markdown("**📋 Current Context:**")
-        context_items = [
-            ("Mission", agent["mission"]),
-            ("Current Task", agent["task"]),
-            ("Progress", f"{agent['progress']}%"),
-            ("Confidence", f"{agent['confidence']}%"),
-            ("Current Tool", agent["tool"]),
-            ("Current Model", agent["model"]),
-        ]
+        st.markdown(f"- **Mission:** {agent['mission']}")
+        st.markdown(f"- **Current Task:** {agent['task']}")
+        st.markdown(f"- **Progress:** {agent['progress']}%")
+        st.markdown(f"- **Confidence:** {agent['confidence']}%")
+        st.markdown(f"- **Current Tool:** {agent['tool']}")
+        st.markdown(f"- **Current Model:** {agent['model']}")
         
-        for label, value in context_items:
-            st.markdown(f"- **{label}:** {value}")
+        # Memory Usage
+        st.markdown("**💾 Memory Usage:**")
+        st.markdown(f"- {agent.get('memory_usage', 'N/A')}")
+        
+        # Current Prompt
+        st.markdown("**💭 Current Prompt:**")
+        st.code(agent.get('current_prompt', 'No current prompt'), language=None)
         
         # Execution History
         st.markdown("**📊 Execution History:**")
