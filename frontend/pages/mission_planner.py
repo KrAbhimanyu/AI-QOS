@@ -134,8 +134,13 @@ def render_mission_planner() -> None:
             st.success("Mission cancelled. Ready to start fresh!")
             st.rerun()
         elif action == "launch":
-            st.success("🚀 Mission launched successfully!")
-            st.balloons()
+            # Initialize intelligence center state with mission data
+            st.session_state.current_view = "intelligence_center"
+            st.session_state.mission_launched = True
+            st.success("🚀 Mission launched! Navigating to Intelligence Center...")
+            st.info("🔬 AI is now studying your application...")
+            time.sleep(2)
+            st.rerun()
     
     # Right sidebar - AI Assistant
     with right_col:
