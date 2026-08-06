@@ -54,6 +54,7 @@ def sidebar_navigation() -> str:
             "🔍 Application Explorer": "application_explorer",
             "🌐 DOM Explorer": "dom_explorer",
             "🕸️ Knowledge Graph": "knowledge_graph",
+            "📊 Reports & Analytics": "reports_center",
             "🎯 Mission Planner": "mission_planner",
             "🔬 Intelligence Center": "intelligence_center",
             "🚀 Live Execution": "execution_center",
@@ -122,6 +123,9 @@ def main() -> None:
     elif current_page == "knowledge_graph":
         from pages.knowledge_graph import render_page
         render_page()
+    elif current_page == "reports_center":
+        from pages.reports_center import render_reports_center
+        render_reports_center()
     elif current_page == "mission_planner":
         from pages.mission_planner import render_mission_planner
         render_mission_planner()
