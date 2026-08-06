@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from typing import Any, Optional
 import streamlit as st
 import plotly.graph_objects as go
+import plotly.express as px
 
 
 # ============================================================================
@@ -19,6 +20,7 @@ def init_knowledge_state() -> None:
         "kg_filters": set(),
         "kg_view_mode": "graph",
         "kg_selected_flow": None,
+        "kg_expanded_categories": set(),
     }
     
     for key, value in defaults.items():
@@ -31,13 +33,21 @@ def select_kg_node(node_id: str) -> None:
     st.session_state.kg_selected_node = node_id
 
 
+def toggle_category(category: str) -> None:
+    """Toggle category expansion."""
+    if category in st.session_state.kg_expanded_categories:
+        st.session_state.kg_expanded_categories.discard(category)
+    else:
+        st.session_state.kg_expanded_categories.add(category)
+
+
 # ============================================================================
-# Knowledge Navigator Component
+# Enhanced Knowledge Navigator Component
 # ============================================================================
 
 def knowledge_navigator(nodes: list[dict[str, Any]], title: str = "Knowledge Navigator") -> None:
-    """Render the knowledge tree navigator."""
-    st.markdown(f"### 📚 {title}")
+    """Render the enhanced knowledge tree navigator."""
+    st.markdown(f"#### 📚 {title}")
     
     # Group nodes by type
     node_groups = {}
@@ -47,49 +57,89 @@ def knowledge_navigator(nodes: list[dict[str, Any]], title: str = "Knowledge Nav
             node_groups[node_type] = []
         node_groups[node_type].append(node)
     
-    # Type icons
-    type_icons = {
-        "application": "🏪",
-        "page": "📄",
-        "component": "🧩",
-        "api": "🔗",
-        "database_table": "🗄️",
-        "business_rule": "📜",
-        "test_case": "🧪",
-        "bug": "🐛",
+    # Type icons and colors
+    type_config = {
+        "mission": {"icon": "🎯", "color": "#ec4899"},
+        "application": {"icon": "🏢", "color": "#6366f1"},
+        "business_domain": {"icon": "🏛️", "color": "#8b5cf6"},
+        "business_flow": {"icon": "🔄", "color": "#06b6d4"},
+        "page": {"icon": "📄", "color": "#22d3ee"},
+        "component": {"icon": "🧩", "color": "#10b981"},
+        "dom_element": {"icon": "🏗️", "color": "#14b8a6"},
+        "form": {"icon": "📝", "color": "#f59e0b"},
+        "button": {"icon": "🔘", "color": "#fb923c"},
+        "input": {"icon": "⌨️", "color": "#a78bfa"},
+        "api": {"icon": "🔗", "color": "#38bdf8"},
+        "database_table": {"icon": "🗄️", "color": "#8b5cf6"},
+        "business_rule": {"icon": "⚖️", "color": "#f472b6"},
+        "feature_file": {"icon": "📦", "color": "#fbbf24"},
+        "test_case": {"icon": "🧪", "color": "#34d399"},
+        "bug": {"icon": "🐛", "color": "#ef4444"},
+        "report": {"icon": "📈", "color": "#a3e635"},
+        "release": {"icon": "🚀", "color": "#22d3ee"},
     }
     
     # Render expandable groups
-    for node_type, type_nodes in node_groups.items():
-        icon = type_icons.get(node_type, "📋")
+    for node_type, type_nodes in sorted(node_groups.items()):
+        config = type_config.get(node_type, {"icon": "📋", "color": "#64748b"})
+        icon = config["icon"]
+        color = config["color"]
         type_name = node_type.replace("_", " ").title()
         
-        with st.expander(f"{icon} {type_name} ({len(type_nodes)})", expanded=False):
-            for node in type_nodes:
-                # Node card
-                risk_colors = {"low": "#10b981", "medium": "#f59e0b", "high": "#ef4444", "critical": "#dc2626"}
-                risk_color = risk_colors.get(node.get("risk", "low"), "#64748b")
-                
-                coverage = node.get("automation_coverage", 0)
-                coverage_color = "#10b981" if coverage >= 80 else "#f59e0b" if coverage >= 60 else "#ef4444"
-                
-                col1, col2 = st.columns([3, 1])
-                
-                with col1:
-                    if st.button(
-                        f"**{node['name']}**",
-                        key=f"kg_nav_{node['id']}",
-                        use_container_width=True,
-                    ):
-                        select_kg_node(node["id"])
-                        st.rerun()
-                    
-                    if st.session_state.kg_selected_node == node["id"]:
-                        st.markdown(f"<div style='color: #6366f1; font-size: 11px;'>{node.get('description', '')[:60]}</div>", unsafe_allow_html=True)
-                
-                with col2:
-                    st.markdown(f"<div style='color: {risk_color}; font-size: 10px; text-align: right;'>{node.get('risk', 'low').upper()}</div>", unsafe_allow_html=True)
-                    st.markdown(f"<div style='color: {coverage_color}; font-size: 10px; text-align: right;'>{coverage:.0f}%</div>", unsafe_allow_html=True)
+        is_expanded = node_type in st.session_state.kg_expanded_categories
+        
+        # Custom styled expander
+        col1, col2 = st.columns([4, 1])
+        with col1:
+            if st.button(
+                f"{'▼' if is_expanded else '▶'} {icon} {type_name}",
+                key=f"kg_cat_{node_type}",
+                use_container_width=True,
+            ):
+                toggle_category(node_type)
+                st.rerun()
+        
+        with col2:
+            st.markdown(f"<span style='color: {color}; font-size: 12px;'>{len(type_nodes)}</span>", unsafe_allow_html=True)
+        
+        if is_expanded:
+            for node in type_nodes[:10]:  # Show first 10
+                _render_node_card(node, color)
+            
+            if len(type_nodes) > 10:
+                st.markdown(f"<span style='color: #64748b; font-size: 11px;'>... and {len(type_nodes) - 10} more</span>", unsafe_allow_html=True)
+
+
+def _render_node_card(node: dict[str, Any], accent_color: str) -> None:
+    """Render a single node card in the navigator."""
+    risk_colors = {"low": "#10b981", "medium": "#f59e0b", "high": "#ef4444", "critical": "#dc2626"}
+    risk_color = risk_colors.get(node.get("risk", "low"), "#64748b")
+    
+    coverage = node.get("automation_coverage", 0)
+    coverage_color = "#10b981" if coverage >= 80 else "#f59e0b" if coverage >= 60 else "#ef4444"
+    
+    is_selected = st.session_state.kg_selected_node == node["id"]
+    bg_color = "rgba(99, 102, 241, 0.2)" if is_selected else "rgba(30, 41, 59, 0.5)"
+    
+    st.markdown(f"""
+    <div style="
+        padding: 8px 12px;
+        background: {bg_color};
+        border-left: 2px solid {accent_color};
+        border-radius: 0 6px 6px 0;
+        margin: 4px 0 4px 16px;
+        cursor: pointer;
+        transition: all 0.2s;
+    ">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #f8fafc; font-size: 12px;">{node['name']}</span>
+            <div style="display: flex; gap: 8px;">
+                <span style="color: {coverage_color}; font-size: 10px;">{coverage:.0f}%</span>
+                <span style="color: {risk_color}; font-size: 10px;">{node.get('risk', 'low').upper()}</span>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -740,7 +790,7 @@ def kg_search(on_search: callable = None) -> str:
 
 def mini_map(graph_data: dict[str, Any], selected_node: Optional[str] = None, title: str = "Mini Map") -> None:
     """Render a mini map of the knowledge graph."""
-    st.markdown(f"### 🗺️ {title}")
+    st.markdown(f"#### 🗺️ {title}")
     
     nodes = graph_data.get("nodes", [])
     edges = graph_data.get("edges", [])
@@ -784,7 +834,7 @@ def mini_map(graph_data: dict[str, Any], selected_node: Optional[str] = None, ti
         ))
     
     fig.update_layout(
-        height=150,
+        height=120,
         showlegend=False,
         paper_bgcolor='transparent',
         plot_bgcolor='transparent',
@@ -794,3 +844,321 @@ def mini_map(graph_data: dict[str, Any], selected_node: Optional[str] = None, ti
     )
     
     st.plotly_chart(fig, use_container_width=True)
+
+
+# ============================================================================
+# Coverage Map Component
+# ============================================================================
+
+def coverage_map_panel(coverage_data: dict[str, Any], title: str = "Automation Coverage") -> None:
+    """Render the automation coverage map."""
+    st.markdown(f"#### 📊 {title}")
+    
+    for category, data in coverage_data.items():
+        coverage = data.get("coverage", 0)
+        status = data.get("status", "unknown")
+        
+        status_colors = {"good": "#10b981", "medium": "#f59e0b", "low": "#ef4444"}
+        color = status_colors.get(status, "#64748b")
+        
+        category_name = category.replace("_", " ").title()
+        
+        st.markdown(f"""
+        <div style="margin-bottom: 12px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <span style="color: #f8fafc; font-size: 12px;">{category_name}</span>
+                <span style="color: {color}; font-size: 12px; font-weight: 600;">{coverage}%</span>
+            </div>
+            <div style="width: 100%; height: 6px; background: rgba(30, 41, 59, 0.8); border-radius: 3px;">
+                <div style="width: {coverage}%; height: 100%; background: {color}; border-radius: 3px;"></div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+
+# ============================================================================
+# Bug Heatmap Component
+# ============================================================================
+
+def bug_heatmap_panel(heatmap_data: dict[str, Any], title: str = "Bug Heatmap") -> None:
+    """Render the bug heatmap."""
+    st.markdown(f"#### 🔥 {title}")
+    
+    tab1, tab2, tab3 = st.tabs(["Components", "APIs", "Pages"])
+    
+    with tab1:
+        for item in heatmap_data.get("by_component", []):
+            risk_colors = {"critical": "#ef4444", "high": "#f59e0b", "medium": "#3b82f6", "low": "#10b981"}
+            color = risk_colors.get(item.get("risk", "low"), "#64748b")
+            
+            st.markdown(f"""
+            <div style="padding: 8px; background: rgba(30, 41, 59, 0.6); border-radius: 6px; margin-bottom: 8px;">
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: #f8fafc;">{item['name']}</span>
+                    <span style="color: {color}; font-size: 11px;">{item['risk'].upper()}</span>
+                </div>
+                <div style="display: flex; gap: 16px; margin-top: 6px;">
+                    <span style="color: #ef4444; font-size: 11px;">❌ {item['failures']}</span>
+                    <span style="color: #f59e0b; font-size: 11px;">📳 {item.get('flaky', 0)}</span>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+    
+    with tab2:
+        for item in heatmap_data.get("by_api", []):
+            risk_colors = {"critical": "#ef4444", "high": "#f59e0b", "medium": "#3b82f6", "low": "#10b981"}
+            color = risk_colors.get(item.get("risk", "low"), "#64748b")
+            
+            st.markdown(f"""
+            <div style="padding: 8px; background: rgba(30, 41, 59, 0.6); border-radius: 6px; margin-bottom: 8px;">
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: #38bdf8; font-size: 12px; font-family: monospace;">{item['name']}</span>
+                    <span style="color: {color}; font-size: 11px;">{item['risk'].upper()}</span>
+                </div>
+                <div style="margin-top: 4px;">
+                    <span style="color: #ef4444; font-size: 11px;">❌ {item['failures']} failures</span>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+    
+    with tab3:
+        for item in heatmap_data.get("by_page", []):
+            risk_colors = {"critical": "#ef4444", "high": "#f59e0b", "medium": "#3b82f6", "low": "#10b981"}
+            color = risk_colors.get(item.get("risk", "low"), "#64748b")
+            
+            st.markdown(f"""
+            <div style="padding: 8px; background: rgba(30, 41, 59, 0.6); border-radius: 6px; margin-bottom: 8px;">
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: #f8fafc;">{item['name']}</span>
+                    <span style="color: {color}; font-size: 11px;">{item['risk'].upper()}</span>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+
+# ============================================================================
+# Graph Timeline Component
+# ============================================================================
+
+def graph_timeline_panel(timeline_data: list[dict[str, Any]], title: str = "Graph Timeline") -> None:
+    """Render the knowledge graph timeline."""
+    st.markdown(f"#### 📅 {title}")
+    
+    # Timeline chart
+    fig = go.Figure()
+    
+    fig.add_trace(go.Scatter(
+        x=[t["date"] for t in timeline_data],
+        y=[t["nodes_added"] for t in timeline_data],
+        mode="lines+markers",
+        name="Nodes Added",
+        line=dict(color="#10b981", width=2),
+        marker=dict(size=8),
+    ))
+    
+    fig.add_trace(go.Scatter(
+        x=[t["date"] for t in timeline_data],
+        y=[t["nodes_removed"] for t in timeline_data],
+        mode="lines+markers",
+        name="Nodes Removed",
+        line=dict(color="#ef4444", width=2),
+        marker=dict(size=8),
+    ))
+    
+    fig.update_layout(
+        height=200,
+        paper_bgcolor="transparent",
+        plot_bgcolor="transparent",
+        font=dict(color="#f8fafc", size=11),
+        showlegend=True,
+        legend=dict(font=dict(color="#f8fafc")),
+        xaxis=dict(showgrid=False, linecolor="rgba(148, 163, 184, 0.2)"),
+        yaxis=dict(showgrid=True, gridcolor="rgba(148, 163, 184, 0.1)"),
+    )
+    
+    st.plotly_chart(fig, use_container_width=True)
+    
+    # Version history
+    st.markdown("**Version History:**")
+    for t in timeline_data:
+        st.markdown(f"""
+        <div style="display: flex; justify-content: space-between; padding: 6px 12px; background: rgba(30, 41, 59, 0.4); border-radius: 4px; margin-bottom: 4px;">
+            <span style="color: #22d3ee;">v{t['version']}</span>
+            <span style="color: #94a3b8; font-size: 11px;">{t['date']}</span>
+            <span style="color: #10b981; font-size: 11px;">+{t['nodes_added']}</span>
+            <span style="color: #ef4444; font-size: 11px;">-{t['nodes_removed']}</span>
+        </div>
+        """, unsafe_allow_html=True)
+
+
+# ============================================================================
+# Graph Analytics Component
+# ============================================================================
+
+def graph_analytics_panel(analytics: dict[str, Any], title: str = "Graph Analytics") -> None:
+    """Render graph analytics."""
+    st.markdown(f"#### 📈 {title}")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.metric("Total Nodes", f"{analytics.get('total_nodes', 0):,}")
+        st.metric("Relationships", f"{analytics.get('total_relationships', 0):,}")
+        st.metric("Coverage", f"{analytics.get('coverage', 0):.1f}%")
+        st.metric("Automation Ready", f"{analytics.get('automation_readiness', 0):.1f}%")
+    
+    with col2:
+        st.metric("Confidence", f"{analytics.get('confidence', 0)}%")
+        st.metric("Risk Score", analytics.get('risk', 0))
+        st.metric("Flaky Components", analytics.get('flaky_components', 0))
+        st.metric("Business Flows", analytics.get('business_flows', 0))
+    
+    # Critical path
+    st.markdown("**🔴 Critical Path:**")
+    path = analytics.get('critical_path', [])
+    
+    path_html = " → ".join([f"<span style='color: #22d3ee;'>{p}</span>" for p in path])
+    st.markdown(f"<div style='padding: 12px; background: rgba(30, 41, 59, 0.6); border-radius: 8px;'>{path_html}</div>", unsafe_allow_html=True)
+    
+    # Most/Least connected
+    col1, col2 = st.columns(2)
+    with col1:
+        most = analytics.get('most_connected', {})
+        st.markdown(f"**🔗 Most Connected:** {most.get('node', 'N/A')} ({most.get('connections', 0)} connections)")
+    
+    with col2:
+        least = analytics.get('least_connected', {})
+        st.markdown(f"**🔗 Least Connected:** {least.get('node', 'N/A')} ({least.get('connections', 0)} connections)")
+
+
+# ============================================================================
+# Dependency Explorer Component
+# ============================================================================
+
+def dependency_explorer_panel(node: dict[str, Any], dependencies: dict[str, list], title: str = "Dependencies") -> None:
+    """Render dependency explorer for a node."""
+    st.markdown(f"#### 🔗 {title}")
+    
+    if not node:
+        st.info("Select a node to see dependencies")
+        return
+    
+    st.markdown(f"**{node.get('name', 'Unknown')}**")
+    
+    tabs = st.tabs(["Depends On", "Required By", "Affected"])
+    
+    with tabs[0]:
+        deps = node.get("dependencies", [])
+        if deps:
+            for dep in deps:
+                st.markdown(f"""
+                <div style="padding: 8px; background: rgba(30, 41, 59, 0.6); border-radius: 6px; margin-bottom: 6px;">
+                    <span style="color: #f59e0b;">←</span>
+                    <span style="color: #f8fafc; margin-left: 8px;">{dep}</span>
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.info("No dependencies")
+    
+    with tabs[1]:
+        required = dependencies.get("required_by", [])
+        if required:
+            for req in required:
+                st.markdown(f"""
+                <div style="padding: 8px; background: rgba(30, 41, 59, 0.6); border-radius: 6px; margin-bottom: 6px;">
+                    <span style="color: #10b981;">→</span>
+                    <span style="color: #f8fafc; margin-left: 8px;">{req}</span>
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.info("No dependents")
+    
+    with tabs[2]:
+        affected = dependencies.get("affected", [])
+        if affected:
+            for aff in affected:
+                st.markdown(f"""
+                <div style="padding: 8px; background: rgba(30, 41, 59, 0.6); border-radius: 6px; margin-bottom: 6px;">
+                    <span style="color: #ec4899;">⚡</span>
+                    <span style="color: #f8fafc; margin-left: 8px;">{aff}</span>
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.info("No affected nodes")
+
+
+# ============================================================================
+# Recommendation Panel Component
+# ============================================================================
+
+def recommendation_panel(recommendations: list[dict[str, Any]], title: str = "AI Recommendations") -> None:
+    """Render AI recommendations."""
+    st.markdown(f"#### 💡 {title}")
+    
+    priority_colors = {"critical": "#ef4444", "high": "#f59e0b", "medium": "#3b82f6", "low": "#10b981"}
+    
+    for i, rec in enumerate(recommendations):
+        priority = rec.get("priority", "medium")
+        color = priority_colors.get(priority, "#64748b")
+        
+        st.markdown(f"""
+        <div style="padding: 12px; background: rgba(30, 41, 59, 0.6); border-left: 3px solid {color}; border-radius: 0 8px 8px 0; margin-bottom: 12px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span style="color: {color}; font-size: 11px; text-transform: uppercase;">{priority}</span>
+                <span style="color: #64748b; font-size: 11px;">{rec.get('category', '')}</span>
+            </div>
+            <div style="color: #f8fafc; font-size: 13px; margin-bottom: 6px;">{rec.get('recommendation', '')}</div>
+            <div style="color: #94a3b8; font-size: 11px;">{rec.get('reason', '')}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+
+# ============================================================================
+# Execution History Component
+# ============================================================================
+
+def execution_history_panel(history: list[dict[str, Any]], title: str = "Execution History") -> None:
+    """Render execution history for a node."""
+    st.markdown(f"#### ⚡ {title}")
+    
+    for item in history:
+        status_color = "#10b981" if item.get("status") == "passed" else "#ef4444"
+        status_icon = "✅" if item.get("status") == "passed" else "❌"
+        
+        st.markdown(f"""
+        <div style="display: flex; justify-content: space-between; padding: 8px; background: rgba(30, 41, 59, 0.4); border-radius: 6px; margin-bottom: 6px;">
+            <span style="color: {status_color};">{status_icon} {item.get('status', 'unknown')}</span>
+            <span style="color: #94a3b8; font-size: 11px;">{item.get('duration', 0)}s</span>
+            <span style="color: #64748b; font-size: 11px;">{item.get('agent', '')}</span>
+        </div>
+        """, unsafe_allow_html=True)
+
+
+# ============================================================================
+# Latest Changes Component
+# ============================================================================
+
+def latest_changes_panel(changes: list[dict[str, Any]], title: str = "Latest Changes") -> None:
+    """Render latest graph changes."""
+    st.markdown(f"#### 🕐 {title}")
+    
+    type_icons = {
+        "node_added": "➕",
+        "relationship_added": "🔗",
+        "coverage_updated": "📊",
+        "rule_modified": "⚙️",
+        "test_added": "🧪",
+    }
+    
+    for change in changes:
+        icon = type_icons.get(change.get("type", ""), "📝")
+        
+        st.markdown(f"""
+        <div style="display: flex; align-items: center; gap: 10px; padding: 8px; background: rgba(30, 41, 59, 0.4); border-radius: 6px; margin-bottom: 6px;">
+            <span style="font-size: 14px;">{icon}</span>
+            <div style="flex: 1;">
+                <div style="color: #f8fafc; font-size: 12px;">{change.get('item', '')}</div>
+                <div style="color: #64748b; font-size: 10px;">{change.get('type', '').replace('_', ' ')}</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)

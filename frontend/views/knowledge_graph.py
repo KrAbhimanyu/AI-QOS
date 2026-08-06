@@ -9,6 +9,13 @@ import streamlit as st
 
 from utils.knowledge_graph_data import (
     GRAPH_INFO,
+    NAVIGATOR_TREE,
+    COVERAGE_MAP,
+    BUG_HEATMAP,
+    GRAPH_TIMELINE,
+    GRAPH_ANALYTICS,
+    NODE_EXECUTION_HISTORY,
+    LATEST_CHANGES,
     KNOWLEDGE_NODES,
     KNOWLEDGE_RELATIONSHIPS,
     BUSINESS_FLOWS,
@@ -36,59 +43,74 @@ from components.knowledge_graph_components import (
     kg_search,
     mini_map,
     select_kg_node,
+    coverage_map_panel,
+    bug_heatmap_panel,
+    graph_timeline_panel,
+    graph_analytics_panel,
+    dependency_explorer_panel,
+    recommendation_panel,
+    execution_history_panel,
+    latest_changes_panel,
 )
 
 
 def render_header(info: dict[str, Any]) -> None:
-    """Render the page header."""
+    """Render the enhanced page header."""
     st.markdown("""
     <style>
     .kg-header {
         background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
         border: 1px solid rgba(148, 163, 184, 0.1);
         border-radius: 16px;
-        padding: 24px;
-        margin-bottom: 24px;
+        padding: 20px 24px;
+        margin-bottom: 20px;
+    }
+    .kg-stat-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-size: 11px;
+        font-weight: 500;
     }
     </style>
     """, unsafe_allow_html=True)
     
     st.markdown(f"""
     <div class="kg-header">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
             <div>
                 <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 8px;">
-                    <span style="font-size: 48px;">🕸️</span>
+                    <span style="font-size: 40px;">🕸️</span>
                     <div>
-                        <h1 style="margin: 0; font-size: 28px; color: #f8fafc;">
-                            Knowledge Graph & AI Reasoning
+                        <h1 style="margin: 0; font-size: 24px; color: #f8fafc;">
+                            Knowledge Graph & AI Reasoning Center
                         </h1>
-                        <p style="margin: 4px 0 0; font-size: 14px; color: #64748b;">
+                        <p style="margin: 4px 0 0; font-size: 13px; color: #64748b;">
                             AI-Powered Knowledge Operating System • Enterprise Intelligence
                         </p>
                     </div>
                 </div>
             </div>
-            <div style="display: flex; gap: 12px;">
-                <span style="
-                    padding: 6px 14px;
-                    background: rgba(99, 102, 241, 0.2);
-                    border: 1px solid rgba(99, 102, 241, 0.3);
-                    border-radius: 20px;
-                    font-size: 12px;
-                    color: #818cf8;
-                ">
-                    v{info.get('knowledge_version', '1.0')}
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <span class="kg-stat-pill" style="background: rgba(99, 102, 241, 0.2); color: #818cf8;">
+                    🎯 {info.get('mission', 'No Mission')}
                 </span>
-                <span style="
-                    padding: 6px 14px;
-                    background: rgba(16, 185, 129, 0.2);
-                    border: 1px solid rgba(16, 185, 129, 0.3);
-                    border-radius: 20px;
-                    font-size: 12px;
-                    color: #10b981;
-                ">
-                    Graph Health: {info.get('graph_health', 0)}%
+                <span class="kg-stat-pill" style="background: rgba(99, 102, 241, 0.2); color: #818cf8;">
+                    🏢 {info.get('application', '')}
+                </span>
+                <span class="kg-stat-pill" style="background: rgba(99, 102, 241, 0.2); color: #818cf8;">
+                    v{info.get('graph_version', '1.0')}
+                </span>
+                <span class="kg-stat-pill" style="background: rgba(16, 185, 129, 0.2); color: #10b981;">
+                    ✅ {info.get('graph_status', 'healthy')}
+                </span>
+                <span class="kg-stat-pill" style="background: rgba(34, 211, 238, 0.2); color: #22d3ee;">
+                    🧠 Confidence: {info.get('confidence', 0)}%
+                </span>
+                <span class="kg-stat-pill" style="background: rgba(239, 68, 68, 0.2); color: #ef4444;">
+                    ⚠️ Risk: {info.get('risk', 0)}
                 </span>
             </div>
         </div>
@@ -96,7 +118,7 @@ def render_header(info: dict[str, Any]) -> None:
     """, unsafe_allow_html=True)
     
     # Stats row
-    col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
+    col1, col2, col3, col4, col5, col6, col7, col8, col9, col10 = st.columns(10)
     
     with col1:
         st.metric("Nodes", f"{info.get('total_nodes', 0):,}")
@@ -107,13 +129,17 @@ def render_header(info: dict[str, Any]) -> None:
     with col4:
         st.metric("Components", info.get('components', 0))
     with col5:
-        st.metric("APIs", info.get('apis', 0))
+        st.metric("DOM Elements", info.get('dom_elements', 0))
     with col6:
-        st.metric("Rules", info.get('business_rules', 0))
+        st.metric("APIs", info.get('apis', 0))
     with col7:
-        st.metric("Coverage", f"{info.get('coverage', 0):.1f}%")
+        st.metric("Rules", info.get('business_rules', 0))
     with col8:
-        st.metric("Flows", info.get('business_flows', 0))
+        st.metric("Coverage", f"{info.get('coverage', 0):.1f}%")
+    with col9:
+        st.metric("Auto Ready", f"{info.get('automation_readiness', 0):.1f}%")
+    with col10:
+        st.metric("Health", f"{info.get('graph_health', 0)}%")
 
 
 def render_left_panel() -> None:
@@ -130,6 +156,14 @@ def render_left_panel() -> None:
     
     # Navigator
     knowledge_navigator(display_nodes, "Knowledge Navigator")
+    
+    # Coverage Map
+    st.markdown("")
+    coverage_map_panel(COVERAGE_MAP, "Coverage Map")
+    
+    # Bug Heatmap
+    st.markdown("")
+    bug_heatmap_panel(BUG_HEATMAP, "Bug Heatmap")
 
 
 def render_center_panel() -> None:
@@ -139,7 +173,7 @@ def render_center_panel() -> None:
     graph_data = get_graph_data_for_visualization()
     
     # View mode toggle
-    view_tab1, view_tab2, view_tab3 = st.tabs(["🕸️ Graph View", "🔀 Business Flows", "📈 Statistics"])
+    view_tab1, view_tab2, view_tab3 = st.tabs(["🕸️ Graph", "🔀 Flows", "📈 Stats"])
     
     with view_tab1:
         knowledge_graph_canvas(graph_data, selected_node_id, "Knowledge Graph")
@@ -152,8 +186,12 @@ def render_center_panel() -> None:
     
     st.markdown("")
     
-    # Mini Map
-    mini_map(graph_data, selected_node_id, "Mini Map")
+    # Mini Map and Timeline
+    col1, col2 = st.columns(2)
+    with col1:
+        mini_map(graph_data, selected_node_id, "Mini Map")
+    with col2:
+        graph_timeline_panel(GRAPH_TIMELINE, "Timeline")
 
 
 def render_right_panel() -> None:
@@ -164,19 +202,29 @@ def render_right_panel() -> None:
     
     # Tabs for different inspector views
     tabs = st.tabs([
-        "🔍 Node Details",
-        "💡 AI Reasoning",
-        "📊 Impact Analysis",
+        "🔍 Node",
+        "💡 Reasoning",
+        "📊 Impact",
+        "🔗 Deps",
     ])
     
     with tabs[0]:
         node_inspector(node, "Node Inspector")
+        st.markdown("")
+        execution_history_panel(NODE_EXECUTION_HISTORY[:5], "Recent Runs")
     
     with tabs[1]:
         ai_reasoning_panel(node, "AI Reasoning")
     
     with tabs[2]:
         impact_analysis_panel(selected_node_id, "Impact Analysis")
+    
+    with tabs[3]:
+        dependencies = {
+            "required_by": ["Dashboard Page", "Reports Page"],
+            "affected": ["Test Cases", "Feature Files"],
+        }
+        dependency_explorer_panel(node, dependencies, "Dependencies")
     
     st.markdown("")
     
@@ -185,16 +233,17 @@ def render_right_panel() -> None:
 
 
 def render_bottom_panel() -> None:
-    """Render the bottom intelligence panel."""
+    """Render the enhanced bottom intelligence panel."""
     
     st.markdown("---")
-    st.markdown("### 🧠 Intelligence Center")
     
     # Tabs
-    intel_tab1, intel_tab2, intel_tab3 = st.tabs([
-        "🤖 AI Discoveries",
-        "🎯 AI Recommendations",
+    intel_tab1, intel_tab2, intel_tab3, intel_tab4, intel_tab5 = st.tabs([
+        "🤖 Discoveries",
+        "🎯 Recommendations",
         "🔗 Relationships",
+        "📅 Timeline",
+        "📊 Analytics",
     ])
     
     with intel_tab1:
@@ -204,7 +253,6 @@ def render_bottom_panel() -> None:
         ai_recommendations_panel(AI_RECOMMENDATIONS, "AI Recommendations")
     
     with intel_tab3:
-        # Show relationships for selected node
         selected_node_id = st.session_state.kg_selected_node
         relationships = get_relationships_for_node(selected_node_id)
         
@@ -228,8 +276,6 @@ def render_bottom_panel() -> None:
                         "affects": "#ef4444",
                     }
                     color = type_colors.get(rel.get("type", "default"), "#64748b")
-                    
-                    direction = "→" if rel["source"] == selected_node_id else "←"
                     
                     st.markdown(f"""
                     <div style="
@@ -258,6 +304,14 @@ def render_bottom_panel() -> None:
                         </div>
                     </div>
                     """, unsafe_allow_html=True)
+    
+    with intel_tab4:
+        graph_timeline_panel(GRAPH_TIMELINE, "Graph Timeline")
+        st.markdown("")
+        latest_changes_panel(LATEST_CHANGES, "Latest Changes")
+    
+    with intel_tab5:
+        graph_analytics_panel(GRAPH_ANALYTICS, "Graph Analytics")
 
 
 def render_page() -> None:

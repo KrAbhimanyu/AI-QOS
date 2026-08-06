@@ -8,20 +8,31 @@ import random
 
 class NodeType(str, Enum):
     """Knowledge graph node types."""
+    MISSION = "mission"
     APPLICATION = "application"
+    BUSINESS_DOMAIN = "business_domain"
+    BUSINESS_FLOW = "business_flow"
     PAGE = "page"
     COMPONENT = "component"
     DOM_ELEMENT = "dom_element"
     FORM = "form"
     BUTTON = "button"
     INPUT = "input"
+    TABLE = "table"
+    DIALOG = "dialog"
+    LOCATOR = "locator"
+    ASSERTION = "assertion"
     API = "api"
     DATABASE_TABLE = "database_table"
     BUSINESS_RULE = "business_rule"
     FEATURE_FILE = "feature_file"
+    SCENARIO = "scenario"
     TEST_CASE = "test_case"
+    EXECUTION = "execution"
+    EVIDENCE = "evidence"
     BUG = "bug"
     REPORT = "report"
+    RELEASE = "release"
     USER = "user"
     ROLE = "role"
 
@@ -39,13 +50,20 @@ class RelationshipType(str, Enum):
     AFFECTS = "affects"
     RELATED_TO = "related_to"
     PARENT_OF = "parent_of"
+    IMPLEMENTS = "implements"
+    TESTS = "tests"
+    BUGS = "bugs"
+    RELEASES = "releases"
 
 
 # Graph Information
 GRAPH_INFO = {
     "mission": "E2E Regression v2.1",
+    "project": "AI-QOS Enterprise",
     "application": "E-Commerce Platform",
     "version": "3.2.1",
+    "graph_version": "2.1.45",
+    "graph_status": "healthy",
     "knowledge_version": "2.0",
     "total_nodes": 487,
     "relationships": 1234,
@@ -53,17 +71,239 @@ GRAPH_INFO = {
     "pages": 45,
     "components": 312,
     "dom_elements": 1247,
+    "forms": 23,
+    "buttons": 156,
+    "inputs": 89,
+    "tables": 34,
+    "dialogs": 12,
+    "locators": 567,
+    "assertions": 234,
     "apis": 67,
+    "endpoints": 156,
     "database_tables": 34,
     "business_rules": 89,
-    "test_cases": 245,
     "feature_files": 23,
+    "scenarios": 89,
+    "test_cases": 245,
+    "executions": 1234,
+    "evidences": 567,
     "bugs": 12,
     "reports": 45,
+    "releases": 8,
     "coverage": 78.5,
+    "automation_readiness": 82.3,
     "graph_health": 94,
+    "confidence": 92,
+    "risk": 18,
     "last_update": datetime.now() - timedelta(minutes=5),
 }
+
+
+# Navigator Tree Structure
+NAVIGATOR_TREE = {
+    "Mission": {
+        "icon": "🎯",
+        "expanded": True,
+        "children": {
+            "E2E Regression v2.1": {"icon": "📋", "node_id": "node_mission"},
+        }
+    },
+    "Application": {
+        "icon": "🏢",
+        "expanded": True,
+        "children": {
+            "E-Commerce Platform": {"icon": "🛒", "node_id": "node_app"},
+        }
+    },
+    "Business Domains": {
+        "icon": "🏛️",
+        "expanded": False,
+        "children": {
+            "Authentication": {"icon": "🔐", "node_id": "node_domain_auth"},
+            "Catalog": {"icon": "📦", "node_id": "node_domain_catalog"},
+            "Cart": {"icon": "🛒", "node_id": "node_domain_cart"},
+            "Checkout": {"icon": "💳", "node_id": "node_domain_checkout"},
+            "Orders": {"icon": "📝", "node_id": "node_domain_orders"},
+        }
+    },
+    "Pages": {
+        "icon": "📄",
+        "expanded": False,
+        "count": 45,
+    },
+    "Components": {
+        "icon": "🧩",
+        "expanded": False,
+        "count": 312,
+    },
+    "DOM Elements": {
+        "icon": "🏗️",
+        "expanded": False,
+        "count": 1247,
+    },
+    "Forms": {
+        "icon": "📝",
+        "expanded": False,
+        "count": 23,
+    },
+    "Buttons": {
+        "icon": "🔘",
+        "expanded": False,
+        "count": 156,
+    },
+    "Inputs": {
+        "icon": "⌨️",
+        "expanded": False,
+        "count": 89,
+    },
+    "Tables": {
+        "icon": "📊",
+        "expanded": False,
+        "count": 34,
+    },
+    "Dialogs": {
+        "icon": "💬",
+        "expanded": False,
+        "count": 12,
+    },
+    "Locators": {
+        "icon": "🎯",
+        "expanded": False,
+        "count": 567,
+    },
+    "Assertions": {
+        "icon": "✅",
+        "expanded": False,
+        "count": 234,
+    },
+    "API Endpoints": {
+        "icon": "🔗",
+        "expanded": False,
+        "count": 156,
+    },
+    "Database Tables": {
+        "icon": "🗄️",
+        "expanded": False,
+        "count": 34,
+    },
+    "Business Rules": {
+        "icon": "⚖️",
+        "expanded": False,
+        "count": 89,
+    },
+    "Feature Files": {
+        "icon": "📦",
+        "expanded": False,
+        "count": 23,
+    },
+    "Test Cases": {
+        "icon": "🧪",
+        "expanded": False,
+        "count": 245,
+    },
+    "Executions": {
+        "icon": "⚡",
+        "expanded": False,
+        "count": 1234,
+    },
+    "Evidences": {
+        "icon": "📸",
+        "expanded": False,
+        "count": 567,
+    },
+    "Bugs": {
+        "icon": "🐛",
+        "expanded": False,
+        "count": 12,
+    },
+    "Reports": {
+        "icon": "📈",
+        "expanded": False,
+        "count": 45,
+    },
+    "Releases": {
+        "icon": "🚀",
+        "expanded": False,
+        "count": 8,
+    },
+}
+
+
+# Coverage Map Data
+COVERAGE_MAP = {
+    "visual_testing": {"coverage": 85, "status": "good"},
+    "accessibility": {"coverage": 72, "status": "medium"},
+    "api_coverage": {"coverage": 80, "status": "good"},
+    "database_coverage": {"coverage": 68, "status": "medium"},
+    "performance_coverage": {"coverage": 45, "status": "low"},
+    "security_coverage": {"coverage": 78, "status": "good"},
+}
+
+
+# Bug Heatmap Data
+BUG_HEATMAP = {
+    "by_component": [
+        {"name": "Checkout Flow", "failures": 45, "flaky": 12, "risk": "critical"},
+        {"name": "Payment Gateway", "failures": 38, "flaky": 8, "risk": "high"},
+        {"name": "Search", "failures": 28, "flaky": 15, "risk": "medium"},
+        {"name": "User Profile", "failures": 15, "flaky": 5, "risk": "low"},
+        {"name": "Product Catalog", "failures": 12, "flaky": 3, "risk": "low"},
+    ],
+    "by_api": [
+        {"name": "POST /checkout", "failures": 34, "risk": "critical"},
+        {"name": "GET /products", "failures": 22, "risk": "medium"},
+        {"name": "POST /auth/login", "failures": 18, "risk": "medium"},
+    ],
+    "by_page": [
+        {"name": "Checkout", "failures": 45, "risk": "critical"},
+        {"name": "Payment", "failures": 38, "risk": "high"},
+        {"name": "Search Results", "failures": 28, "risk": "medium"},
+    ],
+}
+
+
+# Graph Timeline Data
+GRAPH_TIMELINE = [
+    {"date": "2024-08-01", "nodes_added": 45, "nodes_removed": 2, "relationships_changed": 123, "version": "2.0.1"},
+    {"date": "2024-08-05", "nodes_added": 23, "nodes_removed": 5, "relationships_changed": 67, "version": "2.0.2"},
+    {"date": "2024-08-10", "nodes_added": 67, "nodes_removed": 3, "relationships_changed": 189, "version": "2.0.3"},
+    {"date": "2024-08-15", "nodes_added": 34, "nodes_removed": 8, "relationships_changed": 98, "version": "2.1.0"},
+    {"date": "2024-08-20", "nodes_added": 12, "nodes_removed": 1, "relationships_changed": 45, "version": "2.1.1"},
+]
+
+
+# Graph Analytics
+GRAPH_ANALYTICS = {
+    "total_nodes": 487,
+    "total_relationships": 1234,
+    "business_flows": 15,
+    "coverage": 78.5,
+    "automation_readiness": 82.3,
+    "knowledge_completeness": 92.0,
+    "confidence": 89,
+    "risk": 23,
+    "flaky_components": 6,
+    "most_connected": {"node": "Authentication API", "connections": 45},
+    "least_connected": {"node": "Legacy Report", "connections": 2},
+    "critical_path": ["Login", "Dashboard", "Checkout", "Payment", "Confirmation"],
+}
+
+
+# Node execution history
+NODE_EXECUTION_HISTORY = [
+    {"date": datetime.now() - timedelta(hours=i*2), "status": "passed", "duration": random.randint(5, 30), "agent": "Frontend Agent"} 
+    for i in range(10)
+]
+
+
+# Latest changes
+LATEST_CHANGES = [
+    {"type": "node_added", "item": "Payment Gateway Component", "time": datetime.now() - timedelta(minutes=15)},
+    {"type": "relationship_added", "item": "Checkout → Payment API", "time": datetime.now() - timedelta(minutes=30)},
+    {"type": "coverage_updated", "item": "Login Form: 95%", "time": datetime.now() - timedelta(hours=1)},
+    {"type": "rule_modified", "item": "Discount Calculation Rule", "time": datetime.now() - timedelta(hours=2)},
+    {"type": "test_added", "item": "New regression test for checkout", "time": datetime.now() - timedelta(hours=3)},
+]
 
 
 # Knowledge Graph Nodes
