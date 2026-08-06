@@ -54,28 +54,21 @@ MOCK_MESSAGES = [
     },
     {
         "role": "assistant",
-        "content": """Based on my analysis of the execution logs, the sidebar test is failing because:
-
-**Root Cause:**
-The sidebar element has `class="hidden"` applied dynamically via JavaScript after page load.
-
-**Evidence:**
-1. DOM shows: `<nav id="sidebar" class="hidden">`
-2. CSS rule: `.hidden { display: none; }`
-3. The sidebar is only shown after clicking the hamburger menu
-
-**Recommended Fix:**
-```python
-def test_sidebar_visible(self):
-    # Click hamburger menu first
-    self.click("#hamburger-menu")
-    # Wait for sidebar
-    self.wait_for_selector("#sidebar:not(.hidden)", timeout=5000)
-    # Verify visibility
-    assert self.is_visible("#sidebar")
-```
-
-Would you like me to generate the updated test case?""",
+        "content": ("Based on my analysis of the execution logs, the sidebar test is failing because:\n\n"
+                   "**Root Cause:**\n"
+                   "The sidebar element has `class=\"hidden\"` applied dynamically via JavaScript after page load.\n\n"
+                   "**Evidence:**\n"
+                   "1. DOM shows: `<nav id=\"sidebar\" class=\"hidden\">`\n"
+                   "2. CSS rule: `.hidden { display: none; }`\n"
+                   "3. The sidebar is only shown after clicking the hamburger menu\n\n"
+                   "**Recommended Fix:**\n"
+                   "```python\n"
+                   "def test_sidebar_visible(self):\n"
+                   "    self.click(\"#hamburger-menu\")\n"
+                   "    self.wait_for_selector(\"#sidebar:not(.hidden)\", timeout=5000)\n"
+                   "    assert self.is_visible(\"#sidebar\")\n"
+                   "```\n\n"
+                   "Would you like me to generate the updated test case?"),
         "timestamp": datetime.now(),
     },
     {
@@ -85,51 +78,28 @@ Would you like me to generate the updated test case?""",
     },
     {
         "role": "assistant",
-        "content": """Here's the updated test case:
-
-```python
-class TestDashboard:
-    """Dashboard page test suite."""
-    
-    def setup_method(self):
-        self.page = Page()
-        self.page.goto("https://demo.app/dashboard")
-        self.authenticate()
-    
-    def test_sidebar_navigation_visible(self):
-        \"\"\"Test sidebar navigation is visible after clicking hamburger menu.\"\"\"
-        # Click hamburger to open sidebar
-        self.page.click("#hamburger-menu")
-        
-        # Wait for sidebar animation to complete
-        self.page.wait_for_timeout(500)
-        
-        # Verify sidebar is visible
-        sidebar = self.page.locator("#sidebar")
-        assert sidebar.is_visible(), "Sidebar should be visible"
-        assert not sidebar.evaluate("el => el.classList.contains('hidden')")
-        
-        # Verify navigation links
-        links = sidebar.locator("nav a")
-        expected_links = ["Dashboard", "Profile", "Settings", "Logout"]
-        for link in expected_links:
-            assert links.filter(has_text=link).is_visible()
-    
-    def test_sidebar_navigation_functionality(self):
-        \"\"\"Test sidebar navigation links work correctly.\"\"\"
-        self.page.click("#hamburger-menu")
-        self.page.click("#sidebar a:has-text('Profile')")
-        self.page.wait_for_url("**/profile")
-        assert "profile" in self.page.url
-```
-
-**Key Changes:**
-1. Added hamburger menu click before checking sidebar
-2. Added timeout wait for animation
-3. Used more specific locator strategy
-4. Added functionality test for navigation links
-
-Should I add this to your test suite?""",
+        "content": ("Here's the updated test case:\n\n"
+                   "```python\n"
+                   "class TestDashboard:\n"
+                   "    def setup_method(self):\n"
+                   "        self.page = Page()\n"
+                   "        self.page.goto(\"https://demo.app/dashboard\")\n"
+                   "        self.authenticate()\n\n"
+                   "    def test_sidebar_visible(self):\n"
+                   "        self.page.click(\"#hamburger-menu\")\n"
+                   "        self.page.wait_for_timeout(500)\n"
+                   "        sidebar = self.page.locator(\"#sidebar\")\n"
+                   "        assert sidebar.is_visible()\n\n"
+                   "    def test_navigation_links(self):\n"
+                   "        self.page.click(\"#hamburger-menu\")\n"
+                   "        self.page.click(\"#sidebar a:has-text('Profile')\")\n"
+                   "        self.page.wait_for_url(\"**/profile\")\n"
+                   "```\n\n"
+                   "**Key Changes:**\n"
+                   "1. Added hamburger menu click before checking sidebar\n"
+                   "2. Added timeout wait for animation\n"
+                   "3. Used more specific locator strategy\n\n"
+                   "Should I add this to your test suite?"),
         "timestamp": datetime.now(),
     },
 ]

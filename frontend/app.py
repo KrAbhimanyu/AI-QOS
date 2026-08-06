@@ -12,8 +12,8 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Apply custom theme
-st.markdown(THEME_CONFIG["custom_css"], unsafe_allow_html=True)
+# Apply custom theme CSS
+st.markdown(f"<style>{THEME_CONFIG['custom_css']}</style>", unsafe_allow_html=True)
 
 
 def local_css(file_name: str) -> None:
@@ -112,55 +112,55 @@ def main() -> None:
     
     # Route to appropriate page
     if current_page == "dashboard":
-        from pages.dashboard import render_dashboard
+        from views.dashboard import render_dashboard
         render_dashboard()
     elif current_page == "application_explorer":
-        from pages.application_explorer import render_page
+        from views.application_explorer import render_page
         render_page()
     elif current_page == "dom_explorer":
-        from pages.dom_explorer import render_page
+        from views.dom_explorer import render_page
         render_page()
     elif current_page == "knowledge_graph":
-        from pages.knowledge_graph import render_page
+        from views.knowledge_graph import render_page
         render_page()
     elif current_page == "reports_center":
-        from pages.reports_center import render_reports_center
+        from views.reports_center import render_reports_center
         render_reports_center()
     elif current_page == "mission_planner":
-        from pages.mission_planner import render_mission_planner
+        from views.mission_planner import render_mission_planner
         render_mission_planner()
     elif current_page == "intelligence_center":
-        from pages.intelligence_center import render_intelligence_center
+        from views.intelligence_center import render_intelligence_center
         render_intelligence_center()
     elif current_page == "execution_center":
-        from pages.execution_center import render_execution_center
+        from views.execution_center import render_execution_center
         render_execution_center()
     elif current_page == "human_review_center":
-        from pages.human_review_center import render_human_review_center
+        from views.human_review_center import render_human_review_center
         render_human_review_center()
     elif current_page == "ai_chat_workspace":
-        from pages.ai_chat_workspace import render_ai_chat_workspace
+        from views.ai_chat_workspace import render_ai_chat_workspace
         render_ai_chat_workspace()
     elif current_page == "agent_control_tower":
-        from pages.agent_control_tower import render_agent_control_tower
+        from views.agent_control_tower import render_agent_control_tower
         render_agent_control_tower()
     elif current_page == "missions":
-        from pages.missions import render_missions
+        from views.missions import render_missions
         render_missions()
     elif current_page == "agents":
-        from pages.agents import render_agents
+        from views.agents import render_agents
         render_agents()
     elif current_page == "executions":
-        from pages.executions import render_executions
+        from views.executions import render_executions
         render_executions()
     elif current_page == "monitoring":
-        from pages.monitoring import render_monitoring
+        from views.monitoring import render_monitoring
         render_monitoring()
     elif current_page == "quality":
-        from pages.quality import render_quality
+        from views.quality import render_quality
         render_quality()
     elif current_page == "reports":
-        from pages.reports import render_reports
+        from views.reports import render_reports
         render_reports()
 
 
