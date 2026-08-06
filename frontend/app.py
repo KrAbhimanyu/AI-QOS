@@ -51,6 +51,9 @@ def sidebar_navigation() -> str:
         
         menu_items = {
             "📊 Dashboard": "dashboard",
+            "🔍 Application Explorer": "application_explorer",
+            "🌐 DOM Explorer": "dom_explorer",
+            "🕸️ Knowledge Graph": "knowledge_graph",
             "🎯 Mission Planner": "mission_planner",
             "🔬 Intelligence Center": "intelligence_center",
             "🚀 Live Execution": "execution_center",
@@ -110,6 +113,15 @@ def main() -> None:
     if current_page == "dashboard":
         from pages.dashboard import render_dashboard
         render_dashboard()
+    elif current_page == "application_explorer":
+        from pages.application_explorer import render_page
+        render_page()
+    elif current_page == "dom_explorer":
+        from pages.dom_explorer import render_page
+        render_page()
+    elif current_page == "knowledge_graph":
+        from pages.knowledge_graph import render_page
+        render_page()
     elif current_page == "mission_planner":
         from pages.mission_planner import render_mission_planner
         render_mission_planner()
