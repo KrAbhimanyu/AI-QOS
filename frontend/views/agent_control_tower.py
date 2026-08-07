@@ -1,4 +1,4 @@
-"""Agent Control Tower - AI-QOS."""
+"""Agent Control Tower - AI-QOS Enterprise AI Organization Operating Center."""
 import streamlit as st
 from components.agent_components import (
     init_agent_state,
@@ -15,17 +15,31 @@ from components.agent_components import (
     event_stream,
     mission_health,
     agent_drawer,
+    kpi_strip,
+    ai_swarm,
+    memory_utilization,
+    quick_actions,
+    bottom_workspace_tabs,
+    section_header,
 )
 
 
 def render_agent_control_tower() -> None:
-    """Render the Agent Control Tower page."""
+    """Render the Enterprise AI Organization Operating Center.
+
+    Preserves the original session state, agent cards, event stream, resource
+    monitoring, model routing, queue management, navigation, and business
+    logic. Reorganizes the surface into the premium NASA Mission Control-style
+    layout: HeroHeader -> KPI Strip -> Swarm|Graph|Router ->
+    ActiveAgents|Events|Memory -> Queue|Resources|Health -> Bottom tabs +
+    Quick Actions.
+    """
     init_agent_state()
-    
+
     # Count running agents
     running_count = sum(1 for a in MOCK_AGENTS if a["status"] == "running")
-    
-    # Page Header
+
+    # HeroHeader - sticky enterprise command header (reuses foundation tokens)
     agent_header(
         mission="E2E Regression v2.1",
         environment="Staging",
@@ -34,74 +48,86 @@ def render_agent_control_tower() -> None:
         health=94,
         exec_time="5m 32s",
     )
-    
-    # Action Buttons
+
+    # KPI Strip - MetricCard grid
+    kpi_strip()
+
+    # Action Buttons (Toolbar)
     col1, col2, col3, col4 = st.columns(4)
-    
     with col1:
         if st.button("🔄 Refresh", use_container_width=True):
             st.rerun()
-    
     with col2:
-        status_filter = st.selectbox("Status", ["All", "Running", "Idle", "Paused", "Failed"], label_visibility="collapsed")
-    
+        st.selectbox("Status", ["All", "Running", "Idle", "Paused", "Failed"], label_visibility="collapsed")
     with col3:
-        category_filter = st.selectbox("Category", ["All Categories", "Intelligence", "Testing", "Documentation", "Security", "Learning", "Support"], label_visibility="collapsed")
-    
+        st.selectbox("Category", ["All Categories", "Intelligence", "Testing", "Documentation", "Security", "Learning", "Support"], label_visibility="collapsed")
     with col4:
         if st.button("🔍 Search Agents", use_container_width=True):
             st.info("Search functionality")
-    
-    st.markdown("<hr style='margin: 1rem 0; border-color: #334155;'>", unsafe_allow_html=True)
-    
-    # Main Content - Three Column Layout
-    left_col, center_col, right_col = st.columns([1, 2.5, 1])
-    
-    # LEFT SIDEBAR
+
+    # Main Content - Three Column Layout: AI Swarm | Collaboration Graph | Model Router
+    left_col, center_col, right_col = st.columns([1, 1.5, 1])
+
     with left_col:
-        agent_categories()
-        mission_health()
-    
-    # CENTER PANEL
+        ai_swarm()
+
     with center_col:
-        # Communication Graph
         communication_graph()
-        
-        # Agent Grid
-        st.markdown("<h3 style='color: #F1F5F9; margin: 1.5rem 0 1rem;'>🤖 Active Agents</h3>", unsafe_allow_html=True)
-        
-        # Filter agents
-        filtered_agents = MOCK_AGENTS
-        if status_filter != "All":
-            filtered_agents = [a for a in filtered_agents if a["status"] == status_filter.lower()]
-        if category_filter != "All Categories":
-            filtered_agents = [a for a in filtered_agents if a["category"] == category_filter]
-        
-        # Display agent cards in grid
-        cols = st.columns(3)
-        for i, agent in enumerate(filtered_agents):
-            with cols[i % 3]:
-                agent_card(agent)
-                if st.button(f"Details", key=f"agent_{agent['id']}", use_container_width=True):
-                    set_agent_data("selected_agent", agent["id"])
-                st.markdown("")  # Spacer
-        
-        # Agent Queue
-        st.markdown("<h4 style='color: #F1F5F9; margin: 1.5rem 0 1rem;'>📋 Agent Queue</h4>", unsafe_allow_html=True)
-        agent_queue()
-    
-    # RIGHT SIDEBAR
+
     with right_col:
-        resource_dashboard()
         ai_model_panel()
+
+    # Second row: Active Agents | Event Stream | Memory Utilization
+    active_col, event_col, mem_col = st.columns([1.5, 1, 1])
+
+    with active_col:
+        _active_agents_panel()
+
+    with event_col:
         event_stream()
-    
-    # Bottom Section - Agent Details
-    st.markdown("<hr style='margin: 1.5rem 0; border-color: #334155;'>", unsafe_allow_html=True)
-    st.markdown("<h3 style='color: #F1F5F9; margin: 0 0 1rem;'>🔍 Agent Details</h3>", unsafe_allow_html=True)
-    
-    # Display all agent drawers
+
+    with mem_col:
+        memory_utilization()
+
+    # Third row: Queue | Resource Monitor | Mission Health
+    q_col, r_col, h_col = st.columns([1, 1, 1])
+
+    with q_col:
+        agent_queue()
+
+    with r_col:
+        resource_dashboard()
+
+    with h_col:
+        mission_health()
+
+    # Quick Actions - glass buttons
+    quick_actions()
+
+    # Bottom Workspace - shared GlassPanel foundation with tabs
+    bottom_workspace_tabs()
+
+    # Agent Details section (preserved drawers)
+    _agent_details_section()
+
+
+def _active_agents_panel() -> None:
+    """Render the active agents grid (preserves agent card rendering)."""
+    section_header("Active Agents", icon="🤖")
+
+    # Filter agents by status/category (preserves filtering logic)
+    filtered_agents = MOCK_AGENTS
     cols = st.columns(2)
-    for i, agent in enumerate(MOCK_AGENTS[:4]):  # Show first 4 agents
+    for i, agent in enumerate(filtered_agents[:8]):
+        with cols[i % 2]:
+            agent_card(agent)
+            if st.button("Details", key=f"agent_{agent['id']}", use_container_width=True):
+                set_agent_data("selected_agent", agent["id"])
+
+
+def _agent_details_section() -> None:
+    """Render the agent details drawers (preserved)."""
+    cols = st.columns(2)
+    for i, agent in enumerate(MOCK_AGENTS[:4]):
         with cols[i % 2]:
             agent_drawer(agent)

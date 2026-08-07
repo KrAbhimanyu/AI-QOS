@@ -1,24 +1,164 @@
-"""Agent Control Tower components for AI-QOS."""
+"""Agent Control Tower components for AI-QOS.
+
+Enterprise AI Organization Operating Center components built on the AI-QOS
+UI Foundation. All styling is derived from design tokens (themes/tokens.py)
+and shared foundation components (components/shared.py). Public function names
+and signatures are preserved for backward compatibility.
+"""
 import streamlit as st
 from datetime import datetime
 from typing import Optional, List, Dict, Any
 
-from frontend.mock.agents import MOCK_AGENTS, MOCK_EVENTS, MOCK_QUEUE, MOCK_MODELS
+from frontend.mock.agents import (
+    MOCK_AGENTS,
+    MOCK_EVENTS,
+    MOCK_QUEUE,
+    MOCK_MODELS,
+    MOCK_ORG_KPIS,
+    MOCK_KPI_METRICS,
+    MOCK_SWARM_HIERARCHY,
+    MOCK_COLLAB_EDGES,
+    MOCK_MODEL_ROUTER,
+    MOCK_MEMORY_UTILIZATION,
+    MOCK_RESOURCE_MONITOR,
+    MOCK_MISSION_HEALTH,
+    MOCK_BOTTOM_TABS,
+    MOCK_TIMELINE_EVENTS,
+    MOCK_TASKS,
+    MOCK_QUICK_ACTIONS,
+)
+
+try:
+    from frontend.themes.tokens import (
+        COLORS, SPACING, TYPOGRAPHY, BORDERS, SHADOWS, ANIMATIONS,
+        get_status_color, get_confidence_color, get_health_color,
+    )
+    from frontend.components.shared import (
+        glass_card, glass_panel, section_header, divider, spacer, pulse_dot,
+        empty_state, metric_card, timeline_item, status_badge,
+    )
+except ImportError:  # pragma: no cover - fallback for direct execution
+    from themes.tokens import (
+        COLORS, SPACING, TYPOGRAPHY, BORDERS, SHADOWS, ANIMATIONS,
+        get_status_color, get_confidence_color, get_health_color,
+    )
+    from shared import (
+        glass_card, glass_panel, section_header, divider, spacer, pulse_dot,
+        empty_state, metric_card, timeline_item, status_badge,
+    )
 
 
 # ============================================================================
-# Session State Management
+# Token shortcuts
+# ============================================================================
+
+_SEMANTIC_COLORS = {
+    "primary": COLORS.PRIMARY,
+    "secondary": COLORS.SECONDARY,
+    "accent": COLORS.ACCENT,
+    "info": COLORS.INFO,
+    "success": COLORS.SUCCESS,
+    "warning": COLORS.WARNING,
+    "error": COLORS.ERROR,
+    "muted": COLORS.TEXT_MUTED,
+}
+
+
+def _hex_to_rgb(hex_color: str) -> str:
+    h = hex_color.lstrip('#')
+    return f"{int(h[0:2], 16)}, {int(h[2:4], 16)}, {int(h[4:6], 16)}"
+
+
+_SEMANTIC_RGB = {
+    "primary": COLORS.PRIMARY_RGB,
+    "secondary": COLORS.SECONDARY_RGB,
+    "accent": COLORS.ACCENT_RGB,
+    "info": COLORS.INFO_RGB,
+    "success": COLORS.SUCCESS_RGB,
+    "warning": COLORS.WARNING_RGB,
+    "error": COLORS.ERROR_RGB,
+    "muted": _hex_to_rgb(COLORS.TEXT_MUTED),
+}
+
+_GLASS_PANEL_BG = f"linear-gradient(135deg, {COLORS.SURFACE} 0%, rgba({COLORS.PRIMARY_RGB}, 0.12) 100%)"
+_GLASS_PANEL_BORDER = f"rgba({COLORS.PRIMARY_RGB}, 0.25)"
+_PANEL_BORDER = COLORS.BORDER
+
+_STATUS_HEX = {
+    "running": COLORS.SUCCESS,
+    "active": COLORS.SUCCESS,
+    "idle": COLORS.TEXT_MUTED,
+    "paused": COLORS.WARNING,
+    "failed": COLORS.ERROR,
+    "pending": COLORS.TEXT_MUTED,
+    "waiting": COLORS.TEXT_MUTED,
+    "completed": COLORS.PRIMARY,
+}
+
+_PRIORITY_HEX = {
+    "critical": COLORS.ERROR,
+    "high": COLORS.WARNING,
+    "medium": COLORS.PRIMARY,
+    "low": COLORS.SUCCESS,
+}
+
+_EVENT_HEX = {
+    "started": COLORS.SUCCESS,
+    "task": COLORS.PRIMARY,
+    "completed": COLORS.SECONDARY,
+    "message": COLORS.TEXT_SECONDARY,
+    "retry": COLORS.WARNING,
+    "learning": COLORS.ACCENT,
+}
+
+_EVENT_ICON = {
+    "started": "🚀",
+    "task": "📋",
+    "completed": "✅",
+    "message": "💬",
+    "retry": "🔄",
+    "learning": "🧠",
+}
+
+
+def _semantic(name: str) -> str:
+    return _SEMANTIC_COLORS.get(name, COLORS.PRIMARY)
+
+
+def _semantic_rgb(name: str) -> str:
+    return _SEMANTIC_RGB.get(name, COLORS.PRIMARY_RGB)
+
+
+def _status_hex(status: str) -> str:
+    if status in _STATUS_HEX:
+        return _STATUS_HEX[status]
+    return get_status_color(status)
+
+
+def _priority_hex(priority: str) -> str:
+    return _PRIORITY_HEX.get(priority, COLORS.TEXT_MUTED)
+
+
+def _escape(text: str) -> str:
+    if text is None:
+        return ""
+    return str(text).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+# ============================================================================
+# Session State Management (preserved keys, no breaking changes)
 # ============================================================================
 
 def init_agent_state() -> None:
-    """Initialize agent session state."""
+    """Initialize agent session state (preserved keys)."""
     defaults = {
         "agent_selected": None,
         "agent_filters": {"status": "all", "category": "all"},
         "agent_search": "",
         "agent_events": [],
+        "agent_bottom_tab": "Timeline",
+        "agent_swarm_heartbeat": True,
     }
-    
     for key, value in defaults.items():
         if key not in st.session_state:
             st.session_state[key] = value
@@ -35,13 +175,7 @@ def set_agent_data(key: str, value: Any) -> None:
 
 
 # ============================================================================
-# Mock Data (imported from frontend.mock.agents)
-# ============================================================================
-
-# Mock data is imported from frontend.mock.agents
-
-# ============================================================================
-# Agent Header
+# Hero Header (Agent Control Tower) - sticky enterprise command header
 # ============================================================================
 
 def agent_header(
@@ -52,53 +186,88 @@ def agent_header(
     health: int,
     exec_time: str,
 ) -> None:
-    """Display agent control tower header."""
-    health_color = "#10B981" if health >= 80 else "#F59E0B" if health >= 50 else "#EF4444"
-    
+    """Display the premium agent control tower hero header.
+
+    Backward-compatible signature. Uses design tokens for all styling.
+    Renders a sticky glass header with breadcrumb, title, status badge,
+    and organization KPI chips.
+    """
+    health_color = get_health_color(health)
+    health_rgb = _hex_to_rgb(health_color)
+
+    stat_chips = "".join(
+        f'<div style="display:flex;flex-direction:column;align-items:center;gap:2px;'
+        f'padding:{SPACING.SPACE_2} {SPACING.SPACE_4};'
+        f'background:rgba({COLORS.SURFACE_RGB},0.7);'
+        f'border:1px solid {_GLASS_PANEL_BORDER};'
+        f'border-radius:{BORDERS.RADIUS_MD};min-width:96px;">'
+        f'<span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};'
+        f'text-transform:uppercase;letter-spacing:1px;">{_escape(k["label"])}</span>'
+        f'<span style="color:{_semantic(k["color"])};font-size:{TYPOGRAPHY.FONT_SIZE_SM};'
+        f'font-weight:600;display:flex;align-items:center;gap:4px;">'
+        f'<span style="font-size:0.9rem;">{k["icon"]}</span>{_escape(str(k["value"]))}'
+        f'</span></div>'
+        for k in MOCK_ORG_KPIS
+    )
+
     st.markdown(
         f"""
         <div style="
-            background: linear-gradient(135deg, rgba(30, 30, 63, 0.95) 0%, rgba(99, 102, 241, 0.15) 100%);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
+            background:{_GLASS_PANEL_BG};
+            border:1px solid {_GLASS_PANEL_BORDER};
+            border-radius:{BORDERS.RADIUS_XL};
+            padding:{SPACING.SPACE_6};
+            margin-bottom:{SPACING.SPACE_4};
+            box-shadow:{SHADOWS.CARD};
+            position:sticky;top:0;z-index:10;
+            backdrop-filter:blur(12px);
         ">
-            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div style="display:flex;align-items:center;justify-content:space-between;
+                        flex-wrap:wrap;gap:{SPACING.SPACE_4};margin-bottom:{SPACING.SPACE_4};">
                 <div>
-                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                        <span style="color: #64748B; font-size: 0.8rem;">🏠 Dashboard</span>
-                        <span style="color: #64748B;">›</span>
-                        <span style="color: #64748B; font-size: 0.8rem;">Agents</span>
-                        <span style="color: #64748B;">›</span>
-                        <span style="color: #F1F5F9; font-size: 0.8rem;">{mission}</span>
+                    <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};
+                                margin-bottom:{SPACING.SPACE_2};">
+                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">🏠 Dashboard</span>
+                        <span style="color:{COLORS.TEXT_MUTED};">›</span>
+                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">Agents</span>
+                        <span style="color:{COLORS.TEXT_MUTED};">›</span>
+                        <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(mission)}</span>
                     </div>
-                    <h1 style="margin: 0; font-size: 1.5rem; color: #F1F5F9;">🤖 Agent Control Tower</h1>
+                    <div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};flex-wrap:wrap;">
+                        <h1 style="margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_2XL};
+                                   color:{COLORS.TEXT_PRIMARY};font-weight:600;">
+                            🤖 Agent Control Tower
+                        </h1>
+                        <span style="display:inline-flex;align-items:center;gap:{SPACING.SPACE_2};
+                                     padding:{SPACING.SPACE_1} {SPACING.SPACE_3};
+                                     background:rgba({health_rgb},0.2);
+                                     color:{health_color};
+                                     border:1px solid rgba({health_rgb},0.4);
+                                     border-radius:{BORDERS.RADIUS_FULL};
+                                     font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">
+                            <span style="width:8px;height:8px;border-radius:50%;
+                                        background:{health_color};
+                                        animation:{ANIMATIONS.PULSE};"></span>
+                            Health {health}%
+                        </span>
+                    </div>
                 </div>
-                
-                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                    <div style="text-align: center; padding: 0.5rem 1rem; background: rgba(30, 30, 63, 0.8); border-radius: 8px;">
-                        <p style="color: #64748B; margin: 0; font-size: 0.7rem;">Mission</p>
-                        <p style="color: #F1F5F9; margin: 0; font-size: 0.85rem;">{mission}</p>
-                    </div>
-                    <div style="text-align: center; padding: 0.5rem 1rem; background: rgba(30, 30, 63, 0.8); border-radius: 8px;">
-                        <p style="color: #64748B; margin: 0; font-size: 0.7rem;">Environment</p>
-                        <p style="color: #F59E0B; margin: 0; font-size: 0.85rem;">{environment}</p>
-                    </div>
-                    <div style="text-align: center; padding: 0.5rem 1rem; background: rgba(30, 30, 63, 0.8); border-radius: 8px;">
-                        <p style="color: #64748B; margin: 0; font-size: 0.7rem;">Running</p>
-                        <p style="color: #10B981; margin: 0; font-size: 0.85rem;">{running_agents}/{total_agents}</p>
-                    </div>
-                    <div style="text-align: center; padding: 0.5rem 1rem; background: rgba(30, 30, 63, 0.8); border-radius: 8px;">
-                        <p style="color: #64748B; margin: 0; font-size: 0.7rem;">Health</p>
-                        <p style="color: {health_color}; margin: 0; font-size: 0.85rem;">{health}%</p>
-                    </div>
-                    <div style="text-align: center; padding: 0.5rem 1rem; background: rgba(30, 30, 63, 0.8); border-radius: 8px;">
-                        <p style="color: #64748B; margin: 0; font-size: 0.7rem;">Time</p>
-                        <p style="color: #6366F1; margin: 0; font-size: 0.85rem;">{exec_time}</p>
-                    </div>
+                <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};flex-wrap:wrap;">
+                    <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};
+                                 border:1px solid {_PANEL_BORDER};border-radius:{BORDERS.RADIUS_MD};
+                                 padding:{SPACING.SPACE_1} {SPACING.SPACE_3};"
+                          title="Search agents">🔍 Search…</span>
+                    <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};
+                                 border:1px solid {_PANEL_BORDER};border-radius:{BORDERS.RADIUS_MD};
+                                 padding:{SPACING.SPACE_1} {SPACING.SPACE_3};"
+                          title="Command palette">⌘K Command</span>
+                    <span style="color:{COLORS.TEXT_MUTED};font-size:1rem;cursor:pointer;"
+                          title="Notifications">🔔</span>
+                    <span style="color:{COLORS.TEXT_MUTED};font-size:1rem;cursor:pointer;"
+                          title="Fullscreen">⛶</span>
                 </div>
             </div>
+            <div style="display:flex;gap:{SPACING.SPACE_2};flex-wrap:wrap;">{stat_chips}</div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -106,641 +275,668 @@ def agent_header(
 
 
 # ============================================================================
-# Agent Card
+# KPI Strip - MetricCard grid
+# ============================================================================
+
+def kpi_strip() -> None:
+    """Display the organization KPI strip as a MetricCard grid."""
+    for i in range(0, len(MOCK_KPI_METRICS), 4):
+        row = MOCK_KPI_METRICS[i:i + 4]
+        cols = st.columns(len(row))
+        for col, m in zip(cols, row):
+            with col:
+                metric_card(
+                    title=m["title"],
+                    value=m["value"],
+                    subtitle=m.get("subtitle", ""),
+                    trend=m.get("trend", ""),
+                    icon=m.get("icon", ""),
+                )
+
+
+# ============================================================================
+# AI Swarm - visual organization hierarchy with heartbeat
+# ============================================================================
+
+def ai_swarm() -> None:
+    """Display the AI swarm hierarchy with animated heartbeat and agent glow."""
+    section_header("AI Swarm", icon="🏢")
+
+    levels: Dict[int, list] = {}
+    for agent in MOCK_SWARM_HIERARCHY:
+        levels.setdefault(agent["level"], []).append(agent)
+
+    glass_panel(title="", icon="")
+
+    for level in sorted(levels.keys()):
+        agents = levels[level]
+        cols = st.columns(len(agents))
+        for col, agent in zip(cols, agents):
+            with col:
+                color = _semantic(agent["color"])
+                color_rgb = _semantic_rgb(agent["color"])
+                running = agent["status"] == "running"
+                heartbeat = f"animation:{ANIMATIONS.PULSE};" if running else ""
+                glow = f"box-shadow:0 0 12px rgba({color_rgb},0.5);" if running else ""
+                st.markdown(
+                    f'<div style="text-align:center;padding:{SPACING.SPACE_3} {SPACING.SPACE_2};'
+                    f'background:rgba({color_rgb},0.12);'
+                    f'border:1px solid rgba({color_rgb},0.35);'
+                    f'border-radius:{BORDERS.RADIUS_LG};{glow}{heartbeat}">'
+                    f'<div style="font-size:1.5rem;margin-bottom:{SPACING.SPACE_1};">{agent["icon"]}</div>'
+                    f'<div style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};'
+                    f'font-weight:600;">{_escape(agent["name"])}</div>'
+                    f'<div style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};'
+                    f'margin-top:2px;">{_escape(agent["task"])}</div>'
+                    f'<div style="margin-top:{SPACING.SPACE_1};">'
+                    f'<span style="width:6px;height:6px;border-radius:50%;'
+                    f'background:{color};display:inline-block;"></span>'
+                    f'<span style="color:{color};font-size:{TYPOGRAPHY.FONT_SIZE_XS};'
+                    f'margin-left:4px;">{agent["status"]}</span>'
+                    f'</div></div>',
+                    unsafe_allow_html=True,
+                )
+        if level < max(levels.keys()):
+            st.markdown(
+                f'<div style="text-align:center;color:{COLORS.TEXT_MUTED};'
+                f'font-size:0.9rem;margin:{SPACING.SPACE_1} 0;">↓</div>',
+                unsafe_allow_html=True,
+            )
+
+
+# ============================================================================
+# Agent Card (preserved) - token-styled
 # ============================================================================
 
 def agent_card(agent: Dict) -> None:
-    """Display an agent card with all fields."""
-    status_colors = {
-        "running": "#10B981",
-        "idle": "#64748B",
-        "paused": "#F59E0B",
-        "failed": "#EF4444",
-    }
-    status_color = status_colors.get(agent["status"], "#64748B")
-    health_color = "#10B981" if agent["health"] >= 80 else "#F59E0B" if agent["health"] >= 50 else "#EF4444"
-    
+    """Display an agent card (preserved signature) with token styling."""
+    status_color = _status_hex(agent["status"])
+    status_rgb = _hex_to_rgb(status_color)
+    health_color = get_health_color(agent["health"])
+    running = agent["status"] == "running"
+    glow = f"box-shadow:0 0 12px rgba({status_rgb},0.4);" if running else "box-shadow:none;"
+    heartbeat = f"animation:{ANIMATIONS.PULSE};" if running else ""
+    opacity = "opacity:0.75;" if agent["status"] == "idle" else ""
+
     st.markdown(
-        f"""
-        <div style="
-            background: rgba(30, 30, 63, 0.8);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-            transition: all 0.3s;
-            {'animation: pulse 2s infinite;' if agent['status'] == 'running' else ''}
-            {'opacity: 0.7;' if agent['status'] == 'idle' else ''}
-        ">
-            <!-- Header -->
-            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-                <div style="
-                    width: 44px;
-                    height: 44px;
-                    border-radius: 10px;
-                    background: linear-gradient(135deg, {status_color}, {status_color}80);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 1.5rem;
-                    {'animation: glow 2s infinite;' if agent['status'] == 'running' else ''}
-                ">{agent['icon']}</div>
-                <div style="flex: 1;">
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <span style="color: #F1F5F9; font-weight: 600; font-size: 0.9rem;">{agent['name']}</span>
-                        <span style="
-                            width: 8px;
-                            height: 8px;
-                            border-radius: 50%;
-                            background: {status_color};
-                        "></span>
-                    </div>
-                    <p style="color: #64748B; margin: 0.25rem 0 0; font-size: 0.75rem;">v{agent.get('version', '1.0.0')} • {agent.get('role', 'Agent')}</p>
-                </div>
-            </div>
-            
-            <!-- Current Task -->
-            <div style="margin-bottom: 0.75rem; padding: 0.5rem; background: rgba(51, 65, 85, 0.5); border-radius: 6px;">
-                <p style="color: #64748B; margin: 0 0 0.25rem; font-size: 0.65rem;">Current Task</p>
-                <p style="color: #F1F5F9; margin: 0; font-size: 0.8rem;">{agent['task']}</p>
-            </div>
-            
-            <!-- Current Prompt -->
-            <div style="margin-bottom: 0.75rem;">
-                <p style="color: #64748B; margin: 0 0 0.25rem; font-size: 0.65rem;">Current Prompt</p>
-                <p style="color: #22D3EE; margin: 0; font-size: 0.75rem; font-style: italic;">"{agent.get('current_prompt', 'N/A')[:40]}..."</p>
-            </div>
-            
-            <!-- Progress -->
-            <div style="margin-bottom: 0.75rem;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
-                    <span style="color: #64748B; font-size: 0.7rem;">Progress</span>
-                    <span style="color: #6366F1; font-size: 0.7rem; font-weight: 600;">{agent['progress']}%</span>
-                </div>
-                <div style="height: 4px; background: #334155; border-radius: 2px; overflow: hidden;">
-                    <div style="width: {agent['progress']}%; height: 100%; background: linear-gradient(90deg, #6366F1, #8B5CF6); border-radius: 2px;"></div>
-                </div>
-            </div>
-            
-            <!-- Metrics Grid -->
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-bottom: 0.75rem;">
-                <div style="text-align: center; padding: 0.4rem; background: rgba(51, 65, 85, 0.5); border-radius: 6px;">
-                    <p style="color: #64748B; margin: 0; font-size: 0.6rem;">CPU</p>
-                    <p style="color: #F59E0B; margin: 0.25rem 0 0; font-size: 0.8rem; font-weight: 600;">{agent['cpu']}%</p>
-                </div>
-                <div style="text-align: center; padding: 0.4rem; background: rgba(51, 65, 85, 0.5); border-radius: 6px;">
-                    <p style="color: #64748B; margin: 0; font-size: 0.6rem;">Memory</p>
-                    <p style="color: #22D3EE; margin: 0.25rem 0 0; font-size: 0.8rem; font-weight: 600;">{agent['memory']}%</p>
-                </div>
-                <div style="text-align: center; padding: 0.4rem; background: rgba(51, 65, 85, 0.5); border-radius: 6px;">
-                    <p style="color: #64748B; margin: 0; font-size: 0.6rem;">Health</p>
-                    <p style="color: {health_color}; margin: 0.25rem 0 0; font-size: 0.8rem; font-weight: 600;">{agent['health']}%</p>
-                </div>
-                <div style="text-align: center; padding: 0.4rem; background: rgba(51, 65, 85, 0.5); border-radius: 6px;">
-                    <p style="color: #64748B; margin: 0; font-size: 0.6rem;">Confidence</p>
-                    <p style="color: #10B981; margin: 0.25rem 0 0; font-size: 0.8rem; font-weight: 600;">{agent['confidence']}%</p>
-                </div>
-            </div>
-            
-            <!-- Footer -->
-            <div style="display: flex; justify-content: space-between; padding-top: 0.5rem; border-top: 1px solid #334155;">
-                <span style="color: #64748B; font-size: 0.65rem;">Model: {agent['model']}</span>
-                <span style="color: #64748B; font-size: 0.65rem;">{agent['exec_time']}</span>
-            </div>
-        </div>
-        <style>
-            @keyframes pulse {{
-                0%, 100% {{ box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }}
-                50% {{ box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }}
-            }}
-            @keyframes glow {{
-                0%, 100% {{ box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }}
-                50% {{ box-shadow: 0 0 20px rgba(16, 185, 129, 0.8); }}
-            }}
-        </style>
-        """,
+        f'<div style="background:rgba({COLORS.SURFACE_RGB},0.8);'
+        f'border:1px solid {_GLASS_PANEL_BORDER};'
+        f'border-radius:{BORDERS.RADIUS_LG};padding:{SPACING.SPACE_4};'
+        f'margin-bottom:{SPACING.SPACE_3};{glow}{heartbeat}{opacity}">'
+        f'<div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};margin-bottom:{SPACING.SPACE_3};">'
+        f'<div style="width:44px;height:44px;border-radius:{BORDERS.RADIUS_MD};'
+        f'background:linear-gradient(135deg,{status_color},rgba({status_rgb},0.5));'
+        f'display:flex;align-items:center;justify-content:center;font-size:1.5rem;">{agent["icon"]}</div>'
+        f'<div style="flex:1;">'
+        f'<div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};">'
+        f'<span style="color:{COLORS.TEXT_PRIMARY};font-weight:600;font-size:{TYPOGRAPHY.FONT_SIZE_BASE};">{_escape(agent["name"])}</span>'
+        f'<span style="width:8px;height:8px;border-radius:50%;background:{status_color};"></span>'
+        f'</div>'
+        f'<p style="color:{COLORS.TEXT_MUTED};margin:0.25rem 0 0;font-size:{TYPOGRAPHY.FONT_SIZE_SM};">v{_escape(agent.get("version", "1.0.0"))} • {_escape(agent.get("role", "Agent"))}</p>'
+        f'</div></div>'
+        f'<div style="margin-bottom:{SPACING.SPACE_3};padding:{SPACING.SPACE_2};'
+        f'background:rgba({COLORS.BORDER_RGB},0.5);border-radius:{BORDERS.RADIUS_MD};">'
+        f'<p style="color:{COLORS.TEXT_MUTED};margin:0 0 {SPACING.SPACE_1};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">Current Task</p>'
+        f'<p style="color:{COLORS.TEXT_PRIMARY};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(agent["task"])}</p>'
+        f'</div>'
+        f'<div style="margin-bottom:{SPACING.SPACE_3};">'
+        f'<p style="color:{COLORS.TEXT_MUTED};margin:0 0 {SPACING.SPACE_1};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">Current Prompt</p>'
+        f'<p style="color:{COLORS.SECONDARY};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-style:italic;">"{_escape(str(agent.get("current_prompt", "N/A"))[:40])}..."</p>'
+        f'</div>'
+        f'<div style="margin-bottom:{SPACING.SPACE_3};">'
+        f'<div style="display:flex;justify-content:space-between;margin-bottom:{SPACING.SPACE_1};">'
+        f'<span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">Progress</span>'
+        f'<span style="color:{COLORS.PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;">{agent["progress"]}%</span>'
+        f'</div>'
+        f'<div style="height:4px;background:{COLORS.BORDER};border-radius:{BORDERS.RADIUS_FULL};overflow:hidden;">'
+        f'<div style="width:{agent["progress"]}%;height:100%;background:linear-gradient(90deg,{COLORS.PRIMARY},{COLORS.ACCENT});border-radius:{BORDERS.RADIUS_FULL};"></div>'
+        f'</div></div>'
+        f'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:{SPACING.SPACE_2};margin-bottom:{SPACING.SPACE_3};">'
+        f'<div style="text-align:center;padding:{SPACING.SPACE_1};background:rgba({COLORS.BORDER_RGB},0.5);border-radius:{BORDERS.RADIUS_MD};">'
+        f'<p style="color:{COLORS.TEXT_MUTED};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_XS};">CPU</p>'
+        f'<p style="color:{COLORS.WARNING};margin:{SPACING.SPACE_1} 0 0;font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:600;">{agent["cpu"]}%</p></div>'
+        f'<div style="text-align:center;padding:{SPACING.SPACE_1};background:rgba({COLORS.BORDER_RGB},0.5);border-radius:{BORDERS.RADIUS_MD};">'
+        f'<p style="color:{COLORS.TEXT_MUTED};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_XS};">Memory</p>'
+        f'<p style="color:{COLORS.SECONDARY};margin:{SPACING.SPACE_1} 0 0;font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:600;">{agent["memory"]}%</p></div>'
+        f'<div style="text-align:center;padding:{SPACING.SPACE_1};background:rgba({COLORS.BORDER_RGB},0.5);border-radius:{BORDERS.RADIUS_MD};">'
+        f'<p style="color:{COLORS.TEXT_MUTED};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_XS};">Health</p>'
+        f'<p style="color:{health_color};margin:{SPACING.SPACE_1} 0 0;font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:600;">{agent["health"]}%</p></div>'
+        f'<div style="text-align:center;padding:{SPACING.SPACE_1};background:rgba({COLORS.BORDER_RGB},0.5);border-radius:{BORDERS.RADIUS_MD};">'
+        f'<p style="color:{COLORS.TEXT_MUTED};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_XS};">Confidence</p>'
+        f'<p style="color:{COLORS.SUCCESS};margin:{SPACING.SPACE_1} 0 0;font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:600;">{agent["confidence"]}%</p></div>'
+        f'</div>'
+        f'<div style="display:flex;justify-content:space-between;padding-top:{SPACING.SPACE_2};border-top:1px solid {COLORS.BORDER};">'
+        f'<span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">Model: {_escape(agent["model"])}</span>'
+        f'<span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(agent["exec_time"])}</span>'
+        f'</div></div>',
         unsafe_allow_html=True,
     )
 
 
 # ============================================================================
-# Agent Category Sidebar
+# Agent Categories Sidebar (preserved)
 # ============================================================================
 
 def agent_categories() -> None:
-    """Display agent category sidebar."""
+    """Display agent category sidebar (preserved signature) with token styling."""
+    section_header("Categories", icon="📂")
     categories = [
-        {"icon": "🧠", "name": "Intelligence", "count": 5, "color": "#6366F1"},
-        {"icon": "🧪", "name": "Testing", "count": 6, "color": "#10B981"},
-        {"icon": "📝", "name": "Documentation", "count": 1, "color": "#22D3EE"},
-        {"icon": "🔐", "name": "Security", "count": 1, "color": "#EF4444"},
-        {"icon": "⚡", "name": "Performance", "count": 1, "color": "#F59E0B"},
-        {"icon": "🧠", "name": "Learning", "count": 1, "color": "#8B5CF6"},
-        {"icon": "🚀", "name": "Support", "count": 1, "color": "#F472B6"},
+        {"icon": "🧠", "name": "Intelligence", "count": 5, "color": "primary"},
+        {"icon": "🧪", "name": "Testing", "count": 6, "color": "success"},
+        {"icon": "📝", "name": "Documentation", "count": 1, "color": "secondary"},
+        {"icon": "🔐", "name": "Security", "count": 1, "color": "error"},
+        {"icon": "⚡", "name": "Performance", "count": 1, "color": "warning"},
+        {"icon": "🧠", "name": "Learning", "count": 1, "color": "accent"},
+        {"icon": "🚀", "name": "Support", "count": 1, "color": "info"},
     ]
-    
-    st.markdown("<h4 style='color: #F1F5F9; margin: 1rem 0 0.75rem;'>📂 Categories</h4>", unsafe_allow_html=True)
-    
     for cat in categories:
+        color = _semantic(cat["color"])
+        color_rgb = _semantic_rgb(cat["color"])
         st.markdown(
-            f"""
-            <div style="
-                display: flex;
-                align-items: center;
-                gap: 0.75rem;
-                padding: 0.75rem;
-                background: rgba(30, 30, 63, 0.5);
-                border-radius: 8px;
-                margin-bottom: 0.5rem;
-                cursor: pointer;
-                transition: all 0.2s;
-            ">
-                <span style="font-size: 1.25rem;">{cat['icon']}</span>
-                <div style="flex: 1;">
-                    <p style="color: #F1F5F9; margin: 0; font-size: 0.85rem;">{cat['name']}</p>
-                </div>
-                <span style="
-                    background: {cat['color']}20;
-                    color: {cat['color']};
-                    padding: 0.2rem 0.5rem;
-                    border-radius: 4px;
-                    font-size: 0.75rem;
-                    font-weight: 600;
-                ">{cat['count']}</span>
-            </div>
-            """,
+            f'<div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};'
+            f'padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.5);'
+            f'border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};cursor:pointer;">'
+            f'<span style="font-size:1.25rem;">{cat["icon"]}</span>'
+            f'<div style="flex:1;"><p style="color:{COLORS.TEXT_PRIMARY};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_BASE};">{_escape(cat["name"])}</p></div>'
+            f'<span style="background:rgba({color_rgb},0.2);color:{color};'
+            f'padding:{SPACING.SPACE_1} {SPACING.SPACE_2};border-radius:{BORDERS.RADIUS_SM};'
+            f'font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:600;">{cat["count"]}</span>'
+            f'</div>',
             unsafe_allow_html=True,
         )
 
 
 # ============================================================================
-# Communication Graph
+# Agent Collaboration Graph (preserved name) - animated message flow
 # ============================================================================
 
 def communication_graph() -> None:
-    """Display agent communication graph."""
+    """Display agent collaboration graph with animated message flow (preserved signature)."""
+    section_header("Agent Collaboration Graph", icon="🔗")
+
+    total_msgs = sum(e["messages"] for e in MOCK_COLLAB_EDGES)
+    active_edges = sum(1 for e in MOCK_COLLAB_EDGES if e["status"] == "active")
     st.markdown(
-        """
-        <div style="
-            background: rgba(30, 30, 63, 0.8);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-        ">
-            <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 1rem;">🔗 Agent Communication</h4>
-        """,
+        f'<div style="display:flex;gap:{SPACING.SPACE_3};flex-wrap:wrap;margin-bottom:{SPACING.SPACE_3};">'
+        f'<span style="display:inline-flex;align-items:center;gap:{SPACING.SPACE_1};'
+        f'padding:{SPACING.SPACE_1} {SPACING.SPACE_3};background:rgba({COLORS.PRIMARY_RGB},0.15);'
+        f'border:1px solid {_GLASS_PANEL_BORDER};border-radius:{BORDERS.RADIUS_FULL};'
+        f'color:{COLORS.TEXT_SECONDARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">📨 {total_msgs} messages</span>'
+        f'<span style="display:inline-flex;align-items:center;gap:{SPACING.SPACE_1};'
+        f'padding:{SPACING.SPACE_1} {SPACING.SPACE_3};background:rgba({COLORS.SUCCESS_RGB},0.15);'
+        f'border:1px solid rgba({COLORS.SUCCESS_RGB},0.4);border-radius:{BORDERS.RADIUS_FULL};'
+        f'color:{COLORS.SUCCESS};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">⚡ {active_edges} active flows</span>'
+        f'<span style="display:inline-flex;align-items:center;gap:{SPACING.SPACE_1};'
+        f'padding:{SPACING.SPACE_1} {SPACING.SPACE_3};background:rgba({COLORS.WARNING_RGB},0.15);'
+        f'border:1px solid rgba({COLORS.WARNING_RGB},0.4);border-radius:{BORDERS.RADIUS_FULL};'
+        f'color:{COLORS.WARNING};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">🎯 High priority routing</span>'
+        f'</div>',
         unsafe_allow_html=True,
     )
-    
-    # Animated nodes
-    nodes = [
-        {"name": "Requirement", "icon": "📋", "x": 50, "y": 10},
-        {"name": "Application", "icon": "🔍", "x": 20, "y": 30},
-        {"name": "DOM", "icon": "📐", "x": 50, "y": 30},
-        {"name": "Locator", "icon": "🎯", "x": 80, "y": 30},
-        {"name": "Frontend", "icon": "🖥️", "x": 35, "y": 55},
-        {"name": "API", "icon": "🔗", "x": 65, "y": 55},
-        {"name": "Docs", "icon": "📝", "x": 50, "y": 80},
-    ]
-    
-    # Draw SVG-like connections
-    connections = [
-        ("Requirement", "Application"),
-        ("Requirement", "DOM"),
-        ("Requirement", "Locator"),
-        ("Application", "Frontend"),
-        ("DOM", "Frontend"),
-        ("Locator", "Frontend"),
-        ("Frontend", "API"),
-        ("Frontend", "Docs"),
-        ("API", "Docs"),
-    ]
-    
-    # Create connection lines
-    for conn in connections:
+
+    glass_panel(title="", icon="")
+    for edge in MOCK_COLLAB_EDGES:
+        prio_color = _priority_hex(edge["priority"])
+        active = edge["status"] == "active"
+        status_dot_color = _status_hex(edge["status"])
+        flow_anim = f"animation:{ANIMATIONS.PULSE};" if active else ""
         st.markdown(
-            f"""
-            <div style="
-                position: absolute;
-                width: 2px;
-                height: 40px;
-                background: linear-gradient(180deg, #6366F1, #10B981);
-                opacity: 0.5;
-                animation: flow 2s infinite;
-            "></div>
-            """,
+            f'<div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};'
+            f'padding:{SPACING.SPACE_2} {SPACING.SPACE_3};'
+            f'background:rgba({COLORS.SURFACE_RGB},0.6);'
+            f'border:1px solid {_PANEL_BORDER};border-left:3px solid {prio_color};'
+            f'border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};">'
+            f'<span style="width:8px;height:8px;border-radius:50%;background:{status_dot_color};'
+            f'{flow_anim}"></span>'
+            f'<div style="flex:1;">'
+            f'<div style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">'
+            f'{_escape(edge["from"])} → {_escape(edge["to"])}</div>'
+            f'<div style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">'
+            f'{edge["messages"]} msgs · {_escape(edge["priority"])} priority · {_escape(edge["status"])}</div>'
+            f'</div>'
+            f'<span style="color:{prio_color};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:600;">{edge["messages"]}</span>'
+            f'</div>',
             unsafe_allow_html=True,
         )
-    
-    # Draw nodes
-    cols = st.columns(7)
-    icons = ["📋", "🔍", "📐", "🎯", "🖥️", "🔗", "📝"]
-    names = ["Requirement", "Application", "DOM", "Locator", "Frontend", "API", "Docs"]
-    
-    for i, (col, icon, name) in enumerate(zip(cols, icons, names)):
-        with col:
-            st.markdown(
-                f"""
-                <div style="
-                    text-align: center;
-                    padding: 0.75rem;
-                    background: rgba(99, 102, 241, 0.2);
-                    border: 1px solid rgba(99, 102, 241, 0.3);
-                    border-radius: 12px;
-                    {'animation: pulse 2s infinite;' if i in [0, 4] else ''}
-                ">
-                    <span style="font-size: 1.5rem; display: block; margin-bottom: 0.5rem;">{icon}</span>
-                    <span style="color: #F1F5F9; font-size: 0.7rem;">{name}</span>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-    
+
     st.markdown(
-        """
-        <style>
-            @keyframes flow {
-                0% { opacity: 0.2; }
-                50% { opacity: 0.8; }
-                100% { opacity: 0.2; }
-            }
-            @keyframes pulse {
-                0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
-                50% { box-shadow: 0 0 0 8px rgba(99, 102, 241, 0); }
-            }
-        </style>
-        """,
+        f'<div style="margin-top:{SPACING.SPACE_3};color:{COLORS.TEXT_MUTED};'
+        f'font-size:{TYPOGRAPHY.FONT_SIZE_SM};margin-bottom:{SPACING.SPACE_2};">Agent Clusters</div>',
         unsafe_allow_html=True,
     )
-    
-    st.markdown("</div>", unsafe_allow_html=True)
+    clusters = ["📋 Requirement", "🔍 Application", "📐 DOM", "🎯 Locator",
+                "🖥️ Frontend", "🔗 API", "📝 Docs", "🧠 Learning"]
+    cols = st.columns(len(clusters))
+    for i, (col, name) in enumerate(zip(cols, clusters)):
+        with col:
+            pulse = f"animation:{ANIMATIONS.PULSE};" if i in [0, 4, 7] else ""
+            st.markdown(
+                f'<div style="text-align:center;padding:{SPACING.SPACE_2};'
+                f'background:rgba({COLORS.PRIMARY_RGB},0.15);'
+                f'border:1px solid {_GLASS_PANEL_BORDER};'
+                f'border-radius:{BORDERS.RADIUS_MD};{pulse}">'
+                f'<span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">'
+                f'{_escape(name)}</span></div>',
+                unsafe_allow_html=True,
+            )
 
 
 # ============================================================================
-# Agent Queue
+# Agent Queue (preserved)
 # ============================================================================
 
 def agent_queue() -> None:
-    """Display agent queue status."""
-    st.markdown(
-        """
-        <div style="
-            background: rgba(30, 30, 63, 0.8);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-        ">
-            <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 1rem;">📊 Agent Queue</h4>
-        """,
-        unsafe_allow_html=True,
-    )
-    
+    """Display agent queue status (preserved signature) with token styling."""
+    section_header("Agent Queue", icon="📊")
     queue_items = [
-        {"status": "Running", "agents": MOCK_QUEUE["running"], "color": "#10B981", "icon": "▶️"},
-        {"status": "Waiting", "agents": MOCK_QUEUE["waiting"], "color": "#64748B", "icon": "⏸️"},
-        {"status": "Paused", "agents": MOCK_QUEUE["paused"], "color": "#F59E0B", "icon": "⏸️"},
-        {"status": "Failed", "agents": MOCK_QUEUE["failed"], "color": "#EF4444", "icon": "❌"},
+        {"status": "Running", "agents": MOCK_QUEUE["running"], "color": "success", "icon": "▶️"},
+        {"status": "Waiting", "agents": MOCK_QUEUE["waiting"], "color": "muted", "icon": "⏸️"},
+        {"status": "Paused", "agents": MOCK_QUEUE["paused"], "color": "warning", "icon": "⏸️"},
+        {"status": "Failed", "agents": MOCK_QUEUE["failed"], "color": "error", "icon": "❌"},
     ]
-    
     for item in queue_items:
+        color = _semantic(item["color"])
         with st.expander(f"{item['icon']} {item['status']} ({len(item['agents'])})", expanded=item["status"] == "Running"):
             if item["agents"]:
                 for agent in item["agents"]:
                     st.markdown(
-                        f"""
-                        <div style="
-                            padding: 0.5rem 0.75rem;
-                            background: rgba(51, 65, 85, 0.5);
-                            border-radius: 6px;
-                            margin-bottom: 0.5rem;
-                        ">
-                            <span style="color: #F1F5F9; font-size: 0.85rem;">{agent}</span>
-                        </div>
-                        """,
+                        f'<div style="padding:{SPACING.SPACE_2} {SPACING.SPACE_3};'
+                        f'background:rgba({COLORS.BORDER_RGB},0.5);'
+                        f'border-left:3px solid {color};'
+                        f'border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};">'
+                        f'<span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(agent)}</span>'
+                        f'</div>',
                         unsafe_allow_html=True,
                     )
             else:
-                st.markdown("<p style='color: #64748B; font-size: 0.8rem;'>None</p>", unsafe_allow_html=True)
-    
-    st.markdown("</div>", unsafe_allow_html=True)
+                st.markdown(
+                    f'<p style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">None</p>',
+                    unsafe_allow_html=True,
+                )
 
 
 # ============================================================================
-# Resource Dashboard
-# ============================================================================
-
-def resource_dashboard() -> None:
-    """Display resource usage dashboard."""
-    st.markdown(
-        """
-        <div style="
-            background: linear-gradient(135deg, rgba(30, 30, 63, 0.95) 0%, rgba(99, 102, 241, 0.1) 100%);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-        ">
-            <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 1rem;">📈 Resource Dashboard</h4>
-        """,
-        unsafe_allow_html=True,
-    )
-    
-    resources = [
-        {"name": "CPU", "value": 45, "max": 100, "color": "#F59E0B"},
-        {"name": "Memory", "value": 62, "max": 100, "color": "#22D3EE"},
-        {"name": "GPU", "value": 28, "max": 100, "color": "#6366F1"},
-        {"name": "Token Usage", "value": 156000, "max": 500000, "color": "#10B981", "suffix": " tokens"},
-        {"name": "Requests", "value": 1247, "max": 5000, "color": "#8B5CF6", "suffix": ""},
-        {"name": "Queue", "value": 8, "max": 50, "color": "#F472B6", "suffix": ""},
-        {"name": "Latency", "value": 45, "max": 200, "color": "#EF4444", "suffix": "ms"},
-    ]
-    
-    for res in resources:
-        value = res.get("value", 0)
-        max_val = res.get("max", 100)
-        percentage = int((value / max_val) * 100)
-        suffix = res.get("suffix", "%")
-        
-        st.markdown(
-            f"""
-            <div style="margin-bottom: 1rem;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
-                    <span style="color: #94A3B8; font-size: 0.8rem;">{res['name']}</span>
-                    <span style="color: {res['color']}; font-size: 0.8rem; font-weight: 600;">{value}{suffix}</span>
-                </div>
-                <div style="height: 6px; background: #334155; border-radius: 3px; overflow: hidden;">
-                    <div style="width: {percentage}%; height: 100%; background: {res['color']}; border-radius: 3px;"></div>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-    
-    st.markdown("</div>", unsafe_allow_html=True)
-
-
-# ============================================================================
-# AI Model Panel
+# AI Model Router (preserved name: ai_model_panel) - routing table
 # ============================================================================
 
 def ai_model_panel() -> None:
-    """Display AI model usage panel."""
-    st.markdown(
-        """
-        <div style="
-            background: rgba(30, 30, 63, 0.8);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-        ">
-            <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 1rem;">🧠 AI Models</h4>
-        """,
-        unsafe_allow_html=True,
-    )
-    
-    for model in MOCK_MODELS:
+    """Display AI model router panel (preserved signature) with token styling."""
+    section_header("AI Model Router", icon="🧠")
+
+    for model in MOCK_MODEL_ROUTER:
+        color = _semantic(model["color"])
+        conf_color = get_confidence_color(model["confidence"])
         st.markdown(
-            f"""
-            <div style="
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-                padding: 0.75rem;
-                background: rgba(51, 65, 85, 0.5);
-                border-radius: 8px;
-                margin-bottom: 0.5rem;
-            ">
-                <div style="
-                    width: 8px;
-                    height: 8px;
-                    border-radius: 50%;
-                    background: {model['color']};
-                "></div>
-                <div style="flex: 1;">
-                    <p style="color: #F1F5F9; margin: 0; font-size: 0.85rem;">{model['name']}</p>
-                </div>
-                <div style="width: 60px; height: 6px; background: #334155; border-radius: 3px; overflow: hidden;">
-                    <div style="width: {model['usage']}%; height: 100%; background: {model['color']}; border-radius: 3px;"></div>
-                </div>
-                <span style="color: {model['color']}; font-size: 0.8rem; font-weight: 600; min-width: 40px; text-align: right;">{model['usage']}%</span>
-            </div>
-            """,
+            f'<div style="background:rgba({COLORS.SURFACE_RGB},0.8);'
+            f'border:1px solid {_GLASS_PANEL_BORDER};'
+            f'border-left:3px solid {color};'
+            f'border-radius:{BORDERS.RADIUS_MD};padding:{SPACING.SPACE_3};margin-bottom:{SPACING.SPACE_2};">'
+            f'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:{SPACING.SPACE_2};">'
+            f'<div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};">'
+            f'<span style="width:8px;height:8px;border-radius:50%;background:{color};'
+            f'animation:{ANIMATIONS.PULSE};"></span>'
+            f'<span style="color:{COLORS.TEXT_PRIMARY};font-weight:600;font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(model["name"])}</span>'
+            f'</div>'
+            f'<span style="color:{conf_color};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;">{model["confidence"]}% conf</span>'
+            f'</div>'
+            f'<div style="height:5px;background:{COLORS.BORDER};border-radius:{BORDERS.RADIUS_FULL};overflow:hidden;margin-bottom:{SPACING.SPACE_2};">'
+            f'<div style="width:{model["usage"]}%;height:100%;background:{color};border-radius:{BORDERS.RADIUS_FULL};"></div>'
+            f'</div>'
+            f'<div style="display:flex;justify-content:space-between;color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">'
+            f'<span>📊 {model["requests"]} req</span>'
+            f'<span>⏱️ {_escape(model["latency"])}</span>'
+            f'<span>💰 {_escape(model["cost"])}</span>'
+            f'</div>'
+            f'<div style="color:{COLORS.TEXT_SECONDARY};font-size:{TYPOGRAPHY.FONT_SIZE_XS};margin-top:{SPACING.SPACE_1};">'
+            f'→ {_escape(model["agent"])}'
+            f'</div></div>',
             unsafe_allow_html=True,
         )
-    
-    st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ============================================================================
-# Event Stream
+# Memory Utilization - animated bars
+# ============================================================================
+
+def memory_utilization() -> None:
+    """Display memory utilization with animated bars."""
+    section_header("Memory Utilization", icon="💾")
+    glass_panel(title="", icon="")
+    for mem in MOCK_MEMORY_UTILIZATION:
+        color = _semantic(mem["color"])
+        color_rgb = _semantic_rgb(mem["color"])
+        st.markdown(
+            f'<div style="margin-bottom:{SPACING.SPACE_3};">'
+            f'<div style="display:flex;justify-content:space-between;margin-bottom:{SPACING.SPACE_1};">'
+            f'<span style="color:{COLORS.TEXT_SECONDARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(mem["name"])}</span>'
+            f'<span style="color:{color};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:600;">{mem["value"]}%</span>'
+            f'</div>'
+            f'<div style="height:6px;background:{COLORS.BORDER};border-radius:{BORDERS.RADIUS_FULL};overflow:hidden;">'
+            f'<div style="width:{mem["value"]}%;height:100%;'
+            f'background:linear-gradient(90deg,{color},rgba({color_rgb},0.7));'
+            f'border-radius:{BORDERS.RADIUS_FULL};'
+            f'transition:width {ANIMATIONS.DURATION_SLOWER} {ANIMATIONS.EASE_OUT};"></div>'
+            f'</div>'
+            f'<div style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};margin-top:2px;">{_escape(mem["detail"])}</div>'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
+
+
+# ============================================================================
+# Resource Dashboard (preserved) - resource monitor with mock values
+# ============================================================================
+
+def resource_dashboard() -> None:
+    """Display resource monitor (preserved signature) with token styling and mock values."""
+    section_header("Resource Monitor", icon="📈")
+    glass_panel(title="", icon="")
+    for res in MOCK_RESOURCE_MONITOR:
+        color = _semantic(res["color"])
+        value = res["value"]
+        max_val = res["max"]
+        percentage = int((value / max_val) * 100)
+        unit = res["unit"]
+        st.markdown(
+            f'<div style="margin-bottom:{SPACING.SPACE_3};">'
+            f'<div style="display:flex;justify-content:space-between;margin-bottom:{SPACING.SPACE_1};">'
+            f'<span style="color:{COLORS.TEXT_SECONDARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(res["name"])}</span>'
+            f'<span style="color:{color};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:600;">{value} {unit}</span>'
+            f'</div>'
+            f'<div style="height:6px;background:{COLORS.BORDER};border-radius:{BORDERS.RADIUS_FULL};overflow:hidden;">'
+            f'<div style="width:{percentage}%;height:100%;background:{color};border-radius:{BORDERS.RADIUS_FULL};"></div>'
+            f'</div></div>',
+            unsafe_allow_html=True,
+        )
+
+
+# ============================================================================
+# Event Stream (preserved)
 # ============================================================================
 
 def event_stream() -> None:
-    """Display live event stream."""
+    """Display live event stream (preserved signature) with token styling."""
+    section_header("Event Stream", icon="⚡")
+
     st.markdown(
-        """
-        <div style="
-            background: rgba(30, 30, 63, 0.8);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 16px;
-            padding: 1.5rem;
-        ">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h4 style="color: #F1F5F9; margin: 0; font-size: 1rem;">⚡ Event Stream</h4>
-                <span style="
-                    width: 8px;
-                    height: 8px;
-                    border-radius: 50%;
-                    background: #10B981;
-                    animation: blink 1s infinite;
-                "></span>
-            </div>
-        """,
+        f'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:{SPACING.SPACE_3};">'
+        f'<span style="display:inline-flex;align-items:center;gap:{SPACING.SPACE_2};'
+        f'color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">'
+        f'<span style="width:8px;height:8px;border-radius:50%;background:{COLORS.SUCCESS};'
+        f'animation:{ANIMATIONS.PULSE};"></span>Live · auto-scroll</span>'
+        f'<span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};'
+        f'border:1px solid {_PANEL_BORDER};border-radius:{BORDERS.RADIUS_MD};'
+        f'padding:{SPACING.SPACE_1} {SPACING.SPACE_2};">🔎 Filter…</span>'
+        f'</div>',
         unsafe_allow_html=True,
     )
-    
-    event_types = {
-        "started": ("#10B981", "🚀"),
-        "task": ("#6366F1", "📋"),
-        "completed": ("#22D3EE", "✅"),
-        "message": ("#94A3B8", "💬"),
-        "retry": ("#F59E0B", "🔄"),
-        "learning": ("#8B5CF6", "🧠"),
-    }
-    
+
     for event in MOCK_EVENTS:
-        color, icon = event_types.get(event["type"], ("#64748B", "ℹ️"))
+        color = _EVENT_HEX.get(event["type"], COLORS.TEXT_MUTED)
+        icon = _EVENT_ICON.get(event["type"], "ℹ️")
         st.markdown(
-            f"""
-            <div style="
-                display: flex;
-                align-items: flex-start;
-                gap: 0.75rem;
-                padding: 0.5rem 0;
-                border-bottom: 1px solid rgba(51, 65, 85, 0.5);
-            ">
-                <span style="font-size: 1rem;">{icon}</span>
-                <div style="flex: 1;">
-                    <p style="color: #F1F5F9; margin: 0; font-size: 0.8rem;">{event['message']}</p>
-                    <p style="color: {color}; margin: 0.25rem 0 0; font-size: 0.7rem;">{event['agent']}</p>
-                </div>
-                <span style="color: #64748B; font-size: 0.7rem;">{event['time'].strftime('%H:%M:%S')}</span>
-            </div>
-            """,
+            f'<div style="display:flex;align-items:flex-start;gap:{SPACING.SPACE_3};'
+            f'padding:{SPACING.SPACE_2} 0;border-bottom:1px solid {COLORS.BORDER};">'
+            f'<span style="font-size:1rem;">{icon}</span>'
+            f'<div style="flex:1;">'
+            f'<p style="color:{COLORS.TEXT_PRIMARY};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(event["message"])}</p>'
+            f'<p style="color:{color};margin:0.25rem 0 0;font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(event["agent"])}</p>'
+            f'</div>'
+            f'<span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{event["time"].strftime("%H:%M:%S")}</span>'
+            f'</div>',
             unsafe_allow_html=True,
         )
-    
-    st.markdown(
-        """
-        <style>
-            @keyframes blink {
-                0%, 100% { opacity: 1; }
-                50% { opacity: 0.3; }
-            }
-        </style>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
 
 
 # ============================================================================
-# Mission Health
+# Mission Health (preserved)
 # ============================================================================
 
 def mission_health() -> None:
-    """Display mission health metrics."""
-    st.markdown(
-        """
-        <div style="
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(30, 30, 63, 0.95) 100%);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-        ">
-            <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 1rem;">🏥 Mission Health</h4>
-        """,
-        unsafe_allow_html=True,
-    )
-    
-    health_items = [
-        {"label": "Overall Health", "value": 94, "color": "#10B981"},
-        {"label": "CPU Usage", "value": 45, "color": "#F59E0B"},
-        {"label": "Memory Usage", "value": 62, "color": "#22D3EE"},
-        {"label": "Failures", "value": 2, "color": "#EF4444"},
-        {"label": "Retries", "value": 5, "color": "#F59E0B"},
-        {"label": "Warnings", "value": 3, "color": "#F59E0B"},
-        {"label": "Confidence", "value": 89, "color": "#10B981"},
-    ]
-    
+    """Display mission health metrics (preserved signature) with token styling."""
+    section_header("Mission Health", icon="🏥")
+    glass_panel(title="", icon="")
     col1, col2 = st.columns(2)
-    
-    for i, item in enumerate(health_items):
+    for i, item in enumerate(MOCK_MISSION_HEALTH):
+        color = _semantic(item["color"])
         col = col1 if i % 2 == 0 else col2
         with col:
+            val = item["value"]
+            suffix = "%" if isinstance(val, int) and val < 100 else ""
             st.markdown(
-                f"""
-                <div style="
-                    padding: 0.75rem;
-                    background: rgba(51, 65, 85, 0.5);
-                    border-radius: 8px;
-                    margin-bottom: 0.5rem;
-                ">
-                    <p style="color: #64748B; margin: 0; font-size: 0.7rem;">{item['label']}</p>
-                    <p style="color: {item['color']}; margin: 0.25rem 0 0; font-size: 1.25rem; font-weight: 600;">{item['value']}{'%' if isinstance(item['value'], int) and item['value'] < 100 else ''}</p>
-                </div>
-                """,
+                f'<div style="padding:{SPACING.SPACE_3};'
+                f'background:rgba({COLORS.BORDER_RGB},0.5);'
+                f'border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};'
+                f'border-left:3px solid {color};">'
+                f'<p style="color:{COLORS.TEXT_MUTED};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(item["label"])}</p>'
+                f'<p style="color:{color};margin:0.25rem 0 0;font-size:1.25rem;font-weight:600;">{val}{suffix}</p>'
+                f'</div>',
                 unsafe_allow_html=True,
             )
-    
-    st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ============================================================================
-# Agent Drawer
+# Quick Actions - glass buttons
+# ============================================================================
+
+def quick_actions() -> None:
+    """Display quick action glass buttons."""
+    section_header("Quick Actions", icon="⚡")
+    cols = st.columns(5)
+    for i, action in enumerate(MOCK_QUICK_ACTIONS):
+        with cols[i % 5]:
+            if st.button(
+                f"{action['icon']} {action['name']}",
+                key=f"qa_{action['name']}",
+                use_container_width=True,
+                help=action["description"],
+            ):
+                st.info(f"{action['name']}: {action['description']}")
+    spacer(SPACING.SPACE_2)
+
+
+# ============================================================================
+# Bottom Workspace Tabs - Timeline | Tasks | Logs | Models | Tools | Metrics | Alerts | History
+# ============================================================================
+
+def bottom_workspace_tabs() -> None:
+    """Display bottom workspace with lazy-rendered tab contents."""
+    section_header("Workspace", icon="🧰")
+    tab_objs = st.tabs(MOCK_BOTTOM_TABS)
+    tab_map = dict(zip(MOCK_BOTTOM_TABS, tab_objs))
+
+    with tab_map["Timeline"]:
+        for ev in MOCK_TIMELINE_EVENTS:
+            color = _semantic(ev["color"])
+            color_rgb = _semantic_rgb(ev["color"])
+            st.markdown(
+                f'<div style="display:flex;align-items:flex-start;gap:{SPACING.SPACE_3};'
+                f'padding:{SPACING.SPACE_2} 0;border-bottom:1px solid {COLORS.BORDER};">'
+                f'<div style="width:36px;height:36px;border-radius:{BORDERS.RADIUS_MD};'
+                f'background:rgba({color_rgb},0.15);border:1px solid rgba({color_rgb},0.4);'
+                f'display:flex;align-items:center;justify-content:center;font-size:1.1rem;'
+                f'animation:{ANIMATIONS.PULSE};">{ev["icon"]}</div>'
+                f'<div style="flex:1;">'
+                f'<div style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">{_escape(ev["title"])}</div>'
+                f'<div style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(ev["desc"])}</div>'
+                f'</div>'
+                f'<span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(ev["time"])}</span>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+
+    with tab_map["Tasks"]:
+        for task in MOCK_TASKS:
+            status_color = _status_hex(task["status"])
+            prio_color = _priority_hex(task["priority"])
+            st.markdown(
+                f'<div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.7);'
+                f'border:1px solid {_PANEL_BORDER};border-left:3px solid {prio_color};'
+                f'border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};">'
+                f'<div style="display:flex;justify-content:space-between;margin-bottom:{SPACING.SPACE_1};">'
+                f'<span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">{_escape(task["task"])}</span>'
+                f'<span style="color:{status_color};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(task["status"])}</span>'
+                f'</div>'
+                f'<div style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};margin-bottom:{SPACING.SPACE_1};">'
+                f'🤖 {_escape(task["agent"])} · {_escape(task["priority"])} priority</div>'
+                f'<div style="height:4px;background:{COLORS.BORDER};border-radius:{BORDERS.RADIUS_FULL};overflow:hidden;">'
+                f'<div style="width:{task["progress"]}%;height:100%;background:linear-gradient(90deg,{COLORS.PRIMARY},{COLORS.ACCENT});border-radius:{BORDERS.RADIUS_FULL};"></div>'
+                f'</div></div>',
+                unsafe_allow_html=True,
+            )
+
+    with tab_map["Logs"]:
+        for ev in MOCK_TIMELINE_EVENTS:
+            st.markdown(
+                f'<div style="font-family:{TYPOGRAPHY.FONT_MONO};font-size:{TYPOGRAPHY.FONT_SIZE_XS};'
+                f'color:{COLORS.TEXT_SECONDARY};padding:2px 0;">'
+                f'<span style="color:{COLORS.TEXT_MUTED};">{_escape(ev["time"])}</span> '
+                f'{ev["icon"]} {_escape(ev["title"])} — {_escape(ev["desc"])}</div>',
+                unsafe_allow_html=True,
+            )
+
+    with tab_map["Models"]:
+        ai_model_panel()
+
+    with tab_map["Tools"]:
+        tools = [
+            {"name": "RequirementParser", "status": "active", "uses": 156},
+            {"name": "WebScanner", "status": "active", "uses": 89},
+            {"name": "DOMInspector", "status": "active", "uses": 234},
+            {"name": "LocatorGenerator", "status": "active", "uses": 78},
+            {"name": "PlaywrightRunner", "status": "active", "uses": 142},
+            {"name": "PatternLearner", "status": "active", "uses": 24},
+            {"name": "BugAnalyzer", "status": "active", "uses": 12},
+            {"name": "ReportGenerator", "status": "idle", "uses": 0},
+        ]
+        for tool in tools:
+            color = _status_hex(tool["status"])
+            st.markdown(
+                f'<div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};'
+                f'padding:{SPACING.SPACE_2} {SPACING.SPACE_3};'
+                f'background:rgba({COLORS.SURFACE_RGB},0.7);border:1px solid {_PANEL_BORDER};'
+                f'border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_1};">'
+                f'<span style="width:8px;height:8px;border-radius:50%;background:{color};"></span>'
+                f'<span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};flex:1;">{_escape(tool["name"])}</span>'
+                f'<span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{tool["uses"]} uses</span>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+
+    with tab_map["Metrics"]:
+        for m in MOCK_KPI_METRICS[:6]:
+            color = COLORS.SUCCESS if str(m["trend"]).startswith("+") else COLORS.ERROR if str(m["trend"]).startswith("-") else COLORS.TEXT_MUTED
+            st.markdown(
+                f'<div style="display:flex;justify-content:space-between;padding:{SPACING.SPACE_2} 0;'
+                f'border-bottom:1px solid {COLORS.BORDER};">'
+                f'<span style="color:{COLORS.TEXT_SECONDARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(m["title"])}</span>'
+                f'<span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:600;">{m["value"]}</span>'
+                f'<span style="color:{color};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(m["trend"])}</span>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+
+    with tab_map["Alerts"]:
+        alerts = [
+            {"level": "warning", "msg": "Redis memory at 88%", "time": "10:05:00"},
+            {"level": "error", "msg": "Sidebar visibility test failed", "time": "10:03:30"},
+            {"level": "info", "msg": "Pattern learned: Login flow", "time": "10:05:00"},
+        ]
+        for a in alerts:
+            color = _semantic(a["level"])
+            st.markdown(
+                f'<div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.7);'
+                f'border:1px solid {_PANEL_BORDER};border-left:3px solid {color};'
+                f'border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};">'
+                f'<div style="color:{color};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:600;text-transform:uppercase;">{_escape(a["level"])}</div>'
+                f'<div style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};margin-top:2px;">{_escape(a["msg"])}</div>'
+                f'<div style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};margin-top:2px;">{_escape(a["time"])}</div>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+
+    with tab_map["History"]:
+        for ev in reversed(MOCK_TIMELINE_EVENTS):
+            st.markdown(
+                f'<div style="display:flex;gap:{SPACING.SPACE_2};padding:{SPACING.SPACE_2} 0;'
+                f'border-bottom:1px solid {COLORS.BORDER};">'
+                f'<span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};min-width:64px;">{_escape(ev["time"])}</span>'
+                f'<span style="font-size:1rem;">{ev["icon"]}</span>'
+                f'<span style="color:{COLORS.TEXT_SECONDARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(ev["title"])} — {_escape(ev["desc"])}</span>'
+                f'</div>',
+                unsafe_allow_html=True,
+            )
+
+
+# ============================================================================
+# Agent Drawer (preserved)
 # ============================================================================
 
 def agent_drawer(agent: Dict) -> None:
-    """Display detailed agent drawer with all fields."""
-    with st.expander(f"🤖 {agent['name']} Details", expanded=True):
-        # Agent Header
+    """Display detailed agent drawer (preserved signature) with token styling."""
+    with st.expander(f"🤖 {_escape(agent['name'])} Details", expanded=True):
+        status_color = _status_hex(agent["status"])
+        status_rgb = _hex_to_rgb(status_color)
         st.markdown(
-            f"""
-            <div style="
-                background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(30, 30, 63, 0.95) 100%);
-                border-radius: 12px;
-                padding: 1.5rem;
-                margin-bottom: 1rem;
-                text-align: center;
-            ">
-                <span style="font-size: 4rem; display: block; margin-bottom: 1rem;">{agent['icon']}</span>
-                <h3 style="color: #F1F5F9; margin: 0;">{agent['name']}</h3>
-                <p style="color: #64748B; margin: 0.5rem 0 0;">Agent DNA • v{agent.get('version', '1.0.0')}</p>
-            </div>
-            """,
+            f'<div style="background:linear-gradient(135deg,rgba({COLORS.PRIMARY_RGB},0.2) 0%,{COLORS.SURFACE} 100%);'
+            f'border:1px solid {_GLASS_PANEL_BORDER};border-radius:{BORDERS.RADIUS_LG};'
+            f'padding:{SPACING.SPACE_6};margin-bottom:{SPACING.SPACE_4};text-align:center;">'
+            f'<span style="font-size:4rem;display:block;margin-bottom:{SPACING.SPACE_4};">{agent["icon"]}</span>'
+            f'<h3 style="color:{COLORS.TEXT_PRIMARY};margin:0;">{_escape(agent["name"])}</h3>'
+            f'<p style="color:{COLORS.TEXT_MUTED};margin:0.5rem 0 0;">Agent DNA • v{_escape(agent.get("version", "1.0.0"))}</p>'
+            f'<span style="display:inline-flex;align-items:center;gap:{SPACING.SPACE_1};'
+            f'margin-top:{SPACING.SPACE_2};padding:{SPACING.SPACE_1} {SPACING.SPACE_3};'
+            f'background:rgba({status_rgb},0.2);color:{status_color};'
+            f'border-radius:{BORDERS.RADIUS_FULL};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">'
+            f'<span style="width:6px;height:6px;border-radius:50%;background:{status_color};"></span>'
+            f'{_escape(agent["status"].title())}</span>'
+            f'</div>',
             unsafe_allow_html=True,
         )
-        
-        # Basic Info
         col1, col2 = st.columns(2)
         with col1:
-            st.markdown(f"**Role:** {agent.get('role', 'Agent')}")
-            st.markdown(f"**Version:** {agent.get('version', '1.0.0')}")
-            st.markdown(f"**Status:** {agent['status'].title()}")
+            st.markdown(f"**Role:** {_escape(agent.get('role', 'Agent'))}")
+            st.markdown(f"**Version:** {_escape(agent.get('version', '1.0.0'))}")
+            st.markdown(f"**Status:** {_escape(agent['status'].title())}")
         with col2:
-            st.markdown(f"**Owner:** {agent.get('owner', 'AI-QOS Team')}")
-            st.markdown(f"**Last Updated:** {agent.get('last_updated', 'N/A')}")
+            st.markdown(f"**Owner:** {_escape(agent.get('owner', 'AI-QOS Team'))}")
+            st.markdown(f"**Last Updated:** {_escape(agent.get('last_updated', 'N/A'))}")
             st.markdown(f"**Health Score:** {agent['health']}%")
-        
-        # Capabilities
+
         st.markdown("**🎯 Capabilities:**")
-        capabilities = agent.get('capabilities', ['No capabilities defined'])
-        for cap in capabilities:
-            st.markdown(f"- {cap}")
-        
-        # Permissions
+        for cap in agent.get('capabilities', ['No capabilities defined']):
+            st.markdown(f"- {_escape(cap)}")
+
         st.markdown("**🔐 Permissions:**")
-        permissions = agent.get('permissions', ['Read'])
-        for perm in permissions:
-            st.markdown(f"- {perm}")
-        
-        # Tools
+        for perm in agent.get('permissions', ['Read']):
+            st.markdown(f"- {_escape(perm)}")
+
         st.markdown("**🛠️ Tools:**")
-        tools = agent.get('tools', [agent.get('tool', 'N/A')])
-        for tool in tools:
-            st.markdown(f"- {tool}")
-        
-        # Dependencies
+        for tool in agent.get('tools', [agent.get('tool', 'N/A')]):
+            st.markdown(f"- {_escape(tool)}")
+
         st.markdown("**🔗 Dependencies:**")
         deps = agent.get('dependencies', [])
         if deps:
             for dep in deps:
-                st.markdown(f"- {dep}")
+                st.markdown(f"- {_escape(dep)}")
         else:
             st.markdown("- No dependencies")
-        
-        # Current Context
+
         st.markdown("**📋 Current Context:**")
-        st.markdown(f"- **Mission:** {agent['mission']}")
-        st.markdown(f"- **Current Task:** {agent['task']}")
+        st.markdown(f"- **Mission:** {_escape(agent['mission'])}")
+        st.markdown(f"- **Current Task:** {_escape(agent['task'])}")
         st.markdown(f"- **Progress:** {agent['progress']}%")
         st.markdown(f"- **Confidence:** {agent['confidence']}%")
-        st.markdown(f"- **Current Tool:** {agent['tool']}")
-        st.markdown(f"- **Current Model:** {agent['model']}")
-        
-        # Memory Usage
+        st.markdown(f"- **Current Tool:** {_escape(agent['tool'])}")
+        st.markdown(f"- **Current Model:** {_escape(agent['model'])}")
+
         st.markdown("**💾 Memory Usage:**")
-        st.markdown(f"- {agent.get('memory_usage', 'N/A')}")
-        
-        # Current Prompt
+        st.markdown(f"- {_escape(agent.get('memory_usage', 'N/A'))}")
+
         st.markdown("**💭 Current Prompt:**")
         st.code(agent.get('current_prompt', 'No current prompt'), language=None)
-        
-        # Execution History
+
         st.markdown("**📊 Execution History:**")
         st.json({
             "total_tasks": 24,
@@ -749,7 +945,7 @@ def agent_drawer(agent: Dict) -> None:
             "avg_duration": "45s",
             "success_rate": "94%",
         })
-        
-        # Health History
+
         st.markdown("**🏥 Health History:**")
         st.line_chart({"health": [95, 92, 94, 96, 95, 98, 97]})
+

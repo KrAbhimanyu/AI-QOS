@@ -476,3 +476,157 @@ MOCK_MODELS = [
     {"name": "DeepSeek-Coder", "usage": 18, "status": "active", "color": "#6366F1"},
     {"name": "Qwen-2", "usage": 15, "status": "active", "color": "#22D3EE"},
 ]
+
+
+# ============================================================================
+# PREMIUM MOCK DATA - AI Organization Operating Center
+# ============================================================================
+
+# Organization KPI strip (HeroHeader stat chips) - semantic color names resolved
+MOCK_ORG_KPIS = [
+    {"label": "Mission", "value": "E2E Regression v2.1", "icon": "🎯", "color": "primary"},
+    {"label": "Application", "value": "AIQOS Demo", "icon": "🔍", "color": "secondary"},
+    {"label": "Organization", "value": "Autonomous Swarm", "icon": "🏢", "color": "accent"},
+    {"label": "Current Mission", "value": "Login Regression", "icon": "🚀", "color": "info"},
+    {"label": "Running", "value": "8", "icon": "🟢", "color": "success"},
+    {"label": "Waiting", "value": "4", "icon": "🟡", "color": "warning"},
+    {"label": "Completed", "value": "1", "icon": "✅", "color": "primary"},
+    {"label": "Failed", "value": "0", "icon": "🔴", "color": "error"},
+    {"label": "Memory", "value": "62%", "icon": "💾", "color": "secondary"},
+    {"label": "Tokens", "value": "156K", "icon": "🔢", "color": "accent"},
+    {"label": "Confidence", "value": "94%", "icon": "🎯", "color": "success"},
+]
+
+# KPI strip metrics (MetricCard grid) - dashboard-style metrics
+MOCK_KPI_METRICS = [
+    {"title": "Running Agents", "value": 8, "icon": "🟢", "trend": "+2", "subtitle": "active swarm"},
+    {"title": "Queued Tasks", "value": 4, "icon": "📋", "trend": "-1", "subtitle": "waiting"},
+    {"title": "Completed", "value": 142, "icon": "✅", "trend": "+12%", "subtitle": "this mission"},
+    {"title": "Failures", "value": 2, "icon": "❌", "trend": "-3", "subtitle": "last hour"},
+    {"title": "Retries", "value": 5, "icon": "🔄", "trend": "+1", "subtitle": "auto-recover"},
+    {"title": "CPU", "value": "45%", "icon": "⚡", "trend": "+5%", "subtitle": "avg load"},
+    {"title": "Memory", "value": "62%", "icon": "💾", "trend": "+2%", "subtitle": "8 agents"},
+    {"title": "GPU", "value": "28%", "icon": "🎮", "trend": "0", "subtitle": "idle"},
+    {"title": "Tokens", "value": "156K", "icon": "🔢", "trend": "+8K", "subtitle": "this session"},
+    {"title": "Models", "value": 5, "icon": "🧠", "trend": "0", "subtitle": "routing"},
+    {"title": "Queue", "value": 8, "icon": "📥", "trend": "-2", "subtitle": "depth"},
+    {"title": "Events/sec", "value": "12.4", "icon": "📊", "trend": "+1.2", "subtitle": "throughput"},
+]
+
+# AI Swarm - visual organization hierarchy (the "living AI company")
+MOCK_SWARM_HIERARCHY = [
+    {"id": "ceo", "name": "CEO Agent", "icon": "👔", "level": 0, "status": "running", "task": "Mission orchestration", "color": "primary"},
+    {"id": "planning", "name": "Planning Agent", "icon": "🗺️", "level": 1, "status": "running", "task": "Test plan generation", "color": "info"},
+    {"id": "requirement", "name": "Requirement Agent", "icon": "📋", "level": 2, "status": "running", "task": "Requirements analysis", "color": "secondary"},
+    {"id": "frontend", "name": "Frontend Agent", "icon": "🖥️", "level": 3, "status": "running", "task": "UI test execution", "color": "success"},
+    {"id": "backend", "name": "Backend Agent", "icon": "⚙️", "level": 3, "status": "idle", "task": "API test execution", "color": "muted"},
+    {"id": "api", "name": "API Agent", "icon": "🔗", "level": 3, "status": "running", "task": "Endpoint validation", "color": "success"},
+    {"id": "database", "name": "Database Agent", "icon": "🗄️", "level": 3, "status": "idle", "task": "DB validation", "color": "muted"},
+    {"id": "documentation", "name": "Documentation Agent", "icon": "📝", "level": 3, "status": "idle", "task": "Docs generation", "color": "muted"},
+    {"id": "review", "name": "Review Agent", "icon": "🔍", "level": 4, "status": "running", "task": "Human review triage", "color": "warning"},
+    {"id": "release", "name": "Release Agent", "icon": "🚀", "level": 4, "status": "idle", "task": "Release advisory", "color": "muted"},
+    {"id": "learning", "name": "Learning Agent", "icon": "🧠", "level": 4, "status": "running", "task": "Pattern learning", "color": "accent"},
+]
+
+# Agent collaboration graph edges (message flow between agents)
+MOCK_COLLAB_EDGES = [
+    {"from": "CEO Agent", "to": "Planning Agent", "messages": 24, "priority": "high", "status": "active"},
+    {"from": "Planning Agent", "to": "Requirement Agent", "messages": 18, "priority": "high", "status": "active"},
+    {"from": "Requirement Agent", "to": "Frontend Agent", "messages": 12, "priority": "medium", "status": "active"},
+    {"from": "Requirement Agent", "to": "API Agent", "messages": 8, "priority": "medium", "status": "active"},
+    {"from": "Frontend Agent", "to": "Review Agent", "messages": 6, "priority": "low", "status": "active"},
+    {"from": "API Agent", "to": "Review Agent", "messages": 4, "priority": "low", "status": "pending"},
+    {"from": "Review Agent", "to": "Learning Agent", "messages": 9, "priority": "medium", "status": "active"},
+    {"from": "Learning Agent", "to": "Planning Agent", "messages": 3, "priority": "low", "status": "active"},
+    {"from": "Frontend Agent", "to": "Release Agent", "messages": 2, "priority": "low", "status": "pending"},
+]
+
+# AI Model Router - routing table per model
+MOCK_MODEL_ROUTER = [
+    {"name": "GPT-5.5", "requests": 1247, "latency": "1.2s", "cost": "$2.40", "confidence": 94, "agent": "Requirement Agent", "usage": 45, "color": "success"},
+    {"name": "Claude-4 Opus", "requests": 892, "latency": "0.9s", "cost": "$1.80", "confidence": 91, "agent": "Bug Analysis Agent", "usage": 32, "color": "error"},
+    {"name": "Gemini-Pro", "requests": 634, "latency": "1.5s", "cost": "$0.90", "confidence": 88, "agent": "Locator Intelligence", "usage": 28, "color": "warning"},
+    {"name": "DeepSeek-Coder", "requests": 412, "latency": "2.1s", "cost": "$0.30", "confidence": 89, "agent": "Frontend Testing", "usage": 18, "color": "primary"},
+    {"name": "Qwen-2", "requests": 298, "latency": "1.8s", "cost": "$0.20", "confidence": 95, "agent": "API Testing", "usage": 15, "color": "secondary"},
+    {"name": "Local LLM", "requests": 156, "latency": "3.2s", "cost": "$0.00", "confidence": 76, "agent": "Learning Agent", "usage": 8, "color": "muted"},
+]
+
+# Memory utilization - animated bars
+MOCK_MEMORY_UTILIZATION = [
+    {"name": "Short-Term Memory", "value": 72, "color": "primary", "detail": "Active context (8 agents)"},
+    {"name": "Mission Memory", "value": 58, "color": "info", "detail": "E2E Regression v2.1"},
+    {"name": "Project Memory", "value": 84, "color": "secondary", "detail": "AIQOS Demo (1,284 nodes)"},
+    {"name": "Knowledge Graph", "value": 91, "color": "accent", "detail": "83 nodes / 142 edges"},
+    {"name": "Learning Memory", "value": 45, "color": "success", "detail": "24 patterns learned"},
+    {"name": "Context Window", "value": 68, "color": "warning", "detail": "4,812 / 16K tokens"},
+    {"name": "Token Cache", "value": 33, "color": "muted", "detail": "3 entries cached"},
+    {"name": "Memory Health", "value": 94, "color": "success", "detail": "Healthy"},
+]
+
+# Resource monitor - mock values only
+MOCK_RESOURCE_MONITOR = [
+    {"name": "CPU", "value": 45, "max": 100, "color": "warning", "unit": "%"},
+    {"name": "Memory", "value": 62, "max": 100, "color": "secondary", "unit": "%"},
+    {"name": "GPU", "value": 28, "max": 100, "color": "primary", "unit": "%"},
+    {"name": "Network", "value": 18, "max": 100, "color": "info", "unit": "Mb/s"},
+    {"name": "Browser", "value": 4, "max": 8, "color": "success", "unit": "inst"},
+    {"name": "Playwright", "value": 3, "max": 8, "color": "success", "unit": "workers"},
+    {"name": "Storage", "value": 42, "max": 100, "color": "accent", "unit": "GB"},
+    {"name": "Redis", "value": 88, "max": 100, "color": "error", "unit": "%"},
+    {"name": "PostgreSQL", "value": 54, "max": 100, "color": "secondary", "unit": "%"},
+    {"name": "Neo4j", "value": 71, "max": 100, "color": "warning", "unit": "%"},
+    {"name": "RabbitMQ", "value": 36, "max": 100, "color": "success", "unit": "msgs"},
+]
+
+# Mission health - dashboard metrics
+MOCK_MISSION_HEALTH = [
+    {"label": "Overall Health", "value": 94, "color": "success"},
+    {"label": "Coverage", "value": 89, "color": "primary"},
+    {"label": "Execution", "value": 67, "color": "secondary"},
+    {"label": "AI Confidence", "value": 94, "color": "success"},
+    {"label": "Automation", "value": 78, "color": "info"},
+    {"label": "Failures", "value": 2, "color": "error"},
+    {"label": "Warnings", "value": 3, "color": "warning"},
+    {"label": "Risk", "value": 24, "color": "warning"},
+    {"label": "Availability", "value": 99, "color": "success"},
+]
+
+# Bottom workspace tabs
+MOCK_BOTTOM_TABS = ["Timeline", "Tasks", "Logs", "Models", "Tools", "Metrics", "Alerts", "History"]
+
+# Timeline events for the Timeline tab
+MOCK_TIMELINE_EVENTS = [
+    {"time": "10:00:01", "icon": "🚀", "title": "Mission Started", "desc": "E2E Regression v2.1 launched", "color": "primary"},
+    {"time": "10:00:15", "icon": "📋", "title": "Requirements Parsed", "desc": "Requirement Agent analyzed 12 user stories", "color": "secondary"},
+    {"time": "10:01:42", "icon": "🔍", "title": "DOM Scan Complete", "desc": "1,284 nodes detected on /dashboard", "color": "info"},
+    {"time": "10:02:08", "icon": "🎯", "title": "Locators Generated", "desc": "24 stable XPath selectors created", "color": "success"},
+    {"time": "10:03:30", "icon": "⚠️", "title": "Test Failure Detected", "desc": "Sidebar visibility assertion failed", "color": "warning"},
+    {"time": "10:04:12", "icon": "🔄", "title": "Auto-Retry", "desc": "Bug Analysis Agent retrying with new strategy", "color": "warning"},
+    {"time": "10:05:00", "icon": "🧠", "title": "Pattern Learned", "desc": "Learning Agent updated locator strategy", "color": "accent"},
+]
+
+# Tasks for the Tasks tab
+MOCK_TASKS = [
+    {"agent": "Requirement Agent", "task": "Analyze login flow requirements", "status": "running", "priority": "high", "progress": 78},
+    {"agent": "Frontend Agent", "task": "Execute sidebar visibility test", "status": "running", "priority": "high", "progress": 65},
+    {"agent": "API Agent", "task": "Validate /api/dashboard endpoint", "status": "running", "priority": "medium", "progress": 91},
+    {"agent": "Bug Analysis Agent", "task": "Diagnose sidebar hidden bug", "status": "running", "priority": "critical", "progress": 87},
+    {"agent": "Learning Agent", "task": "Learn from recent execution", "status": "running", "priority": "low", "progress": 76},
+    {"agent": "Backend Agent", "task": "Execute backend test suite", "status": "waiting", "priority": "medium", "progress": 0},
+    {"agent": "Database Agent", "task": "Validate DB schema", "status": "waiting", "priority": "low", "progress": 0},
+    {"agent": "Review Agent", "task": "Triage human review queue", "status": "running", "priority": "high", "progress": 54},
+]
+
+# Quick actions - glass buttons
+MOCK_QUICK_ACTIONS = [
+    {"name": "Pause Agents", "icon": "⏸️", "description": "Halt the running swarm", "color": "warning"},
+    {"name": "Resume Agents", "icon": "▶️", "description": "Resume paused agents", "color": "success"},
+    {"name": "Restart Agent", "icon": "🔄", "description": "Restart selected agent", "color": "primary"},
+    {"name": "Reassign Task", "icon": "📤", "description": "Reassign queued task", "color": "info"},
+    {"name": "Generate Report", "icon": "📊", "description": "Quality report", "color": "secondary"},
+    {"name": "Open Chat", "icon": "💬", "description": "AI command center", "color": "accent"},
+    {"name": "Knowledge Graph", "icon": "🕸️", "description": "Graph explorer", "color": "primary"},
+    {"name": "DOM Explorer", "icon": "🌐", "description": "DOM tree", "color": "secondary"},
+    {"name": "Mission Control", "icon": "🎯", "description": "Mission planner", "color": "info"},
+    {"name": "Open Reports", "icon": "📈", "description": "Analytics", "color": "success"},
+]

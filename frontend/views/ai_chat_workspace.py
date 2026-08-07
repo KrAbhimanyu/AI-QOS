@@ -1,4 +1,4 @@
-"""AI Chat Workspace - AI-QOS."""
+"""AI Chat Workspace - AI-QOS Enterprise AI Command Center."""
 import streamlit as st
 from components.chat_components import (
     init_chat_state,
@@ -8,73 +8,99 @@ from components.chat_components import (
     MOCK_MISSION_CONTEXT,
     chat_header,
     chat_action_buttons,
+    chat_context_strip,
     conversation_sidebar,
     chat_message,
     typing_indicator,
     prompt_editor,
     context_panel,
     ai_knowledge_panel,
+    ai_context_panel,
+    mission_context_panel,
     quick_actions_grid,
+    quick_actions_premium,
     prompt_library,
     ai_thinking_panel,
+    bottom_workspace_tabs,
+    console_viewer,
+    browser_frame,
+    loading_skeleton,
+    message_types_legend,
+    notification_toast,
 )
 
 
 def render_ai_chat_workspace() -> None:
-    """Render the AI Chat Workspace page."""
+    """Render the Enterprise AI Command Center chat workspace.
+
+    Preserves the original session state, conversation history, prompt editor,
+    AI reasoning, mission context, quick actions, tabs, and business logic.
+    Reorganizes the surface into the premium Command Center layout:
+    HeroHeader → Context Strip → Conversations | Chat | AI Context →
+    Prompt Tools | Prompt Editor | AI Thinking → Bottom Workspace tabs.
+    """
     init_chat_state()
-    
-    # Page Header
+
+    # HeroHeader - sticky enterprise command header (reuses foundation tokens)
     chat_header(
         mission_name=MOCK_MISSION_CONTEXT["mission_name"],
         mission_status=MOCK_MISSION_CONTEXT["execution_status"],
         agent=MOCK_MISSION_CONTEXT["current_agent"],
         test=MOCK_MISSION_CONTEXT["current_test"],
     )
-    
-    # Action Buttons
+
+    # Context Strip - premium horizontal live context bar
+    chat_context_strip()
+
+    # Action Buttons (Toolbar)
     chat_action_buttons()
-    
+
     st.markdown("<hr style='margin: 1rem 0; border-color: #334155;'>", unsafe_allow_html=True)
-    
-    # Main Content - Three Panel Layout
+
+    # Main Content - Three Panel Layout: Conversations | Chat | AI Context
     left_col, center_col, right_col = st.columns([1, 3, 1])
-    
-    # LEFT SIDEBAR
+
+    # LEFT SIDEBAR - Conversation Workspace
     with left_col:
         conversation_sidebar()
-    
+
     # CENTER CHAT PANEL
     with center_col:
         render_chat_panel()
-    
-    # RIGHT CONTEXT PANEL
+
+    # RIGHT PANEL - AI Intelligence + Knowledge
     with right_col:
-        context_panel()
+        ai_context_panel()
         ai_knowledge_panel()
-        ai_thinking_panel()
-    
-    # Bottom Prompt Bar
+
     st.markdown("<hr style='margin: 1.5rem 0; border-color: #334155;'>", unsafe_allow_html=True)
-    
-    # Quick Actions and Prompt Library
-    left_panel, right_panel = st.columns(2)
-    
+
+    # Prompt Tools | Prompt Editor | AI Thinking row
+    left_panel, center_panel, right_panel = st.columns([1, 2, 1])
+
     with left_panel:
-        quick_actions_grid()
-    
+        quick_actions_premium()
+
+    with center_panel:
+        prompt_editor()
+
     with right_panel:
-        prompt_library()
-    
-    # Prompt Editor
-    prompt_editor()
+        ai_thinking_panel()
+
+    # Bottom Workspace - shared GlassPanel foundation with tabs
+    st.markdown("<hr style='margin: 1.5rem 0; border-color: #334155;'>", unsafe_allow_html=True)
+    bottom_workspace_tabs()
+
+    # Message types legend (different badges)
+    st.markdown("<hr style='margin: 1.5rem 0; border-color: #334155;'>", unsafe_allow_html=True)
+    message_types_legend()
 
 
 def render_chat_panel() -> None:
-    """Render the chat message panel."""
-    # Conversation Title
+    """Render the chat message panel with markdown/code support."""
+    # Conversation Title (token-styled)
     st.markdown(
-        """
+        f"""
         <div style="
             background: rgba(30, 30, 63, 0.8);
             border: 1px solid rgba(99, 102, 241, 0.2);
@@ -97,7 +123,7 @@ def render_chat_panel() -> None:
         """,
         unsafe_allow_html=True,
     )
-    
+
     # Scrollable chat area
     st.markdown(
         """
@@ -112,23 +138,24 @@ def render_chat_panel() -> None:
         """,
         unsafe_allow_html=True,
     )
-    
-    # Render messages
+
+    # Render messages (preserves conversation history)
     for message in MOCK_MESSAGES:
         chat_message(
             role=message["role"],
             content=message["content"],
             timestamp=message["timestamp"],
         )
-    
-    # Show typing indicator occasionally
-    # typing_indicator()
-    
+
+    # Show typing indicator when AI reasoning is active
+    if get_chat_data("chat_ai_thinking_active", True):
+        typing_indicator()
+
     st.markdown("</div>", unsafe_allow_html=True)
-    
+
     # Context Cards
     st.markdown("<h4 style='color: #F1F5F9; margin: 1rem 0 0.75rem;'>📎 Context Cards</h4>", unsafe_allow_html=True)
-    
+
     context_cards = [
         {"icon": "🎯", "name": "Mission", "desc": "E2E Regression v2.1"},
         {"icon": "⚡", "name": "Execution", "desc": "Running at 67%"},
@@ -137,12 +164,10 @@ def render_chat_panel() -> None:
         {"icon": "📐", "name": "DOM", "desc": "nav#sidebar"},
         {"icon": "🔗", "name": "API", "desc": "/api/dashboard"},
     ]
-    
-    col1, col2, col3, col4, col5, col6 = st.columns(6)
-    
+
+    cols = st.columns(6)
     for i, card in enumerate(context_cards):
-        col = [col1, col2, col3, col4, col5, col6][i]
-        with col:
+        with cols[i]:
             st.markdown(
                 f"""
                 <div style="
@@ -162,7 +187,7 @@ def render_chat_panel() -> None:
             )
 
 
-# Command Palette Handler
+# Command Palette Handler (preserved)
 def handle_command(command: str) -> None:
     """Handle slash commands."""
     commands = {
@@ -178,7 +203,7 @@ def handle_command(command: str) -> None:
         "/execution": "Execution status...",
         "/history": "Conversation history...",
     }
-    
+
     if command in commands:
         st.info(commands[command])
     elif command.startswith("/"):

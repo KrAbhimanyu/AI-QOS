@@ -106,3 +106,172 @@ MOCK_PROMPT_TEMPLATES = [
     {"icon": "🔗", "name": "API Test", "prompt": "Create API test cases for..."},
     {"icon": "📸", "name": "Screenshot Analysis", "prompt": "Analyze this screenshot and suggest..."},
 ]
+
+# ----------------------------------------------------------------------------
+# Enterprise AI Command Center datasets (non-breaking additions)
+# ----------------------------------------------------------------------------
+
+MOCK_HERO_STATS = [
+    {"label": "Agent", "value": "Frontend Agent", "icon": "🤖", "color": "primary"},
+    {"label": "Model", "value": "AIQOS-Opus 1.4", "icon": "🧠", "color": "accent"},
+    {"label": "Conversation", "value": "Login Flow Analysis", "icon": "💬", "color": "info"},
+    {"label": "Tokens", "value": "4,812 / 16K", "icon": "🔢", "color": "secondary"},
+    {"label": "Memory", "value": "8 entries", "icon": "🗂️", "color": "success"},
+    {"label": "Knowledge", "value": "83 nodes", "icon": "📚", "color": "primary"},
+    {"label": "Confidence", "value": "94%", "icon": "🎯", "color": "success"},
+    {"label": "Status", "value": "Reasoning", "icon": "⚡", "color": "warning"},
+]
+
+MOCK_CONTEXT_STRIP = [
+    {"label": "Mission", "value": "E2E Regression v2.1", "color": "primary", "live": True},
+    {"label": "Page", "value": "/dashboard", "color": "secondary", "live": True},
+    {"label": "DOM", "value": "nav#sidebar", "color": "info", "live": False},
+    {"label": "URL", "value": "demo.app/dashboard", "color": "muted", "live": False},
+    {"label": "Step", "value": "Verify Sidebar", "color": "accent", "live": True},
+    {"label": "Agent", "value": "Frontend Agent", "color": "primary", "live": True},
+    {"label": "Element", "value": "#hamburger-menu", "color": "success", "live": True},
+    {"label": "Coverage", "value": "94%", "color": "success", "live": True},
+]
+
+MOCK_AI_THINKING_STAGES = [
+    {"stage": "Understanding", "status": "completed", "detail": "Parsed user query about sidebar test failure"},
+    {"stage": "Reasoning", "status": "completed", "detail": "Correlated DOM class with execution logs"},
+    {"stage": "Searching Memory", "status": "completed", "detail": "Recalled 3 prior sidebar observations"},
+    {"stage": "Connecting Knowledge", "status": "active", "detail": "Linking locator strategy to bug evidence"},
+    {"stage": "Generating Response", "status": "pending", "detail": "Drafting updated test case"},
+    {"stage": "Validating", "status": "pending", "detail": "Awaiting generated fix"},
+    {"stage": "Confidence Update", "status": "pending", "detail": "Pending"},
+    {"stage": "Recommendation", "status": "pending", "detail": "Pending"},
+]
+
+MOCK_AI_CONTEXT = {
+    "current_thought": "Sidebar toggles via JS-applied `.hidden` class after page load.",
+    "reasoning": "DOM observation matched against execution log; element present but not visible until hamburger interaction.",
+    "confidence": 94,
+    "evidence": "3 DOM observations + 1 console warning matched",
+    "current_tool": "DOM Inspector → Class Mutation Tracker",
+    "current_agent": "Frontend Agent",
+    "current_model": "AIQOS-Opus 1.4",
+    "knowledge_used": "8 pages, 83 endpoints, sidebar locator graph",
+    "memory_used": "Prior run #2145, test sidebar_visible",
+    "business_context": "Login flow regression gate for v2.1 release",
+    "recommendation": "Add wait-for-class-removal before asserting visibility",
+}
+
+MOCK_MISSION_PANEL = {
+    "mission": "E2E Regression v2.1",
+    "application": "AIQOS Demo",
+    "execution": "Paused at Review",
+    "browser": "Chrome 121",
+    "environment": "Staging",
+    "coverage": "94%",
+    "execution_status": "paused",
+    "risk": "Medium",
+    "connected_apis": ["POST /api/auth/login", "GET /api/dashboard", "GET /api/sidebar"],
+    "database": "postgres://staging (read)",
+    "knowledge_graph": "83 nodes / 142 edges",
+    "business_flow": "Login → Dashboard → Sidebar Navigation",
+}
+
+MOCK_KNOWLEDGE_PANEL = {
+    "detected_pages": 8,
+    "detected_apis": 83,
+    "detected_components": 47,
+    "business_rules": 12,
+    "dom_nodes": 1284,
+    "current_locator": "#sidebar-menu",
+    "latest_bug": "Sidebar hidden after load",
+    "latest_screenshot": "dashboard_2145.png",
+    "latest_report": "v2.1.45",
+    "knowledge_confidence": 91,
+}
+
+MOCK_BOTTOM_TABS = [
+    {"id": "attachments", "label": "Attachments", "icon": "📎"},
+    {"id": "mission", "label": "Mission", "icon": "🎯"},
+    {"id": "browser", "label": "Browser", "icon": "🌐"},
+    {"id": "console", "label": "Console", "icon": "🖥️"},
+    {"id": "knowledge", "label": "Knowledge", "icon": "🧠"},
+    {"id": "reports", "label": "Reports", "icon": "📊"},
+    {"id": "history", "label": "History", "icon": "🕘"},
+    {"id": "bookmarks", "label": "Bookmarks", "icon": "🔖"},
+    {"id": "memory", "label": "Memory", "icon": "🗂️"},
+]
+
+MOCK_CONSOLE_LOGS = [
+    {"level": "info", "source": "browser", "message": "Navigated to https://demo.app/dashboard", "time": "10:00:01"},
+    {"level": "warning", "source": "dom", "message": "Element nav#sidebar has class 'hidden' applied", "time": "10:00:03"},
+    {"level": "info", "source": "agent", "message": "Frontend Agent scanning for toggle trigger", "time": "10:00:04"},
+    {"level": "error", "source": "test", "message": "Assertion failed: expected #sidebar visible", "time": "10:00:05"},
+    {"level": "info", "source": "ai", "message": "Linked class mutation to hamburger click handler", "time": "10:00:06"},
+]
+
+MOCK_BROWSER_FRAME = {
+    "url": "https://demo.app/dashboard",
+    "title": "Dashboard | AIQOS Demo",
+    "highlighted_element": "#hamburger-menu",
+    "locator": "#hamburger-menu",
+    "role": "button",
+    "text": "☰",
+    "confidence": 96,
+    "action": "inspect",
+}
+
+MOCK_SLASH_COMMANDS = [
+    {"/new": "Start new conversation"},
+    {"/tests": "List test cases"},
+    {"/bugs": "Open bugs in mission"},
+    {"/dom": "Current DOM structure"},
+    {"/network": "Network activity"},
+    {"/report": "Generate report"},
+    {"/screenshot": "Latest screenshot analysis"},
+    {"/locator": "Current locator strategy"},
+    {"/execution": "Execution status"},
+    {"/history": "Conversation history"},
+    {"/help": "Available commands"},
+]
+
+MOCK_PROMPT_VARIABLES = [
+    {"name": "mission", "value": "E2E Regression v2.1"},
+    {"name": "page", "value": "/dashboard"},
+    {"name": "element", "value": "#hamburger-menu"},
+    {"name": "agent", "value": "Frontend Agent"},
+    {"name": "locator", "value": "#sidebar-menu"},
+]
+
+MOCK_PROMPT_EDITOR_TOOLS = [
+    {"icon": "🔗", "label": "Link", "placeholder": True},
+    {"icon": "📎", "label": "Attach", "placeholder": True},
+    {"icon": "🖼️", "label": "Image", "placeholder": True},
+    {"icon": "🎤", "label": "Voice", "placeholder": True},
+    {"icon": "⌨️", "label": "Code", "placeholder": True},
+    {"icon": "/", "label": "Commands", "placeholder": True},
+]
+
+MOCK_MESSAGE_TYPE_EXAMPLES = [
+    {"type": "user", "icon": "👤", "label": "User", "color": "primary"},
+    {"type": "assistant", "icon": "🤖", "label": "Assistant", "color": "accent"},
+    {"type": "system", "icon": "⚙️", "label": "System", "color": "muted"},
+    {"type": "mission", "icon": "🎯", "label": "Mission", "color": "primary"},
+    {"type": "warning", "icon": "⚠️", "label": "Warning", "color": "warning"},
+    {"type": "tool", "icon": "🔧", "label": "Tool Output", "color": "secondary"},
+    {"type": "execution", "icon": "⚡", "label": "Execution", "color": "info"},
+    {"type": "knowledge", "icon": "🧠", "label": "Knowledge", "color": "success"},
+    {"type": "error", "icon": "❌", "label": "Error", "color": "error"},
+]
+
+MOCK_QUICK_ACTIONS_PREMIUM = [
+    {"icon": "🧪", "name": "Generate Test", "description": "Create new test case"},
+    {"icon": "✨", "name": "Generate Feature", "description": "Create Gherkin feature"},
+    {"icon": "📦", "name": "Generate Page Object", "description": "Create POM class"},
+    {"icon": "🔗", "name": "Generate API Test", "description": "API validation"},
+    {"icon": "🗄️", "name": "Generate SQL", "description": "Create DB check"},
+    {"icon": "🐛", "name": "Generate Bug", "description": "Create bug report"},
+    {"icon": "❌", "name": "Explain Failure", "description": "Analyze test failure"},
+    {"icon": "📐", "name": "Analyze DOM", "description": "Examine DOM structure"},
+    {"icon": "📸", "name": "Analyze Screenshot", "description": "Visual analysis"},
+    {"icon": "📊", "name": "Generate Report", "description": "Quality report"},
+    {"icon": "🕸️", "name": "Open Knowledge Graph", "description": "Graph explorer"},
+    {"icon": "🔍", "name": "Open DOM Explorer", "description": "DOM tree"},
+    {"icon": "✅", "name": "Open Review", "description": "Human review"},
+]
