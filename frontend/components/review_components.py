@@ -140,39 +140,39 @@ def review_action_buttons() -> None:
     col1, col2, col3, col4, col5, col6, col7 = st.columns([1, 1, 1, 1, 1, 1, 1])
     
     with col1:
-        if st.button("✅ Approve", type="primary", use_container_width=True):
+        if st.button("✅ Approve", type="primary", use_container_width=True, key="review_approve"):
             set_review_data("review_decision", "approved")
             st.success("✅ Test approved! Continuing execution...")
             st.rerun()
     
     with col2:
-        if st.button("🔄 Retry", use_container_width=True):
+        if st.button("🔄 Retry", use_container_width=True, key="review_retry"):
             set_review_data("review_decision", "retry")
             st.info("🔄 Retrying test...")
             st.rerun()
     
     with col3:
-        if st.button("❌ Fail", use_container_width=True):
+        if st.button("❌ Fail", use_container_width=True, key="review_fail"):
             set_review_data("review_decision", "failed")
             st.error("❌ Test marked as failed")
             st.rerun()
     
     with col4:
-        if st.button("✏️ Modify", use_container_width=True):
+        if st.button("✏️ Modify", use_container_width=True, key="review_modify"):
             set_review_data("show_modify_panel", True)
     
     with col5:
-        if st.button("🐛 Bug", use_container_width=True):
+        if st.button("🐛 Bug", use_container_width=True, key="review_bug"):
             set_review_data("show_bug_panel", True)
     
     with col6:
-        if st.button("⏭️ Skip", use_container_width=True):
+        if st.button("⏭️ Skip", use_container_width=True, key="review_skip"):
             set_review_data("review_decision", "skipped")
             st.info("⏭️ Test skipped")
             st.rerun()
     
     with col7:
-        if st.button("⏸️ Pause", use_container_width=True):
+        if st.button("⏸️ Pause", use_container_width=True, key="review_pause"):
             st.warning("⏸️ Mission paused by user")
 
 
@@ -294,19 +294,19 @@ def browser_comparison() -> None:
     col1, col2, col3, col4, col5, col6, col7 = st.columns([1, 1, 1, 2, 1, 1, 1])
     
     with col1:
-        st.button("⬅️ Back", use_container_width=True)
+        st.button("⬅️ Back", use_container_width=True, key="browser_back")
     with col2:
-        st.button("➡️ Forward", use_container_width=True)
+        st.button("➡️ Forward", use_container_width=True, key="browser_forward")
     with col3:
-        st.button("🔄 Refresh", use_container_width=True)
+        st.button("🔄 Refresh", use_container_width=True, key="browser_refresh")
     with col4:
         st.selectbox("Zoom", ["50%", "75%", "100%", "125%", "150%"], label_visibility="collapsed")
     with col5:
         st.selectbox("Device", ["Desktop", "Tablet", "Mobile"], label_visibility="collapsed")
     with col6:
-        st.button("⛶ Fullscreen", use_container_width=True)
+        st.button("⛶ Fullscreen", use_container_width=True, key="browser_fullscreen")
     with col7:
-        st.button("📐 Annotate", use_container_width=True)
+        st.button("📐 Annotate", use_container_width=True, key="browser_annotate")
     
     # Current URL Display
     st.markdown(
@@ -777,9 +777,9 @@ def modification_panel() -> None:
     
     col1, col2 = st.columns(2)
     with col1:
-        st.button("💾 Apply Changes", type="primary", use_container_width=True)
+        st.button("💾 Apply Changes", type="primary", use_container_width=True, key="modify_apply_changes")
     with col2:
-        st.button("↩️ Reset", use_container_width=True)
+        st.button("↩️ Reset", use_container_width=True, key="modify_reset")
     
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -863,9 +863,9 @@ def review_tabs() -> None:
         )
         col1, col2 = st.columns(2)
         with col1:
-            st.button("📥 Download Logs", use_container_width=True)
+            st.button("📥 Download Logs", use_container_width=True, key="logs_download")
         with col2:
-            st.button("🗑️ Clear Logs", use_container_width=True)
+            st.button("🗑️ Clear Logs", use_container_width=True, key="logs_clear")
     
     with tabs[6]:
         st.markdown("### Screenshots")
@@ -898,11 +898,11 @@ def review_tabs() -> None:
         )
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.button("▶️ Play", use_container_width=True)
+            st.button("▶️ Play", use_container_width=True, key="video_play")
         with col2:
-            st.button("📥 Download", use_container_width=True)
+            st.button("📥 Download", use_container_width=True, key="video_download")
         with col3:
-            st.button("🔗 Share", use_container_width=True)
+            st.button("🔗 Share", use_container_width=True, key="video_share")
     
     with tabs[8]:
         st.markdown("### Accessibility")

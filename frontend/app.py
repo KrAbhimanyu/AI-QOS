@@ -1,8 +1,21 @@
 """AI-QOS - AI Quality Operating System Main Application."""
-import streamlit as st
+import sys
 from pathlib import Path
-from themes.theme_config import THEME_CONFIG
-from config.app_config import APP_NAME, APP_VERSION, APP_DESCRIPTION
+
+import streamlit as st
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+FRONTEND_ROOT = Path(__file__).resolve().parent
+for path in (str(PROJECT_ROOT), str(FRONTEND_ROOT)):
+    if path not in sys.path:
+        sys.path.insert(0, path)
+
+try:
+    from .themes import THEME_CONFIG
+    from .config.app_config import APP_NAME, APP_VERSION, APP_DESCRIPTION
+except ImportError:
+    from themes import THEME_CONFIG
+    from config.app_config import APP_NAME, APP_VERSION, APP_DESCRIPTION
 
 # Page configuration
 st.set_page_config(
@@ -111,56 +124,76 @@ def main() -> None:
     current_page = sidebar_navigation()
     
     # Route to appropriate page
-    if current_page == "dashboard":
+    try:
+        from .views.dashboard import render_dashboard
+        from .views.application_explorer import render_page as render_application_explorer
+        from .views.dom_explorer import render_page as render_dom_explorer
+        from .views.knowledge_graph import render_page as render_knowledge_graph
+        from .views.reports_center import render_reports_center
+        from .views.mission_planner import render_mission_planner
+        from .views.intelligence_center import render_intelligence_center
+        from .views.execution_center import render_execution_center
+        from .views.human_review_center import render_human_review_center
+        from .views.ai_chat_workspace import render_ai_chat_workspace
+        from .views.agent_control_tower import render_agent_control_tower
+        from .views.missions import render_missions
+        from .views.agents import render_agents
+        from .views.executions import render_executions
+        from .views.monitoring import render_monitoring
+        from .views.quality import render_quality
+        from .views.reports import render_reports
+    except ImportError:
         from views.dashboard import render_dashboard
+        from views.application_explorer import render_page as render_application_explorer
+        from views.dom_explorer import render_page as render_dom_explorer
+        from views.knowledge_graph import render_page as render_knowledge_graph
+        from views.reports_center import render_reports_center
+        from views.mission_planner import render_mission_planner
+        from views.intelligence_center import render_intelligence_center
+        from views.execution_center import render_execution_center
+        from views.human_review_center import render_human_review_center
+        from views.ai_chat_workspace import render_ai_chat_workspace
+        from views.agent_control_tower import render_agent_control_tower
+        from views.missions import render_missions
+        from views.agents import render_agents
+        from views.executions import render_executions
+        from views.monitoring import render_monitoring
+        from views.quality import render_quality
+        from views.reports import render_reports
+    
+    if current_page == "dashboard":
         render_dashboard()
     elif current_page == "application_explorer":
-        from views.application_explorer import render_page
-        render_page()
+        render_application_explorer()
     elif current_page == "dom_explorer":
-        from views.dom_explorer import render_page
-        render_page()
+        render_dom_explorer()
     elif current_page == "knowledge_graph":
-        from views.knowledge_graph import render_page
-        render_page()
+        render_knowledge_graph()
     elif current_page == "reports_center":
-        from views.reports_center import render_reports_center
         render_reports_center()
     elif current_page == "mission_planner":
-        from views.mission_planner import render_mission_planner
         render_mission_planner()
     elif current_page == "intelligence_center":
-        from views.intelligence_center import render_intelligence_center
         render_intelligence_center()
     elif current_page == "execution_center":
-        from views.execution_center import render_execution_center
         render_execution_center()
     elif current_page == "human_review_center":
-        from views.human_review_center import render_human_review_center
         render_human_review_center()
     elif current_page == "ai_chat_workspace":
-        from views.ai_chat_workspace import render_ai_chat_workspace
         render_ai_chat_workspace()
     elif current_page == "agent_control_tower":
-        from views.agent_control_tower import render_agent_control_tower
         render_agent_control_tower()
     elif current_page == "missions":
-        from views.missions import render_missions
         render_missions()
     elif current_page == "agents":
-        from views.agents import render_agents
         render_agents()
     elif current_page == "executions":
-        from views.executions import render_executions
         render_executions()
     elif current_page == "monitoring":
-        from views.monitoring import render_monitoring
         render_monitoring()
     elif current_page == "quality":
-        from views.quality import render_quality
         render_quality()
     elif current_page == "reports":
-        from views.reports import render_reports
         render_reports()
 
 

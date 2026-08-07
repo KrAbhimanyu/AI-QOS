@@ -3,8 +3,8 @@
 This module provides the design system tokens, shared CSS, and
 configuration for the AI-QOS frontend.
 """
-from frontend.themes.theme_config import THEME_CONFIG
-from frontend.themes.tokens import (
+from .theme_config import THEME_CONFIG
+from .tokens import (
     COLORS,
     TYPOGRAPHY,
     SPACING,
@@ -23,7 +23,7 @@ from frontend.themes.tokens import (
     glass_background,
     border_color,
 )
-from frontend.themes.shared_css import (
+from .shared_css import (
     SHARED_CSS,
     ANIMATION_KEYFRAMES,
     CSS_VARIABLES,

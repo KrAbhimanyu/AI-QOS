@@ -3,7 +3,7 @@
 This module provides centralized CSS for the entire application.
 Import and use via st.markdown(shared_css(), unsafe_allow_html=True)
 """
-from frontend.themes.tokens import ANIMATIONS, TYPOGRAPHY, SPACING, BORDERS, SHADOWS, COLORS
+from .tokens import ANIMATIONS, TYPOGRAPHY, SPACING, BORDERS, SHADOWS, COLORS
 
 # Keyframe animations (must be injected via st.markdown)
 ANIMATION_KEYFRAMES = f"""

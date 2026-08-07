@@ -286,8 +286,8 @@ def render_quality_tab() -> None:
         
         fig.update_layout(
             height=300,
-            paper_bgcolor="transparent",
-            plot_bgcolor="transparent",
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
             font=dict(color="#f8fafc"),
             showlegend=False,
             yaxis=dict(range=[0, 100]),
@@ -406,8 +406,8 @@ def render_ai_performance_tab() -> None:
     
     fig.update_layout(
         height=300,
-        paper_bgcolor="transparent",
-        plot_bgcolor="transparent",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         font=dict(color="#f8fafc"),
         showlegend=False,
     )
@@ -477,7 +477,7 @@ def render_flaky_tests_tab() -> None:
         
         fig.update_layout(
             height=300,
-            paper_bgcolor="transparent",
+            paper_bgcolor="rgba(0,0,0,0)",
         )
         
         st.plotly_chart(fig, use_container_width=True)

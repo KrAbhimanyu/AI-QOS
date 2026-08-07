@@ -4,7 +4,7 @@ This module provides UI components for the AI-QOS frontend.
 Use shared components for consistent styling across the application.
 """
 # Shared UI Components (use these for consistent design)
-from frontend.components.shared import (
+from .shared import (
     # Card components
     card,
     metric_card,

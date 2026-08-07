@@ -6,7 +6,7 @@ components, and metadata discovered by AI analysis.
 
 from typing import Any
 import streamlit as st
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from utils.explorer_data import (
     APPLICATION_INFO,

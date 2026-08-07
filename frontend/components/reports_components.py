@@ -169,8 +169,8 @@ def coverage_chart(data: list[dict[str, Any]], title: str = "Test Coverage") -> 
     
     fig.update_layout(
         height=max(300, len(data) * 50),
-        paper_bgcolor="transparent",
-        plot_bgcolor="transparent",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         font=dict(color="#f8fafc"),
         xaxis_title="Coverage %",
         yaxis_title="",
@@ -209,8 +209,8 @@ def trend_chart(data: list[dict[str, Any]], title: str = "Trend", color: str = "
     
     fig.update_layout(
         height=300,
-        paper_bgcolor="transparent",
-        plot_bgcolor="transparent",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         font=dict(color="#f8fafc", size=12),
         showlegend=False,
         xaxis=dict(
@@ -251,7 +251,7 @@ def pie_chart(data: dict[str, Any], title: str = "Distribution") -> None:
     
     fig.update_layout(
         height=300,
-        paper_bgcolor="transparent",
+        paper_bgcolor="rgba(0,0,0,0)",
         showlegend=True,
         legend=dict(
             font=dict(color="#f8fafc"),
@@ -526,8 +526,8 @@ def comparison_chart(data: dict[str, list], title: str = "Comparison") -> None:
     
     fig.update_layout(
         height=300,
-        paper_bgcolor="transparent",
-        plot_bgcolor="transparent",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         font=dict(color="#f8fafc"),
         legend=dict(
             font=dict(color="#f8fafc"),

@@ -967,8 +967,8 @@ def graph_timeline_panel(timeline_data: list[dict[str, Any]], title: str = "Grap
     
     fig.update_layout(
         height=200,
-        paper_bgcolor="transparent",
-        plot_bgcolor="transparent",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         font=dict(color="#f8fafc", size=11),
         showlegend=True,
         legend=dict(font=dict(color="#f8fafc")),

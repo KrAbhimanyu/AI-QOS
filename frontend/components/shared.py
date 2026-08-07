@@ -4,16 +4,23 @@ This module provides reusable UI components that use design tokens
 for consistent styling across the application.
 
 Usage:
-    from frontend.components.shared import (
+    from .shared import (
         card, badge, progress_bar, panel, header
     )
 """
 import streamlit as st
 from typing import Optional, List, Dict, Any, Union
-from frontend.themes.tokens import (
-    COLORS, SPACING, TYPOGRAPHY, BORDERS, SHADOWS, ANIMATIONS,
-    get_status_color, get_priority_color, get_health_color, get_confidence_color
-)
+
+try:
+    from ..themes.tokens import (
+        COLORS, SPACING, TYPOGRAPHY, BORDERS, SHADOWS, ANIMATIONS,
+        get_status_color, get_priority_color, get_health_color, get_confidence_color,
+    )
+except ImportError:  # pragma: no cover - fallback for direct execution
+    from themes.tokens import (
+        COLORS, SPACING, TYPOGRAPHY, BORDERS, SHADOWS, ANIMATIONS,
+        get_status_color, get_priority_color, get_health_color, get_confidence_color,
+    )
 
 
 # =============================================================================
