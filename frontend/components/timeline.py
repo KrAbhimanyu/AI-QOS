@@ -24,44 +24,7 @@ def render_timeline_marker(
     
     pulse_class = "animation: pulse 2s infinite;" if is_active else ""
     
-    st.markdown(f"""
-    <div style="
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-    ">
-        <div style="
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: {color};
-            box-shadow: 0 0 10px {color}50;
-            {pulse_class}
-        "></div>
-        <div style="
-            font-size: 10px;
-            color: #64748b;
-            font-family: 'JetBrains Mono', monospace;
-        ">
-            {time_str}
-        </div>
-        <div style="
-            padding: 4px 8px;
-            background: {color}20;
-            border-radius: 4px;
-            font-size: 10px;
-            color: #f8fafc;
-            text-align: center;
-            max-width: 80px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        ">
-            {label}
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style=" display: flex; flex-direction: column; align-items: center; gap: 8px; "> <div style=" width: 12px; height: 12px; border-radius: 50%; background: {color}; box-shadow: 0 0 10px {color}50; {pulse_class} "></div> <div style=" font-size: 10px; color: #64748b; font-family: 'JetBrains Mono', monospace; "> {time_str} </div> <div style=" padding: 4px 8px; background: {color}20; border-radius: 4px; font-size: 10px; color: #f8fafc; text-align: center; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; "> {label} </div> </div>""", unsafe_allow_html=True)
 
 
 def render_horizontal_timeline(events: list[dict[str, Any]]) -> None:
@@ -84,84 +47,7 @@ def render_horizontal_timeline(events: list[dict[str, Any]]) -> None:
         time_buckets.append(current_bucket)
     
     # Render timeline
-    st.markdown("""
-    <style>
-    .timeline-container {
-        overflow-x: auto;
-        padding: 20px 0;
-        margin: 0 -20px;
-    }
-    
-    .timeline-wrapper {
-        display: flex;
-        gap: 40px;
-        padding: 0 20px;
-        min-width: max-content;
-        position: relative;
-    }
-    
-    .timeline-wrapper::before {
-        content: '';
-        position: absolute;
-        top: 35px;
-        left: 20px;
-        right: 20px;
-        height: 3px;
-        background: linear-gradient(90deg, #6366f1, #22d3ee);
-        border-radius: 2px;
-        opacity: 0.5;
-    }
-    
-    .timeline-bucket {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 12px;
-        min-width: 80px;
-    }
-    
-    .timeline-dot {
-        width: 16px;
-        height: 16px;
-        border-radius: 50%;
-        background: #6366f1;
-        border: 3px solid #1e293b;
-        box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
-        z-index: 1;
-    }
-    
-    .timeline-time {
-        font-size: 11px;
-        color: #64748b;
-        font-family: 'JetBrains Mono', monospace;
-        margin-top: 8px;
-    }
-    
-    .timeline-events {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        margin-top: 8px;
-    }
-    
-    .timeline-event {
-        padding: 6px 10px;
-        background: rgba(30, 41, 59, 0.6);
-        border-radius: 6px;
-        font-size: 10px;
-        color: #94a3b8;
-        white-space: nowrap;
-        max-width: 100px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    
-    .timeline-event.info { border-left: 2px solid #3b82f6; }
-    .timeline-event.success { border-left: 2px solid #10b981; }
-    .timeline-event.warning { border-left: 2px solid #f59e0b; }
-    .timeline-event.error { border-left: 2px solid #ef4444; }
-    </style>
-    """, unsafe_allow_html=True)
+    st.markdown("""<style> .timeline-container { overflow-x: auto; padding: 20px 0; margin: 0 -20px; } .timeline-wrapper { display: flex; gap: 40px; padding: 0 20px; min-width: max-content; position: relative; } .timeline-wrapper::before { content: ''; position: absolute; top: 35px; left: 20px; right: 20px; height: 3px; background: linear-gradient(90deg, #6366f1, #22d3ee); border-radius: 2px; opacity: 0.5; } .timeline-bucket { display: flex; flex-direction: column; align-items: center; gap: 12px; min-width: 80px; } .timeline-dot { width: 16px; height: 16px; border-radius: 50%; background: #6366f1; border: 3px solid #1e293b; box-shadow: 0 0 15px rgba(99, 102, 241, 0.5); z-index: 1; } .timeline-time { font-size: 11px; color: #64748b; font-family: 'JetBrains Mono', monospace; margin-top: 8px; } .timeline-events { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; } .timeline-event { padding: 6px 10px; background: rgba(30, 41, 59, 0.6); border-radius: 6px; font-size: 10px; color: #94a3b8; white-space: nowrap; max-width: 100px; overflow: hidden; text-overflow: ellipsis; } .timeline-event.info { border-left: 2px solid #3b82f6; } .timeline-event.success { border-left: 2px solid #10b981; } .timeline-event.warning { border-left: 2px solid #f59e0b; } .timeline-event.error { border-left: 2px solid #ef4444; } </style>""", unsafe_allow_html=True)
     
     st.markdown('<div class="timeline-container"><div class="timeline-wrapper">', unsafe_allow_html=True)
     
@@ -176,12 +62,7 @@ def render_horizontal_timeline(events: list[dict[str, Any]]) -> None:
         colors = {"success": "#10b981", "info": "#3b82f6", "warning": "#f59e0b", "error": "#ef4444"}
         color = colors.get(dominant_status, "#3b82f6")
         
-        st.markdown(f'''
-        <div class="timeline-bucket">
-            <div class="timeline-dot" style="background: {color}; box-shadow: 0 0 15px {color}50;"></div>
-            <div class="timeline-time">{time_str}</div>
-            <div class="timeline-events">
-        ''', unsafe_allow_html=True)
+        st.markdown(f"""<div class="timeline-bucket"> <div class="timeline-dot" style="background: {color}; box-shadow: 0 0 15px {color}50;"></div> <div class="timeline-time">{time_str}</div> <div class="timeline-events">""", unsafe_allow_html=True)
         
         for event in bucket[:3]:
             status = event.get('severity', 'info')
@@ -195,83 +76,7 @@ def render_horizontal_timeline(events: list[dict[str, Any]]) -> None:
 
 def render_agent_timeline(agents: list[dict[str, Any]]) -> None:
     """Render timeline showing agent activity."""
-    st.markdown("""
-    <style>
-    .agent-timeline {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        padding: 16px 0;
-    }
-    
-    .agent-timeline-item {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        padding: 12px 16px;
-        background: rgba(30, 41, 59, 0.4);
-        border-radius: 10px;
-        transition: all 0.2s ease;
-    }
-    
-    .agent-timeline-item:hover {
-        background: rgba(30, 41, 59, 0.6);
-        transform: translateX(4px);
-    }
-    
-    .agent-timeline-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-    }
-    
-    .agent-timeline-content {
-        flex: 1;
-    }
-    
-    .agent-timeline-name {
-        font-size: 14px;
-        font-weight: 500;
-        color: #f8fafc;
-        margin-bottom: 2px;
-    }
-    
-    .agent-timeline-mission {
-        font-size: 12px;
-        color: #64748b;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 300px;
-    }
-    
-    .agent-timeline-progress {
-        width: 100px;
-        height: 6px;
-        background: rgba(51, 65, 85, 0.5);
-        border-radius: 3px;
-        overflow: hidden;
-    }
-    
-    .agent-timeline-progress-fill {
-        height: 100%;
-        border-radius: 3px;
-        transition: width 0.5s ease;
-    }
-    
-    .agent-timeline-time {
-        font-size: 11px;
-        color: #64748b;
-        font-family: 'JetBrains Mono', monospace;
-        min-width: 60px;
-        text-align: right;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+    st.markdown("""<style> .agent-timeline { display: flex; flex-direction: column; gap: 12px; padding: 16px 0; } .agent-timeline-item { display: flex; align-items: center; gap: 16px; padding: 12px 16px; background: rgba(30, 41, 59, 0.4); border-radius: 10px; transition: all 0.2s ease; } .agent-timeline-item:hover { background: rgba(30, 41, 59, 0.6); transform: translateX(4px); } .agent-timeline-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; } .agent-timeline-content { flex: 1; } .agent-timeline-name { font-size: 14px; font-weight: 500; color: #f8fafc; margin-bottom: 2px; } .agent-timeline-mission { font-size: 12px; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; } .agent-timeline-progress { width: 100px; height: 6px; background: rgba(51, 65, 85, 0.5); border-radius: 3px; overflow: hidden; } .agent-timeline-progress-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; } .agent-timeline-time { font-size: 11px; color: #64748b; font-family: 'JetBrains Mono', monospace; min-width: 60px; text-align: right; } </style>""", unsafe_allow_html=True)
     
     # Sort agents by status priority and recency
     status_priority = {"running": 0, "waiting": 1, "paused": 2, "failed": 3, "completed": 4, "idle": 5}
@@ -308,21 +113,7 @@ def render_agent_timeline(agents: list[dict[str, Any]]) -> None:
         else:
             time_str = f"{exec_time // 3600}h"
         
-        st.markdown(f'''
-        <div class="agent-timeline-item">
-            <div class="agent-timeline-icon" style="background: {color}20; border: 1px solid {color}40;">
-                {icon}
-            </div>
-            <div class="agent-timeline-content">
-                <div class="agent-timeline-name">{agent["name"]}</div>
-                <div class="agent-timeline-mission">{mission}...</div>
-            </div>
-            <div class="agent-timeline-progress">
-                <div class="agent-timeline-progress-fill" style="width: {progress}%; background: linear-gradient(90deg, {color}, {color}cc);"></div>
-            </div>
-            <div class="agent-timeline-time">{time_str}</div>
-        </div>
-        ''', unsafe_allow_html=True)
+        st.markdown(f"""<div class="agent-timeline-item"> <div class="agent-timeline-icon" style="background: {color}20; border: 1px solid {color}40;"> {icon} </div> <div class="agent-timeline-content"> <div class="agent-timeline-name">{agent["name"]}</div> <div class="agent-timeline-mission">{mission}...</div> </div> <div class="agent-timeline-progress"> <div class="agent-timeline-progress-fill" style="width: {progress}%; background: linear-gradient(90deg, {color}, {color}cc);"></div> </div> <div class="agent-timeline-time">{time_str}</div> </div>""", unsafe_allow_html=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
 

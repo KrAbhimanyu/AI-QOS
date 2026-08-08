@@ -16,11 +16,13 @@ try:
         COLORS, SPACING, TYPOGRAPHY, BORDERS, SHADOWS, ANIMATIONS,
         get_status_color, get_priority_color, get_health_color, get_confidence_color,
     )
+    from ..themes.tokens import _hex_to_rgb
 except ImportError:  # pragma: no cover - fallback for direct execution
     from themes.tokens import (
         COLORS, SPACING, TYPOGRAPHY, BORDERS, SHADOWS, ANIMATIONS,
         get_status_color, get_priority_color, get_health_color, get_confidence_color,
     )
+    from themes.tokens import _hex_to_rgb
 
 
 # =============================================================================
@@ -68,27 +70,7 @@ def card(
     # Build footer HTML
     footer_html = f'<div style="border-top: 1px solid {COLORS.BORDER}; padding-top: {SPACING.SPACE_4}; margin-top: {SPACING.SPACE_4};">{footer}</div>' if footer else ""
     
-    st.markdown(f"""
-    <div style="
-        background: {COLORS.GLASS};
-        border: {BORDERS.WIDTH_THIN} solid {COLORS.BORDER};
-        border-radius: {BORDERS.RADIUS_LG};
-        padding: {SPACING.SPACE_6};
-        margin-bottom: {SPACING.SPACE_4};
-    ">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: {SPACING.SPACE_3};">
-            <div style="display: flex; align-items: center; gap: {SPACING.SPACE_3};">
-                {icon_html}
-                <h3 style="color: {COLORS.TEXT_PRIMARY}; margin: 0; font-size: {TYPOGRAPHY.FONT_SIZE_LG}; font-weight: 600;">
-                    {title}
-                </h3>
-            </div>
-            {badge_html}
-        </div>
-        {content_html}
-        {footer_html}
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style=" background: {COLORS.GLASS}; border: {BORDERS.WIDTH_THIN} solid {COLORS.BORDER}; border-radius: {BORDERS.RADIUS_LG}; padding: {SPACING.SPACE_6}; margin-bottom: {SPACING.SPACE_4}; box-sizing: border-box; max-width: 100%; min-width: 0; "> <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: {SPACING.SPACE_3}; gap: {SPACING.SPACE_3}; min-width: 0;"> <div style="display: flex; align-items: center; gap: {SPACING.SPACE_3}; min-width: 0;"> {icon_html} <h3 style="color: {COLORS.TEXT_PRIMARY}; margin: 0; font-size: {TYPOGRAPHY.FONT_SIZE_LG}; font-weight: 600; overflow-wrap: anywhere; min-width: 0;"> {title} </h3> </div> {badge_html} </div> {content_html} {footer_html} </div>""", unsafe_allow_html=True)
 
 
 def metric_card(
@@ -111,28 +93,7 @@ def metric_card(
     """
     trend_color = COLORS.SUCCESS if trend.startswith("+") else COLORS.ERROR if trend.startswith("-") else COLORS.TEXT_MUTED
     
-    st.markdown(f"""
-    <div style="
-        background: linear-gradient(135deg, {COLORS.SURFACE} 0%, rgba({COLORS.PRIMARY_RGB}, 0.1) 100%);
-        border: {BORDERS.WIDTH_THIN} solid {COLORS.BORDER};
-        border-radius: {BORDERS.RADIUS_LG};
-        padding: {SPACING.SPACE_6};
-        text-align: center;
-        margin-bottom: {SPACING.SPACE_4};
-    ">
-        <div style="font-size: 11px; color: {COLORS.TEXT_MUTED}; text-transform: uppercase; letter-spacing: 1px; margin-bottom: {SPACING.SPACE_2};">
-            {title}
-        </div>
-        <div style="display: flex; align-items: center; justify-content: center; gap: {SPACING.SPACE_3};">
-            <div style="font-size: 2rem; font-weight: 700; color: {COLORS.TEXT_PRIMARY}; font-family: {TYPOGRAPHY.FONT_MONO};">
-                {value}
-            </div>
-            {f'<span style="font-size: 1.5rem;">{icon}</span>' if icon else ''}
-        </div>
-        {f'<div style="font-size: {TYPOGRAPHY.FONT_SIZE_SM}; color: {COLORS.TEXT_SECONDARY}; margin-top: {SPACING.SPACE_2};">{subtitle}</div>' if subtitle else ''}
-        {f'<div style="font-size: {TYPOGRAPHY.FONT_SIZE_SM}; font-weight: 600; color: {trend_color}; margin-top: {SPACING.SPACE_2};">{trend}</div>' if trend else ''}
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style=" background: linear-gradient(135deg, {COLORS.SURFACE} 0%, rgba({COLORS.PRIMARY_RGB}, 0.1) 100%); border: {BORDERS.WIDTH_THIN} solid {COLORS.BORDER}; border-radius: {BORDERS.RADIUS_LG}; padding: {SPACING.SPACE_6}; text-align: center; margin-bottom: {SPACING.SPACE_4}; box-sizing: border-box; max-width: 100%; min-width: 0; "> <div style="font-size: {TYPOGRAPHY.FONT_SIZE_XS}; color: {COLORS.TEXT_MUTED}; text-transform: uppercase; letter-spacing: 1px; margin-bottom: {SPACING.SPACE_2}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"> {title} </div> <div style="display: flex; align-items: center; justify-content: center; gap: {SPACING.SPACE_3}; min-width: 0;"> <div style="font-size: {TYPOGRAPHY.FONT_SIZE_2XL}; font-weight: 700; color: {COLORS.TEXT_PRIMARY}; font-family: {TYPOGRAPHY.FONT_MONO}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;"> {value} </div> {f'<span style="font-size: 1.5rem; flex-shrink: 0;">{icon}</span>' if icon else ''} </div> {f'<div style="font-size: {TYPOGRAPHY.FONT_SIZE_SM}; color: {COLORS.TEXT_SECONDARY}; margin-top: {SPACING.SPACE_2}; overflow-wrap: anywhere;">{subtitle}</div>' if subtitle else ''} {f'<div style="font-size: {TYPOGRAPHY.FONT_SIZE_SM}; font-weight: 600; color: {trend_color}; margin-top: {SPACING.SPACE_2}; white-space: nowrap;">{trend}</div>' if trend else ''} </div>""", unsafe_allow_html=True)
 
 
 def glass_card(
@@ -148,18 +109,7 @@ def glass_card(
         padding: Card padding
     """
     card_content = content or children
-    st.markdown(f"""
-    <div style="
-        background: {COLORS.GLASS};
-        border: {BORDERS.WIDTH_THIN} solid {COLORS.GLASS_BORDER};
-        border-radius: {BORDERS.RADIUS_LG};
-        padding: {padding};
-        backdrop-filter: blur(12px);
-        margin-bottom: {SPACING.SPACE_4};
-    ">
-        {card_content}
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style=" background: {COLORS.GLASS}; border: {BORDERS.WIDTH_THIN} solid {COLORS.GLASS_BORDER}; border-radius: {BORDERS.RADIUS_LG}; padding: {padding}; backdrop-filter: blur(12px); margin-bottom: {SPACING.SPACE_4}; box-sizing: border-box; max-width: 100%; min-width: 0; "> {card_content} </div>""", unsafe_allow_html=True)
 
 
 # =============================================================================
@@ -187,21 +137,7 @@ def badge(
     
     color, rgb = colors.get(badge_type, colors["info"])
     
-    st.markdown(f"""
-    <span style="
-        display: inline-flex;
-        align-items: center;
-        gap: {SPACING.SPACE_1};
-        padding: {SPACING.SPACE_1} {SPACING.SPACE_3};
-        background: rgba({rgb}, 0.2);
-        color: {color};
-        border-radius: {BORDERS.RADIUS_FULL};
-        font-size: {TYPOGRAPHY.FONT_SIZE_SM};
-        font-weight: 500;
-    ">
-        {f'{icon} ' if icon else ''}{text}
-    </span>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<span style=" display: inline-flex; align-items: center; gap: {SPACING.SPACE_1}; padding: {SPACING.SPACE_1} {SPACING.SPACE_3}; background: rgba({rgb}, 0.2); color: {color}; border-radius: {BORDERS.RADIUS_FULL}; font-size: {TYPOGRAPHY.FONT_SIZE_SM}; font-weight: 500; "> {f'{icon} ' if icon else ''}{text} </span>""", unsafe_allow_html=True)
 
 
 def status_badge(
@@ -228,22 +164,7 @@ def status_badge(
             animation: pulse 2s infinite;
         "></span>'''
     
-    st.markdown(f"""
-    <span style="
-        display: inline-flex;
-        align-items: center;
-        gap: {SPACING.SPACE_2};
-        padding: {SPACING.SPACE_1} {SPACING.SPACE_3};
-        background: rgba({color.lstrip('#')}, 0.2);
-        color: {color};
-        border-radius: {BORDERS.RADIUS_FULL};
-        font-size: {TYPOGRAPHY.FONT_SIZE_SM};
-        font-weight: 500;
-    ">
-        {dot_html}
-        {status_display}
-    </span>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<span style=" display: inline-flex; align-items: center; gap: {SPACING.SPACE_2}; padding: {SPACING.SPACE_1} {SPACING.SPACE_3}; background: rgba({_hex_to_rgb(color)}, 0.2); color: {color}; border-radius: {BORDERS.RADIUS_FULL}; font-size: {TYPOGRAPHY.FONT_SIZE_SM}; font-weight: 500; white-space: nowrap; flex-shrink: 0; "> {dot_html} {status_display} </span>""", unsafe_allow_html=True)
 
 
 def priority_badge(priority: str) -> None:
@@ -255,20 +176,7 @@ def priority_badge(priority: str) -> None:
     color = get_priority_color(priority)
     priority_display = priority.replace("_", " ").title()
     
-    st.markdown(f"""
-    <span style="
-        display: inline-flex;
-        align-items: center;
-        padding: {SPACING.SPACE_1} {SPACING.SPACE_3};
-        background: rgba({color.lstrip('#')}, 0.2);
-        color: {color};
-        border-radius: {BORDERS.RADIUS_FULL};
-        font-size: {TYPOGRAPHY.FONT_SIZE_SM};
-        font-weight: 500;
-    ">
-        {priority_display}
-    </span>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<span style=" display: inline-flex; align-items: center; padding: {SPACING.SPACE_1} {SPACING.SPACE_3}; background: rgba({_hex_to_rgb(color)}, 0.2); color: {color}; border-radius: {BORDERS.RADIUS_FULL}; font-size: {TYPOGRAPHY.FONT_SIZE_SM}; font-weight: 500; white-space: nowrap; flex-shrink: 0; "> {priority_display} </span>""", unsafe_allow_html=True)
 
 
 # =============================================================================
@@ -303,25 +211,7 @@ def progress_bar(
             f'<span style="font-size: {font_size}; color: {COLORS.TEXT_PRIMARY}; font-weight: 500;">{percentage:.0f}%</span>' \
             f'</div>'
     
-    st.markdown(f"""
-    <div style="margin-bottom: {SPACING.SPACE_2};">
-        {label_html}
-        <div style="
-            height: {height};
-            background: {COLORS.BORDER};
-            border-radius: {BORDERS.RADIUS_FULL};
-            overflow: hidden;
-        ">
-            <div style="
-                width: {percentage}%;
-                height: 100%;
-                background: linear-gradient(90deg, {progress_color}, {progress_color}cc);
-                border-radius: {BORDERS.RADIUS_FULL};
-                transition: width {ANIMATIONS.DURATION_SLOWER} ease;
-            "></div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style="margin-bottom: {SPACING.SPACE_2};"> {label_html} <div style=" height: {height}; background: {COLORS.BORDER}; border-radius: {BORDERS.RADIUS_FULL}; overflow: hidden; "> <div style=" width: {percentage}%; height: 100%; background: linear-gradient(90deg, {progress_color}, {progress_color}cc); border-radius: {BORDERS.RADIUS_FULL}; transition: width {ANIMATIONS.DURATION_SLOWER} ease; "></div> </div> </div>""", unsafe_allow_html=True)
 
 
 def health_bar(health: float, label: str = "Health") -> None:
@@ -387,19 +277,7 @@ def glass_panel(
         icon_span = f"<span>{icon}</span>" if icon else ""
         title_html = f'<h4 style="color: {COLORS.TEXT_PRIMARY}; margin: 0 0 {SPACING.SPACE_4}; display: flex; align-items: center; gap: {SPACING.SPACE_2};">{icon_span}{title}</h4>'
     
-    st.markdown(f"""
-    <div style="
-        background: {COLORS.GLASS_LIGHT};
-        border: {BORDERS.WIDTH_THIN} solid {COLORS.GLASS_BORDER};
-        border-radius: {BORDERS.RADIUS_LG};
-        padding: {SPACING.SPACE_6};
-        backdrop-filter: blur(12px);
-        margin-bottom: {SPACING.SPACE_4};
-    ">
-        {title_html}
-        {content}
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style=" background: {COLORS.GLASS_LIGHT}; border: {BORDERS.WIDTH_THIN} solid {COLORS.GLASS_BORDER}; border-radius: {BORDERS.RADIUS_LG}; padding: {SPACING.SPACE_6}; backdrop-filter: blur(12px); margin-bottom: {SPACING.SPACE_4}; box-sizing: border-box; max-width: 100%; min-width: 0; "> {title_html} {content} </div>""", unsafe_allow_html=True)
 
 
 # =============================================================================
@@ -418,22 +296,7 @@ def header(
         subtitle: Optional subtitle
         icon: Optional icon
     """
-    st.markdown(f"""
-    <div style="margin-bottom: {SPACING.SPACE_6};">
-        <div style="display: flex; align-items: center; gap: {SPACING.SPACE_3}; margin-bottom: {SPACING.SPACE_2};">
-            {f'<span style="font-size: 2rem;">{icon}</span>' if icon else ''}
-            <h1 style="
-                font-size: {TYPOGRAPHY.FONT_SIZE_2XL};
-                font-weight: 600;
-                color: {COLORS.TEXT_PRIMARY};
-                margin: 0;
-            ">
-                {title}
-            </h1>
-        </div>
-        {f'<p style="color: {COLORS.TEXT_SECONDARY}; font-size: {TYPOGRAPHY.FONT_SIZE_BASE}; margin: 0;">{subtitle}</p>' if subtitle else ''}
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style="margin-bottom: {SPACING.SPACE_6}; min-width: 0;"> <div style="display: flex; align-items: center; gap: {SPACING.SPACE_3}; margin-bottom: {SPACING.SPACE_2}; min-width: 0;"> {f'<span style="font-size: 2rem; flex-shrink: 0;">{icon}</span>' if icon else ''} <h1 style=" font-size: {TYPOGRAPHY.FONT_SIZE_2XL}; font-weight: 600; color: {COLORS.TEXT_PRIMARY}; margin: 0; min-width: 0; overflow-wrap: anywhere; "> {title} </h1> </div> {f'<p style="color: {COLORS.TEXT_SECONDARY}; font-size: {TYPOGRAPHY.FONT_SIZE_BASE}; margin: 0; overflow-wrap: anywhere;">{subtitle}</p>' if subtitle else ''} </div>""", unsafe_allow_html=True)
 
 
 def section_header(
@@ -448,43 +311,7 @@ def section_header(
         icon: Optional icon
         action: Optional action HTML
     """
-    st.markdown(f"""
-    <div style="
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: {SPACING.SPACE_4};
-        padding-bottom: {SPACING.SPACE_3};
-        border-bottom: 1px solid {COLORS.BORDER};
-    ">
-        <h3 style="
-            color: {COLORS.TEXT_PRIMARY};
-            font-size: {TYPOGRAPHY.FONT_SIZE_LG};
-            font-weight: 600;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: {SPACING.SPACE_2};
-        ">
-            {f'<span>{icon}</span>' if icon else ''}
-            {title}
-        </h3>
-        {action if action else ''}
-    </div>
-    """ if action else f"""
-    <h3 style="
-        color: {COLORS.TEXT_PRIMARY};
-        font-size: {TYPOGRAPHY.FONT_SIZE_LG};
-        font-weight: 600;
-        margin: 0 0 {SPACING.SPACE_4};
-        display: flex;
-        align-items: center;
-        gap: {SPACING.SPACE_2};
-    ">
-        {f'<span>{icon}</span>' if icon else ''}
-        {title}
-    </h3>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style=" display: flex; justify-content: space-between; align-items: center; margin-bottom: {SPACING.SPACE_4}; padding-bottom: {SPACING.SPACE_3}; border-bottom: 1px solid {COLORS.BORDER}; gap: {SPACING.SPACE_3}; flex-wrap: wrap; min-width: 0; "> <h3 style=" color: {COLORS.TEXT_PRIMARY}; font-size: {TYPOGRAPHY.FONT_SIZE_LG}; font-weight: 600; margin: 0; display: flex; align-items: center; gap: {SPACING.SPACE_2}; min-width: 0; overflow-wrap: anywhere; "> {f'<span style="flex-shrink: 0;">{icon}</span>' if icon else ''} {title} </h3> {action if action else ''} </div> """ if action else f""" <h3 style=" color: {COLORS.TEXT_PRIMARY}; font-size: {TYPOGRAPHY.FONT_SIZE_LG}; font-weight: 600; margin: 0 0 {SPACING.SPACE_4}; display: flex; align-items: center; gap: {SPACING.SPACE_2}; min-width: 0; overflow-wrap: anywhere; "> {f'<span style="flex-shrink: 0;">{icon}</span>' if icon else ''} {title} </h3>""", unsafe_allow_html=True)
 
 
 # =============================================================================
@@ -515,40 +342,7 @@ def timeline_item(
     
     dot_color = status_colors.get(status, COLORS.TEXT_MUTED)
     
-    st.markdown(f"""
-    <div style="
-        position: relative;
-        padding-left: {SPACING.SPACE_8};
-        padding-bottom: {SPACING.SPACE_6};
-    ">
-        <div style="
-            position: absolute;
-            left: 0;
-            top: 4px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: {dot_color};
-            {'animation: pulse 2s infinite;' if status == 'active' else ''}
-        "></div>
-        <div style="
-            position: absolute;
-            left: 5px;
-            top: 20px;
-            bottom: 0;
-            width: 2px;
-            background: {COLORS.BORDER};
-        "></div>
-        <div>
-            <div style="display: flex; align-items: center; gap: {SPACING.SPACE_3}; margin-bottom: {SPACING.SPACE_1};">
-                {f'<span>{icon}</span>' if icon else ''}
-                <span style="color: {COLORS.TEXT_PRIMARY}; font-weight: 500;">{title}</span>
-            </div>
-            {f'<p style="color: {COLORS.TEXT_SECONDARY}; font-size: {TYPOGRAPHY.FONT_SIZE_SM}; margin: 0 0 {SPACING.SPACE_1};">{description}</p>' if description else ''}
-            {f'<span style="color: {COLORS.TEXT_MUTED}; font-size: {TYPOGRAPHY.FONT_SIZE_XS};">{time}</span>' if time else ''}
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style=" position: relative; padding-left: {SPACING.SPACE_8}; padding-bottom: {SPACING.SPACE_6}; "> <div style=" position: absolute; left: 0; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: {dot_color}; {'animation: pulse 2s infinite;' if status == 'active' else ''} "></div> <div style=" position: absolute; left: 5px; top: 20px; bottom: 0; width: 2px; background: {COLORS.BORDER}; "></div> <div> <div style="display: flex; align-items: center; gap: {SPACING.SPACE_3}; margin-bottom: {SPACING.SPACE_1};"> {f'<span>{icon}</span>' if icon else ''} <span style="color: {COLORS.TEXT_PRIMARY}; font-weight: 500;">{title}</span> </div> {f'<p style="color: {COLORS.TEXT_SECONDARY}; font-size: {TYPOGRAPHY.FONT_SIZE_SM}; margin: 0 0 {SPACING.SPACE_1};">{description}</p>' if description else ''} {f'<span style="color: {COLORS.TEXT_MUTED}; font-size: {TYPOGRAPHY.FONT_SIZE_XS};">{time}</span>' if time else ''} </div> </div>""", unsafe_allow_html=True)
 
 
 # =============================================================================
@@ -595,17 +389,7 @@ def icon_label(
         label: Label text
         color: Text color
     """
-    st.markdown(f"""
-    <span style="
-        display: inline-flex;
-        align-items: center;
-        gap: {SPACING.SPACE_2};
-        color: {color};
-    ">
-        <span>{icon}</span>
-        <span>{label}</span>
-    </span>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<span style=" display: inline-flex; align-items: center; gap: {SPACING.SPACE_2}; color: {color}; "> <span>{icon}</span> <span>{label}</span> </span>""", unsafe_allow_html=True)
 
 
 def stat_item(
@@ -620,21 +404,7 @@ def stat_item(
         value: Stat value
         icon: Optional icon
     """
-    st.markdown(f"""
-    <div style="
-        padding: {SPACING.SPACE_3};
-        background: {COLORS.GLASS_LIGHT};
-        border-radius: {BORDERS.RADIUS_MD};
-    ">
-        <div style="display: flex; align-items: center; gap: {SPACING.SPACE_2}; margin-bottom: {SPACING.SPACE_1};">
-            {f'<span style="font-size: 1rem;">{icon}</span>' if icon else ''}
-            <span style="color: {COLORS.TEXT_MUTED}; font-size: {TYPOGRAPHY.FONT_SIZE_SM};">{label}</span>
-        </div>
-        <div style="color: {COLORS.TEXT_PRIMARY}; font-size: {TYPOGRAPHY.FONT_SIZE_LG}; font-weight: 600;">
-            {value}
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style=" padding: {SPACING.SPACE_3}; background: {COLORS.GLASS_LIGHT}; border-radius: {BORDERS.RADIUS_MD}; box-sizing: border-box; max-width: 100%; min-width: 0; "> <div style="display: flex; align-items: center; gap: {SPACING.SPACE_2}; margin-bottom: {SPACING.SPACE_1}; min-width: 0;"> {f'<span style="font-size: 1rem; flex-shrink: 0;">{icon}</span>' if icon else ''} <span style="color: {COLORS.TEXT_MUTED}; font-size: {TYPOGRAPHY.FONT_SIZE_SM}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;">{label}</span> </div> <div style="color: {COLORS.TEXT_PRIMARY}; font-size: {TYPOGRAPHY.FONT_SIZE_LG}; font-weight: 600; overflow-wrap: anywhere; word-break: normal;"> {value} </div> </div>""", unsafe_allow_html=True)
 
 
 # =============================================================================
@@ -643,13 +413,7 @@ def stat_item(
 
 def divider() -> None:
     """Render a horizontal divider."""
-    st.markdown(f"""
-    <hr style="
-        border: none;
-        border-top: 1px solid {COLORS.BORDER};
-        margin: {SPACING.SPACE_4} 0;
-    ">
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<hr style=" border: none; border-top: 1px solid {COLORS.BORDER}; margin: {SPACING.SPACE_4} 0; ">""", unsafe_allow_html=True)
 
 
 def spacer(size: str = SPACING.SPACE_4) -> None:
@@ -669,16 +433,7 @@ def loading_spinner(message: str = "Loading...") -> None:
 
 def pulse_dot(color: str = COLORS.PRIMARY) -> None:
     """Render an animated pulse dot."""
-    st.markdown(f"""
-    <span style="
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: {color};
-        animation: pulse 2s infinite ease-in-out;
-    "></span>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<span style=" display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: {color}; animation: pulse 2s infinite ease-in-out; "></span>""", unsafe_allow_html=True)
 
 
 # =============================================================================
@@ -697,17 +452,7 @@ def empty_state(
         title: Title text
         description: Description text
     """
-    st.markdown(f"""
-    <div style="
-        text-align: center;
-        padding: {SPACING.SPACE_12};
-        color: {COLORS.TEXT_MUTED};
-    ">
-        <div style="font-size: 3rem; margin-bottom: {SPACING.SPACE_4};">{icon}</div>
-        <h3 style="color: {COLORS.TEXT_SECONDARY}; margin-bottom: {SPACING.SPACE_2};">{title}</h3>
-        {f'<p style="font-size: {TYPOGRAPHY.FONT_SIZE_SM};">{description}</p>' if description else ''}
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style=" text-align: center; padding: {SPACING.SPACE_12}; color: {COLORS.TEXT_MUTED}; "> <div style="font-size: 3rem; margin-bottom: {SPACING.SPACE_4};">{icon}</div> <h3 style="color: {COLORS.TEXT_SECONDARY}; margin-bottom: {SPACING.SPACE_2};">{title}</h3> {f'<p style="font-size: {TYPOGRAPHY.FONT_SIZE_SM};">{description}</p>' if description else ''} </div>""", unsafe_allow_html=True)
 
 
 # =============================================================================
@@ -736,18 +481,4 @@ def notification(
     color, rgb, default_icon = colors.get(notification_type, colors["info"])
     notification_icon = icon or default_icon
     
-    st.markdown(f"""
-    <div style="
-        background: rgba({rgb}, 0.2);
-        border: 1px solid {color};
-        border-radius: {BORDERS.RADIUS_MD};
-        padding: {SPACING.SPACE_3} {SPACING.SPACE_4};
-        margin-bottom: {SPACING.SPACE_3};
-        display: flex;
-        align-items: center;
-        gap: {SPACING.SPACE_3};
-    ">
-        <span>{notification_icon}</span>
-        <span style="color: {COLORS.TEXT_PRIMARY};">{message}</span>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style=" background: rgba({rgb}, 0.2); border: 1px solid {color}; border-radius: {BORDERS.RADIUS_MD}; padding: {SPACING.SPACE_3} {SPACING.SPACE_4}; margin-bottom: {SPACING.SPACE_3}; display: flex; align-items: center; gap: {SPACING.SPACE_3}; box-sizing: border-box; max-width: 100%; min-width: 0; "> <span style="flex-shrink: 0;">{notification_icon}</span> <span style="color: {COLORS.TEXT_PRIMARY}; min-width: 0; overflow-wrap: anywhere;">{message}</span> </div>""", unsafe_allow_html=True)

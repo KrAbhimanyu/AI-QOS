@@ -173,5 +173,103 @@ THEME_CONFIG: dict = {
     ::-webkit-scrollbar-thumb:hover {
         background: var(--text-muted);
     }
+
+    /* ============================================================
+       GLOBAL LAYOUT STABILIZATION
+       Prevents horizontal page overflow, squeezed columns,
+       broken text wrapping, and content-dependent layout shifts
+       across every module. Applied app-wide via app.py.
+       ============================================================ */
+
+    /* Universal box model — no content may exceed its parent */
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    /* App + main containers never horizontally scroll */
+    [data-testid="stAppViewContainer"],
+    [data-testid="stMainBlockContainer"],
+    .stMainBlockContainer,
+    section[data-testid="stMainBlockContainer"],
+    div[data-testid="stAppViewBlockContainer"] {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* Every Streamlit column can shrink and never overflows */
+    .stColumn,
+    [data-testid="stColumn"] {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    /* Metrics are stable — label/value never wrap to vertical chars */
+    .stMetric,
+    [data-testid="stMetric"] {
+        min-width: 0;
+    }
+    .stMetric label,
+    [data-testid="stMetricLabel"] {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    [data-testid="stMetricValue"] {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Markdown containers never overflow horizontally */
+    .stMarkdown,
+    [data-testid="stMarkdownContainer"] {
+        max-width: 100%;
+        min-width: 0;
+        overflow-wrap: anywhere;
+        word-break: normal;
+    }
+    .stMarkdown div,
+    .stMarkdown span {
+        max-width: 100%;
+    }
+
+    /* Dataframes/tables scroll internally, never push the page */
+    .stDataFrame,
+    [data-testid="stDataFrame"] {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    /* Code blocks scroll horizontally, never wrap vertically */
+    .stCodeBlock,
+    pre {
+        max-width: 100%;
+        overflow-x: auto;
+        white-space: pre;
+        word-break: normal;
+        overflow-wrap: normal;
+    }
+
+    /* Tabs never overflow horizontally — wrap if needed */
+    .stTabs [data-baseweb="tab-list"] {
+        max-width: 100%;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+    }
+
+    /* Plotly charts respect parent width */
+    .stPlotlyChart,
+    [data-testid="stPlotlyChart"] {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    /* Prevent long unbreakable strings (URLs, IDs, JSON) from breaking layout */
+    .stMarkdown p,
+    .stMarkdown li,
+    .stMarkdown td {
+        overflow-wrap: anywhere;
+        word-break: normal;
+    }
     """,
 }

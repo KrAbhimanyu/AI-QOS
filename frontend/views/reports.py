@@ -49,21 +49,7 @@ def render_reports() -> None:
     
     with left_col:
         # Report visualization
-        st.markdown(
-            """
-            <div style="
-                background: linear-gradient(135deg, #1E1E3F 0%, rgba(99, 102, 241, 0.1) 100%);
-                border: 1px solid #334155;
-                border-radius: 12px;
-                padding: 2rem;
-                text-align: center;
-            ">
-                <h3 style="color: #F1F5F9; margin-bottom: 1rem;">📊 Weekly Quality Summary</h3>
-                <p style="color: #94A3B8; margin-bottom: 2rem;">Generated: July 29, 2024</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown("""<div style=" background: linear-gradient(135deg, #1E1E3F 0%, rgba(99, 102, 241, 0.1) 100%); border: 1px solid #334155; border-radius: 12px; padding: 2rem; text-align: center; "> <h3 style="color: #F1F5F9; margin-bottom: 1rem;">📊 Weekly Quality Summary</h3> <p style="color: #94A3B8; margin-bottom: 2rem;">Generated: July 29, 2024</p> </div>""", unsafe_allow_html=True)
         
         # Activity Chart
         st.markdown("#### Mission Activity")
@@ -101,7 +87,7 @@ def render_reports() -> None:
             yaxis=dict(showgrid=True, gridcolor="rgba(51, 65, 85, 0.5)", color="#94A3B8"),
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="reports_chart")
     
     with right_col:
         # Recent Reports
@@ -116,30 +102,4 @@ def render_reports() -> None:
         ]
         
         for name, date, category, format_type in reports:
-            st.markdown(
-                f"""
-                <div style="
-                    background: #1E1E3F;
-                    border-radius: 8px;
-                    padding: 0.75rem;
-                    margin-bottom: 0.5rem;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                ">
-                    <div style="display: flex; justify-content: space-between; align-items: start;">
-                        <div>
-                            <p style="margin: 0; color: #F1F5F9; font-size: 0.875rem; font-weight: 500;">{name}</p>
-                            <p style="margin: 0.25rem 0 0; color: #64748B; font-size: 0.75rem;">{date}</p>
-                        </div>
-                        <span style="
-                            background: #334155;
-                            padding: 0.25rem 0.5rem;
-                            border-radius: 4px;
-                            font-size: 0.65rem;
-                            color: #94A3B8;
-                        ">{format_type}</span>
-                    </div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+            st.markdown(f"""<div style=" background: #1E1E3F; border-radius: 8px; padding: 0.75rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s; "> <div style="display: flex; justify-content: space-between; align-items: start;"> <div> <p style="margin: 0; color: #F1F5F9; font-size: 0.875rem; font-weight: 500;">{name}</p> <p style="margin: 0.25rem 0 0; color: #64748B; font-size: 0.75rem;">{date}</p> </div> <span style=" background: #334155; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.65rem; color: #94A3B8; ">{format_type}</span> </div> </div>""", unsafe_allow_html=True)

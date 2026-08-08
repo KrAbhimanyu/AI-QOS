@@ -143,119 +143,25 @@ def wizard_stepper(current_step: int, total_steps: int = 5) -> None:
                 bg_color = "#334155"
                 border_color = "#334155"
             
-            st.markdown(
-                f"""
-                <div style="text-align: center; padding: 0.5rem;">
-                    <div style="
-                        width: 40px;
-                        height: 40px;
-                        border-radius: 50%;
-                        background: {bg_color};
-                        border: 2px solid {border_color};
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        margin: 0 auto 0.5rem;
-                        font-size: 1.25rem;
-                    ">
-                        {'✓' if is_completed else icon}
-                    </div>
-                    <p style="
-                        margin: 0;
-                        font-size: 0.75rem;
-                        color: {'#10B981' if is_completed else '#F1F5F9' if is_current else '#64748B'};
-                        font-weight: {600 if is_current else 400};
-                    ">{step}</p>
-                    <p style="
-                        margin: 0.25rem 0 0;
-                        font-size: 0.65rem;
-                        color: #64748B;
-                    ">Step {i}</p>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+            st.markdown(f"""<div style="text-align: center; padding: 0.5rem;"> <div style=" width: 40px; height: 40px; border-radius: 50%; background: {bg_color}; border: 2px solid {border_color}; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem; font-size: 1.25rem; "> {'✓' if is_completed else icon} </div> <p style=" margin: 0; font-size: 0.75rem; color: {'#10B981' if is_completed else '#F1F5F9' if is_current else '#64748B'}; font-weight: {600 if is_current else 400}; ">{step}</p> <p style=" margin: 0.25rem 0 0; font-size: 0.65rem; color: #64748B; ">Step {i}</p> </div>""", unsafe_allow_html=True)
             
             # Connectors
             if i < total_steps:
                 connector_color = "#10B981" if i < current_step else "#334155"
-                st.markdown(
-                    f"""
-                    <div style="
-                        position: absolute;
-                        top: 25px;
-                        left: calc({(i) * 20}% + 20px);
-                        width: calc(20% - 40px);
-                        height: 2px;
-                        background: {connector_color};
-                    "></div>
-                    """,
-                    unsafe_allow_html=True,
-                )
+                st.markdown(f"""<div style=" position: absolute; top: 25px; left: calc({(i) * 20}% + 20px); width: calc(20% - 40px); height: 2px; background: {connector_color}; "></div>""", unsafe_allow_html=True)
 
 
 def validation_badge(is_valid: bool, message: str = "") -> None:
     """Display validation status badge."""
     if is_valid:
-        st.markdown(
-            f"""
-            <span style="
-                display: inline-flex;
-                align-items: center;
-                gap: 0.25rem;
-                padding: 0.25rem 0.5rem;
-                border-radius: 4px;
-                font-size: 0.7rem;
-                background: rgba(16, 185, 129, 0.2);
-                color: #10B981;
-            ">
-                ✓ {message or 'Valid'}
-            </span>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown(f"""<span style=" display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem; background: rgba(16, 185, 129, 0.2); color: #10B981; "> ✓ {message or 'Valid'} </span>""", unsafe_allow_html=True)
     else:
-        st.markdown(
-            f"""
-            <span style="
-                display: inline-flex;
-                align-items: center;
-                gap: 0.25rem;
-                padding: 0.25rem 0.5rem;
-                border-radius: 4px;
-                font-size: 0.7rem;
-                background: rgba(239, 68, 68, 0.2);
-                color: #EF4444;
-            ">
-                ✗ {message or 'Invalid'}
-            </span>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown(f"""<span style=" display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem; background: rgba(239, 68, 68, 0.2); color: #EF4444; "> ✗ {message or 'Invalid'} </span>""", unsafe_allow_html=True)
 
 
 def step_section(title: str, icon: str = "📋") -> None:
     """Display step section header."""
-    st.markdown(
-        f"""
-        <div style="margin-bottom: 1.5rem;">
-            <h2 style="
-                font-size: 1.5rem;
-                font-weight: 600;
-                color: #F1F5F9;
-                margin: 0 0 0.25rem;
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-            ">
-                <span>{icon}</span>
-                <span>{title}</span>
-            </h2>
-            <div style="height: 2px; background: linear-gradient(90deg, #6366F1, transparent); margin-top: 0.5rem;"></div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(f"""<div style="margin-bottom: 1.5rem;"> <h2 style=" font-size: 1.5rem; font-weight: 600; color: #F1F5F9; margin: 0 0 0.25rem; display: flex; align-items: center; gap: 0.5rem; "> <span>{icon}</span> <span>{title}</span> </h2> <div style="height: 2px; background: linear-gradient(90deg, #6366F1, transparent); margin-top: 0.5rem;"></div> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -264,19 +170,7 @@ def step_section(title: str, icon: str = "📋") -> None:
 
 def glass_card(content_fn: Callable, **kwargs) -> None:
     """Create a glass morphism card container."""
-    st.markdown(
-        """
-        <div style="
-            background: rgba(30, 30, 63, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-        ">
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("""<div style=" background: rgba(30, 30, 63, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; ">""", unsafe_allow_html=True)
     content_fn(**kwargs)
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -360,24 +254,7 @@ def file_upload_card(
     extensions: List[str],
 ) -> Dict[str, Any]:
     """Render a drag-and-drop file upload card."""
-    st.markdown(
-        f"""
-        <div style="
-            background: linear-gradient(135deg, rgba(30, 30, 63, 0.9) 0%, rgba(99, 102, 241, 0.1) 100%);
-            border: 2px dashed rgba(99, 102, 241, 0.3);
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
-        ">
-            <div style="font-size: 2rem; margin-bottom: 0.5rem;">{icon}</div>
-            <h4 style="color: #F1F5F9; margin: 0 0 0.25rem;">{file_type}</h4>
-            <p style="color: #94A3B8; font-size: 0.75rem; margin: 0 0 0.5rem;">{description}</p>
-            <p style="color: #64748B; font-size: 0.7rem; margin: 0;">{', '.join(extensions)}</p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(f"""<div style=" background: linear-gradient(135deg, rgba(30, 30, 63, 0.9) 0%, rgba(99, 102, 241, 0.1) 100%); border: 2px dashed rgba(99, 102, 241, 0.3); border-radius: 12px; padding: 1.5rem; text-align: center; transition: all 0.3s ease; "> <div style="font-size: 2rem; margin-bottom: 0.5rem;">{icon}</div> <h4 style="color: #F1F5F9; margin: 0 0 0.25rem;">{file_type}</h4> <p style="color: #94A3B8; font-size: 0.75rem; margin: 0 0 0.5rem;">{description}</p> <p style="color: #64748B; font-size: 0.7rem; margin: 0;">{', '.join(extensions)}</p> </div>""", unsafe_allow_html=True)
     
     uploaded_file = st.file_uploader(
         f"Upload {file_type}",
@@ -404,61 +281,7 @@ def testing_type_card(
     border_color = "#6366F1" if is_selected else "#334155"
     bg_color = "rgba(99, 102, 241, 0.15)" if is_selected else "transparent"
     
-    st.markdown(
-        f"""
-        <div style="
-            background: {bg_color};
-            border: 2px solid {border_color};
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 0.5rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        ">
-            <div style="display: flex; align-items: start; gap: 1rem;">
-                <div style="
-                    width: 36px;
-                    height: 36px;
-                    border-radius: 8px;
-                    background: rgba(99, 102, 241, 0.2);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 1.25rem;
-                    flex-shrink: 0;
-                ">{icon}</div>
-                <div style="flex: 1;">
-                    <h4 style="color: #F1F5F9; margin: 0 0 0.25rem; font-size: 0.95rem;">{test_type}</h4>
-                    <p style="color: #94A3B8; margin: 0 0 0.5rem; font-size: 0.8rem;">{description}</p>
-                    <span style="
-                        display: inline-flex;
-                        align-items: center;
-                        gap: 0.25rem;
-                        padding: 0.2rem 0.5rem;
-                        background: rgba(99, 102, 241, 0.2);
-                        border-radius: 4px;
-                        font-size: 0.7rem;
-                        color: #6366F1;
-                    ">⏱️ {estimated_time}</span>
-                </div>
-                <div style="
-                    width: 24px;
-                    height: 24px;
-                    border-radius: 50%;
-                    border: 2px solid {'#6366F1' if is_selected else '#334155'};
-                    background: {'#6366F1' if is_selected else 'transparent'};
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: white;
-                    font-size: 0.8rem;
-                    flex-shrink: 0;
-                ">{'✓' if is_selected else ''}</div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(f"""<div style=" background: {bg_color}; border: 2px solid {border_color}; border-radius: 12px; padding: 1rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s ease; "> <div style="display: flex; align-items: start; gap: 1rem;"> <div style=" width: 36px; height: 36px; border-radius: 8px; background: rgba(99, 102, 241, 0.2); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; ">{icon}</div> <div style="flex: 1;"> <h4 style="color: #F1F5F9; margin: 0 0 0.25rem; font-size: 0.95rem;">{test_type}</h4> <p style="color: #94A3B8; margin: 0 0 0.5rem; font-size: 0.8rem;">{description}</p> <span style=" display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.2rem 0.5rem; background: rgba(99, 102, 241, 0.2); border-radius: 4px; font-size: 0.7rem; color: #6366F1; ">⏱️ {estimated_time}</span> </div> <div style=" width: 24px; height: 24px; border-radius: 50%; border: 2px solid {'#6366F1' if is_selected else '#334155'}; background: {'#6366F1' if is_selected else 'transparent'}; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem; flex-shrink: 0; ">{'✓' if is_selected else ''}</div> </div> </div>""", unsafe_allow_html=True)
     
     return st.checkbox(
         f"Select {test_type}",
@@ -481,26 +304,7 @@ def config_card(
     selected: Optional[str] = None,
 ) -> str:
     """Render a configuration selection card with options."""
-    st.markdown(
-        f"""
-        <div style="
-            background: rgba(30, 30, 63, 0.8);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 12px;
-            padding: 1.25rem;
-            margin-bottom: 1rem;
-        ">
-            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-                <span style="font-size: 1.5rem;">{icon}</span>
-                <div>
-                    <h4 style="color: #F1F5F9; margin: 0;">{title}</h4>
-                    <p style="color: #94A3B8; margin: 0; font-size: 0.8rem;">{description}</p>
-                </div>
-            </div>
-            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-            """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(f"""<div style=" background: rgba(30, 30, 63, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; "> <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;"> <span style="font-size: 1.5rem;">{icon}</span> <div> <h4 style="color: #F1F5F9; margin: 0;">{title}</h4> <p style="color: #94A3B8; margin: 0; font-size: 0.8rem;">{description}</p> </div> </div> <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">""", unsafe_allow_html=True)
     
     cols = st.columns(len(options))
     result = selected
@@ -533,24 +337,7 @@ def config_card(
 
 def summary_item(label: str, value: Any, icon: str = "📋") -> None:
     """Render a summary item."""
-    st.markdown(
-        f"""
-        <div style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid #334155;
-        ">
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <span style="font-size: 1.25rem;">{icon}</span>
-                <span style="color: #94A3B8; font-size: 0.875rem;">{label}</span>
-            </div>
-            <span style="color: #F1F5F9; font-weight: 500;">{value}</span>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(f"""<div style=" display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #334155; "> <div style="display: flex; align-items: center; gap: 0.75rem;"> <span style="font-size: 1.25rem;">{icon}</span> <span style="color: #94A3B8; font-size: 0.875rem;">{label}</span> </div> <span style="color: #F1F5F9; font-weight: 500;">{value}</span> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -604,67 +391,17 @@ def ai_assistant_panel(step: int) -> None:
     
     current_tip = tips.get(step, tips[1])
     
-    st.markdown(
-        f"""
-        <div style="
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(30, 30, 63, 0.9) 100%);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 12px;
-            padding: 1.25rem;
-            height: 100%;
-        ">
-            <h4 style="color: #F1F5F9; margin: 0 0 1rem; display: flex; align-items: center; gap: 0.5rem;">
-                🤖 AI Assistant
-            </h4>
-            <h5 style="color: #6366F1; margin: 0 0 0.75rem; font-size: 0.9rem;">{current_tip['title']}</h5>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(f"""<div style=" background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(30, 30, 63, 0.9) 100%); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 12px; padding: 1.25rem; height: 100%; "> <h4 style="color: #F1F5F9; margin: 0 0 1rem; display: flex; align-items: center; gap: 0.5rem;"> 🤖 AI Assistant </h4> <h5 style="color: #6366F1; margin: 0 0 0.75rem; font-size: 0.9rem;">{current_tip['title']}</h5>""", unsafe_allow_html=True)
     
     for item in current_tip["items"]:
-        st.markdown(
-            f"""
-            <div style="
-                display: flex;
-                align-items: start;
-                gap: 0.5rem;
-                padding: 0.5rem 0;
-                border-bottom: 1px solid rgba(99, 102, 241, 0.1);
-            ">
-                <span style="color: #22D3EE; font-size: 0.8rem;">▸</span>
-                <span style="color: #94A3B8; font-size: 0.8rem;">{item}</span>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown(f"""<div style=" display: flex; align-items: start; gap: 0.5rem; padding: 0.5rem 0; border-bottom: 1px solid rgba(99, 102, 241, 0.1); "> <span style="color: #22D3EE; font-size: 0.8rem;">▸</span> <span style="color: #94A3B8; font-size: 0.8rem;">{item}</span> </div>""", unsafe_allow_html=True)
     
     # Coverage estimate
     if step >= 3:
         testing_types = get_wizard_data("testing_types", [])
         coverage = min(95, 30 + len(testing_types) * 12)
         
-        st.markdown(
-            f"""
-            <div style="
-                margin-top: 1rem;
-                padding: 1rem;
-                background: rgba(16, 185, 129, 0.1);
-                border-radius: 8px;
-                border: 1px solid rgba(16, 185, 129, 0.3);
-            ">
-                <p style="color: #10B981; margin: 0 0 0.5rem; font-size: 0.8rem; font-weight: 500;">
-                    📊 Estimated Coverage
-                </p>
-                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                    <div style="flex: 1; height: 8px; background: #334155; border-radius: 4px;">
-                        <div style="width: {coverage}%; height: 100%; background: #10B981; border-radius: 4px;"></div>
-                    </div>
-                    <span style="color: #10B981; font-weight: 600;">{coverage}%</span>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown(f"""<div style=" margin-top: 1rem; padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.3); "> <p style="color: #10B981; margin: 0 0 0.5rem; font-size: 0.8rem; font-weight: 500;"> 📊 Estimated Coverage </p> <div style="display: flex; align-items: center; gap: 0.75rem;"> <div style="flex: 1; height: 8px; background: #334155; border-radius: 4px;"> <div style="width: {coverage}%; height: 100%; background: #10B981; border-radius: 4px;"></div> </div> <span style="color: #10B981; font-weight: 600;">{coverage}%</span> </div> </div>""", unsafe_allow_html=True)
     
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -683,18 +420,7 @@ def progress_sidebar(current_step: int) -> None:
         ("5", "Summary", "📊"),
     ]
     
-    st.markdown(
-        """
-        <div style="
-            background: rgba(30, 30, 63, 0.5);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        ">
-            <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 0.95rem;">📍 Mission Progress</h4>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("""<div style=" background: rgba(30, 30, 63, 0.5); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; "> <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 0.95rem;">📍 Mission Progress</h4>""", unsafe_allow_html=True)
     
     for step_num, title, icon in steps:
         is_completed = int(step_num) < current_step
@@ -711,38 +437,7 @@ def progress_sidebar(current_step: int) -> None:
             color = "#64748B"
             icon_display = step_num
         
-        st.markdown(
-            f"""
-            <div style="
-                display: flex;
-                align-items: center;
-                gap: 0.75rem;
-                padding: 0.75rem;
-                background: {'rgba(99, 102, 241, 0.1)' if is_current else 'transparent'};
-                border-radius: 8px;
-                margin-bottom: 0.5rem;
-                border-left: 3px solid {color};
-            ">
-                <div style="
-                    width: 28px;
-                    height: 28px;
-                    border-radius: 50%;
-                    background: {color};
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 0.8rem;
-                    color: white;
-                    flex-shrink: 0;
-                ">{icon_display}</div>
-                <div style="flex: 1;">
-                    <p style="margin: 0; color: {'#F1F5F9' if is_current else '#94A3B8'}; font-size: 0.85rem;">{title}</p>
-                </div>
-                {'✅' if is_completed else '⏳' if is_current else '⭕'}
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown(f"""<div style=" display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: {'rgba(99, 102, 241, 0.1)' if is_current else 'transparent'}; border-radius: 8px; margin-bottom: 0.5rem; border-left: 3px solid {color}; "> <div style=" width: 28px; height: 28px; border-radius: 50%; background: {color}; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: white; flex-shrink: 0; ">{icon_display}</div> <div style="flex: 1;"> <p style="margin: 0; color: {'#F1F5F9' if is_current else '#94A3B8'}; font-size: 0.85rem;">{title}</p> </div> {'✅' if is_completed else '⏳' if is_current else '⭕'} </div>""", unsafe_allow_html=True)
     
     st.markdown("</div>", unsafe_allow_html=True)
 

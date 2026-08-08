@@ -135,17 +135,7 @@ def render_coverage_tab() -> None:
             coverage = data["coverage"]
             count = data["count"]
             color = _coverage_color(coverage)
-            st.markdown(f"""
-            <div style="margin-bottom:{SPACING.SPACE_4};">
-                <div style="display:flex;justify-content:space-between;margin-bottom:{SPACING.SPACE_1};">
-                    <span style="font-size:{TYPOGRAPHY.FONT_SIZE_SM};color:{COLORS.TEXT_PRIMARY};">{test_name} ({count})</span>
-                    <span style="font-size:{TYPOGRAPHY.FONT_SIZE_SM};color:{color};font-weight:600;">{coverage}%</span>
-                </div>
-                <div style="width:100%;height:8px;background:rgba({COLORS.SURFACE_RGB},0.8);border-radius:4px;overflow:hidden;">
-                    <div style="width:{coverage}%;height:100%;background:{color};border-radius:4px;"></div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div style="margin-bottom:{SPACING.SPACE_4};"> <div style="display:flex;justify-content:space-between;margin-bottom:{SPACING.SPACE_1};"> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_SM};color:{COLORS.TEXT_PRIMARY};">{test_name} ({count})</span> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_SM};color:{color};font-weight:600;">{coverage}%</span> </div> <div style="width:100%;height:8px;background:rgba({COLORS.SURFACE_RGB},0.8);border-radius:4px;overflow:hidden;"> <div style="width:{coverage}%;height:100%;background:{color};border-radius:4px;"></div> </div> </div>""", unsafe_allow_html=True)
     with col2:
         section_header("Test Distribution", icon="📊")
         distribution = {
@@ -158,18 +148,7 @@ def render_coverage_tab() -> None:
     section_header("Coverage Gaps", icon="⚠️")
     for gap in COVERAGE_REPORT["gaps"]:
         color = {"high": COLORS.ERROR, "medium": COLORS.WARNING, "low": COLORS.INFO}.get(gap["priority"], COLORS.TEXT_MUTED)
-        st.markdown(f"""
-        <div style="padding:{SPACING.SPACE_4};background:rgba({COLORS.SURFACE_RGB},0.6);border-left:3px solid {color};border-radius:0 {BORDERS.RADIUS_MD} {BORDERS.RADIUS_MD} 0;margin-bottom:{SPACING.SPACE_3};">
-            <div style="display:flex;justify-content:space-between;">
-                <span style="font-size:{TYPOGRAPHY.FONT_SIZE_BASE};color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(gap['module'])}</span>
-                <span style="padding:2px 8px;background:rgba({_hex_to_rgb(color)},0.2);color:{color};border-radius:{BORDERS.RADIUS_SM};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;">{gap['priority'].upper()}</span>
-            </div>
-            <div style="margin-top:{SPACING.SPACE_2};">
-                <span style="font-size:{TYPOGRAPHY.FONT_SIZE_2XL};font-weight:700;color:{COLORS.ERROR};">{gap['gap']}%</span>
-                <span style="font-size:{TYPOGRAPHY.FONT_SIZE_SM};color:{COLORS.TEXT_SECONDARY};margin-left:{SPACING.SPACE_2};">coverage gap</span>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_4};background:rgba({COLORS.SURFACE_RGB},0.6);border-left:3px solid {color};border-radius:0 {BORDERS.RADIUS_MD} {BORDERS.RADIUS_MD} 0;margin-bottom:{SPACING.SPACE_3};"> <div style="display:flex;justify-content:space-between;"> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_BASE};color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(gap['module'])}</span> <span style="padding:2px 8px;background:rgba({_hex_to_rgb(color)},0.2);color:{color};border-radius:{BORDERS.RADIUS_SM};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;">{gap['priority'].upper()}</span> </div> <div style="margin-top:{SPACING.SPACE_2};"> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_2XL};font-weight:700;color:{COLORS.ERROR};">{gap['gap']}%</span> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_SM};color:{COLORS.TEXT_SECONDARY};margin-left:{SPACING.SPACE_2};">coverage gap</span> </div> </div>""", unsafe_allow_html=True)
 
 
 def render_quality_tab() -> None:
@@ -207,13 +186,7 @@ def render_quality_tab() -> None:
         section_header("Defect Distribution", icon="📉")
         for defect in QUALITY_REPORT["defect_distribution"]:
             color = _severity_color(defect["severity"])
-            st.markdown(f"""
-            <div style="display:flex;justify-content:space-between;padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};border-left:3px solid {color};">
-                <span style="color:{color};font-weight:600;">{_escape(defect['severity'])}</span>
-                <span style="color:{COLORS.TEXT_PRIMARY};font-weight:700;">{defect['count']}</span>
-                <span style="color:{COLORS.SUCCESS};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(defect['trend'])}</span>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div style="display:flex;justify-content:space-between;padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};border-left:3px solid {color};"> <span style="color:{color};font-weight:600;">{_escape(defect['severity'])}</span> <span style="color:{COLORS.TEXT_PRIMARY};font-weight:700;">{defect['count']}</span> <span style="color:{COLORS.SUCCESS};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(defect['trend'])}</span> </div>""", unsafe_allow_html=True)
 
     st.markdown("---")
     section_header("Quality Metrics Summary", icon="📋")
@@ -249,17 +222,7 @@ def render_ai_performance_tab() -> None:
         section_header("Model Usage Distribution", icon="🧠")
         for model in AI_PERFORMANCE_REPORT["model_usage"]:
             color = COLORS.PRIMARY if model["model"] == "GPT-4" else COLORS.SECONDARY if model["model"] == "Claude" else COLORS.SUCCESS
-            st.markdown(f"""
-            <div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};">
-                <div style="display:flex;justify-content:space-between;margin-bottom:{SPACING.SPACE_1};">
-                    <span style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(model['model'])}</span>
-                    <span style="color:{COLORS.TEXT_SECONDARY};">{model['requests']:,} requests</span>
-                </div>
-                <div style="width:100%;height:6px;background:rgba({COLORS.BORDER_RGB},0.4);border-radius:3px;overflow:hidden;">
-                    <div style="width:{model['percentage']}%;height:100%;background:{color};border-radius:3px;"></div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};"> <div style="display:flex;justify-content:space-between;margin-bottom:{SPACING.SPACE_1};"> <span style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(model['model'])}</span> <span style="color:{COLORS.TEXT_SECONDARY};">{model['requests']:,} requests</span> </div> <div style="width:100%;height:6px;background:rgba({COLORS.BORDER_RGB},0.4);border-radius:3px;overflow:hidden;"> <div style="width:{model['percentage']}%;height:100%;background:{color};border-radius:3px;"></div> </div> </div>""", unsafe_allow_html=True)
     with col2:
         section_header("Token Usage", icon="🔢")
         token = AI_PERFORMANCE_REPORT["token_usage"]
@@ -305,20 +268,7 @@ def render_flaky_tests_tab() -> None:
     section_header("Top Flaky Tests", icon="🔝")
     for test in FLAKY_REPORT["top_flaky_tests"]:
         rate_color = COLORS.ERROR if test["rate"] >= 10 else COLORS.WARNING
-        st.markdown(f"""
-        <div style="padding:{SPACING.SPACE_4};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_3};border-left:3px solid {rate_color};">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-                <div>
-                    <div style="font-size:{TYPOGRAPHY.FONT_SIZE_BASE};color:{COLORS.TEXT_PRIMARY};font-family:{TYPOGRAPHY.FONT_MONO};">{_escape(test['name'])}</div>
-                    <div style="font-size:{TYPOGRAPHY.FONT_SIZE_SM};color:{COLORS.TEXT_SECONDARY};margin-top:{SPACING.SPACE_1};">Reason: {_escape(test['reason'])}</div>
-                </div>
-                <div style="text-align:right;">
-                    <div style="font-size:{TYPOGRAPHY.FONT_SIZE_2XL};font-weight:700;color:{rate_color};">{test['rate']}%</div>
-                    <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Fails: {test['fails']}</div>
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_4};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_3};border-left:3px solid {rate_color};"> <div style="display:flex;justify-content:space-between;align-items:center;"> <div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_BASE};color:{COLORS.TEXT_PRIMARY};font-family:{TYPOGRAPHY.FONT_MONO};">{_escape(test['name'])}</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_SM};color:{COLORS.TEXT_SECONDARY};margin-top:{SPACING.SPACE_1};">Reason: {_escape(test['reason'])}</div> </div> <div style="text-align:right;"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_2XL};font-weight:700;color:{rate_color};">{test['rate']}%</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Fails: {test['fails']}</div> </div> </div> </div>""", unsafe_allow_html=True)
 
     st.markdown("---")
     col1, col2 = st.columns(2)
@@ -336,14 +286,7 @@ def render_flaky_tests_tab() -> None:
         section_header("By Module", icon="📦")
         for module in FLAKY_REPORT["by_module"]:
             color = {"critical": COLORS.ERROR, "high": COLORS.WARNING, "medium": COLORS.INFO, "low": COLORS.SUCCESS}.get(module["impact"], COLORS.TEXT_MUTED)
-            st.markdown(f"""
-            <div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};border-left:3px solid {color};">
-                <div style="display:flex;justify-content:space-between;">
-                    <span style="color:{COLORS.TEXT_PRIMARY};">{_escape(module['module'])}</span>
-                    <span style="color:{color};font-weight:600;">{module['flaky_count']} tests ({module['rate']}%)</span>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};border-left:3px solid {color};"> <div style="display:flex;justify-content:space-between;"> <span style="color:{COLORS.TEXT_PRIMARY};">{_escape(module['module'])}</span> <span style="color:{color};font-weight:600;">{module['flaky_count']} tests ({module['rate']}%)</span> </div> </div>""", unsafe_allow_html=True)
 
 
 def render_reports_center() -> None:

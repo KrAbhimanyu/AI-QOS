@@ -78,45 +78,7 @@ def render_page_header() -> None:
     # Notification button
     notification_count = len(get_intel_data("intel_notifications", []))
     
-    st.markdown(
-        """
-        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-            <div>
-                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                    <span style="color: #64748B; font-size: 0.8rem;">🏠 Dashboard</span>
-                    <span style="color: #64748B;">›</span>
-                    <span style="color: #64748B; font-size: 0.8rem;">Missions</span>
-                    <span style="color: #64748B;">›</span>
-                    <span style="color: #F1F5F9; font-size: 0.8rem;">""" + mission_name + """</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                    <h1 style="margin: 0; font-size: 1.5rem; color: #F1F5F9;">🎯 Application Intelligence Center</h1>
-                    <span style="
-                        display: inline-flex;
-                        align-items: center;
-                        gap: 0.5rem;
-                        padding: 0.25rem 0.75rem;
-                        border-radius: 9999px;
-                        font-size: 0.75rem;
-                        background: rgba(99, 102, 241, 0.2);
-                        color: #6366F1;
-                    ">
-                        <span style="width: 8px; height: 8px; border-radius: 50%; background: #6366F1;"></span>
-                        """ + status + """
-                    </span>
-                </div>
-            </div>
-            
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <div style="text-align: center; padding: 0.5rem 1rem; background: rgba(30, 30, 63, 0.8); border-radius: 8px;">
-                    <p style="color: #64748B; margin: 0; font-size: 0.7rem;">Confidence</p>
-                    <p style="color: #10B981; margin: 0; font-size: 1.25rem; font-weight: 600;">""" + str(confidence) + """%</p>
-                </div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("""<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;"> <div> <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;"> <span style="color: #64748B; font-size: 0.8rem;">🏠 Dashboard</span> <span style="color: #64748B;">›</span> <span style="color: #64748B; font-size: 0.8rem;">Missions</span> <span style="color: #64748B;">›</span> <span style="color: #F1F5F9; font-size: 0.8rem;">""" + mission_name + """</span> </div> <div style="display: flex; align-items: center; gap: 1rem;"> <h1 style="margin: 0; font-size: 1.5rem; color: #F1F5F9;">🎯 Application Intelligence Center</h1> <span style=" display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; background: rgba(99, 102, 241, 0.2); color: #6366F1; "> <span style="width: 8px; height: 8px; border-radius: 50%; background: #6366F1;"></span> """ + status + """ </span> </div> </div> <div style="display: flex; align-items: center; gap: 0.75rem;"> <div style="text-align: center; padding: 0.5rem 1rem; background: rgba(30, 30, 63, 0.8); border-radius: 8px;"> <p style="color: #64748B; margin: 0; font-size: 0.7rem;">Confidence</p> <p style="color: #10B981; margin: 0; font-size: 1.25rem; font-weight: 600;">""" + str(confidence) + """%</p> </div> </div> </div>""", unsafe_allow_html=True)
     
     # Action buttons row
     col1, col2, col3, col4, col5, col6, col7 = st.columns([1, 1, 1, 1, 1, 1, 1])
@@ -214,35 +176,7 @@ def render_center_panel() -> None:
     is_complete = get_intel_data("intel_discovery_complete", False)
     
     # Discovery Progress Section
-    st.markdown(
-        """
-        <div style="
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(30, 30, 63, 0.95) 100%);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        ">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
-                <h2 style="color: #F1F5F9; margin: 0; font-size: 1.25rem;">🔬 Application Intelligence</h2>
-                <span style="
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    padding: 0.35rem 0.75rem;
-                    border-radius: 9999px;
-                    font-size: 0.75rem;
-                    background: rgba(99, 102, 241, 0.2);
-                    color: #6366F1;
-                ">
-                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #6366F1; animation: pulse 2s infinite;"></span>
-                    AI Studying Application
-                </span>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("""<div style=" background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(30, 30, 63, 0.95) 100%); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; "> <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;"> <h2 style="color: #F1F5F9; margin: 0; font-size: 1.25rem;">🔬 Application Intelligence</h2> <span style=" display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; background: rgba(99, 102, 241, 0.2); color: #6366F1; "> <span style="width: 8px; height: 8px; border-radius: 50%; background: #6366F1; animation: pulse 2s infinite;"></span> AI Studying Application </span> </div> </div>""", unsafe_allow_html=True)
     
     # Phase list with progress
     for i, phase in enumerate(DISCOVERY_PHASES):
@@ -261,44 +195,10 @@ def render_center_panel() -> None:
                 color="#6366F1",
             )
         else:
-            st.markdown(
-                f"""
-                <div style="
-                    display: flex;
-                    align-items: center;
-                    gap: 1rem;
-                    padding: 0.75rem;
-                    background: rgba(30, 30, 63, 0.5);
-                    border-radius: 8px;
-                    margin-bottom: 0.5rem;
-                    opacity: 0.5;
-                ">
-                    <span style="font-size: 1.25rem;">{phase['icon']}</span>
-                    <span style="color: #64748B;">{phase['name']}</span>
-                    <span style="color: #64748B; margin-left: auto; font-size: 0.75rem;">Pending</span>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+            st.markdown(f"""<div style=" display: flex; align-items: center; gap: 1rem; padding: 0.75rem; background: rgba(30, 30, 63, 0.5); border-radius: 8px; margin-bottom: 0.5rem; opacity: 0.5; "> <span style="font-size: 1.25rem;">{phase['icon']}</span> <span style="color: #64748B;">{phase['name']}</span> <span style="color: #64748B; margin-left: auto; font-size: 0.75rem;">Pending</span> </div>""", unsafe_allow_html=True)
     
     if is_complete:
-        st.markdown(
-            """
-            <div style="
-                background: rgba(16, 185, 129, 0.15);
-                border: 1px solid rgba(16, 185, 129, 0.3);
-                border-radius: 12px;
-                padding: 1.5rem;
-                text-align: center;
-                margin-top: 1rem;
-            ">
-                <span style="font-size: 3rem;">🎉</span>
-                <h3 style="color: #10B981; margin: 1rem 0 0.5rem;">Discovery Complete!</h3>
-                <p style="color: #94A3B8; margin: 0;">Application blueprint generated successfully</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown("""<div style=" background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 1.5rem; text-align: center; margin-top: 1rem; "> <span style="font-size: 3rem;">🎉</span> <h3 style="color: #10B981; margin: 1rem 0 0.5rem;">Discovery Complete!</h3> <p style="color: #94A3B8; margin: 0;">Application blueprint generated successfully</p> </div>""", unsafe_allow_html=True)
     
     # Application Overview
     st.markdown("<h3 style='color: #F1F5F9; margin: 1.5rem 0 1rem;'>🌐 Application Overview</h3>", unsafe_allow_html=True)
@@ -354,19 +254,7 @@ def render_right_panel() -> None:
     )
     
     # Progress Stats
-    st.markdown(
-        """
-        <div style="
-            background: rgba(30, 30, 63, 0.8);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 12px;
-            padding: 1.25rem;
-            margin-top: 1rem;
-        ">
-            <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 0.95rem;">📊 Progress Stats</h4>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("""<div style=" background: rgba(30, 30, 63, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1.25rem; margin-top: 1rem; "> <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 0.95rem;">📊 Progress Stats</h4>""", unsafe_allow_html=True)
     
     progress_items = [
         ("Pages Scanned", "8/8", "#10B981"),
@@ -376,15 +264,7 @@ def render_right_panel() -> None:
     ]
     
     for label, value, color in progress_items:
-        st.markdown(
-            f"""
-            <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid rgba(51, 65, 85, 0.5);">
-                <span style="color: #94A3B8; font-size: 0.8rem;">{label}</span>
-                <span style="color: {color}; font-weight: 600;">{value}</span>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown(f"""<div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid rgba(51, 65, 85, 0.5);"> <span style="color: #94A3B8; font-size: 0.8rem;">{label}</span> <span style="color: {color}; font-weight: 600;">{value}</span> </div>""", unsafe_allow_html=True)
     
     st.markdown("</div>", unsafe_allow_html=True)
     
@@ -395,22 +275,7 @@ def render_right_panel() -> None:
         {"type": "success", "message": "Authentication flow detected", "time": "3 min ago"},
     ])
     
-    st.markdown(
-        """
-        <div style="
-            background: rgba(30, 30, 63, 0.8);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 12px;
-            padding: 1.25rem;
-            margin-top: 1rem;
-        ">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h4 style="color: #F1F5F9; margin: 0; font-size: 0.95rem;">🔔 Notifications</h4>
-                <span style="color: #64748B; font-size: 0.75rem;">3 new</span>
-            </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("""<div style=" background: rgba(30, 30, 63, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1.25rem; margin-top: 1rem; "> <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;"> <h4 style="color: #F1F5F9; margin: 0; font-size: 0.95rem;">🔔 Notifications</h4> <span style="color: #64748B; font-size: 0.75rem;">3 new</span> </div>""", unsafe_allow_html=True)
     
     for notif in notifications:
         notification_toast(notif["message"], notif["type"], "✅" if notif["type"] == "success" else "ℹ️")
@@ -423,19 +288,7 @@ def render_bottom_timeline() -> None:
     current_phase_idx = get_intel_data("intel_current_phase", 0)
     start_time = get_intel_data("intel_start_time", datetime.now())
     
-    st.markdown(
-        """
-        <div style="
-            background: rgba(30, 30, 63, 0.8);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 16px;
-            padding: 1.5rem;
-        ">
-            <h3 style="color: #F1F5F9; margin: 0 0 1.5rem; font-size: 1.1rem;">📅 Mission Timeline</h3>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("""<div style=" background: rgba(30, 30, 63, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 16px; padding: 1.5rem; "> <h3 style="color: #F1F5F9; margin: 0 0 1.5rem; font-size: 1.1rem;">📅 Mission Timeline</h3> </div>""", unsafe_allow_html=True)
     
     # Timeline steps
     timeline_items = [
@@ -463,93 +316,13 @@ def render_discovered_pages() -> None:
     """Render discovered pages table."""
     pages = MOCK_DISCOVERED_PAGES
     
-    st.markdown(
-        """
-        <div style="
-            background: rgba(30, 30, 63, 0.8);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 16px;
-            padding: 1.5rem;
-        ">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                <div>
-                    <h3 style="color: #F1F5F9; margin: 0; font-size: 1.1rem;">📄 Discovered Pages</h3>
-                    <p style="color: #64748B; margin: 0.25rem 0 0; font-size: 0.8rem;">8 pages analyzed</p>
-                </div>
-                <div style="display: flex; gap: 0.5rem;">
-                    <input type="text" placeholder="Search pages..." style="
-                        background: rgba(51, 65, 85, 0.5);
-                        border: 1px solid #334155;
-                        border-radius: 8px;
-                        padding: 0.5rem 1rem;
-                        color: #F1F5F9;
-                        font-size: 0.85rem;
-                    ">
-                </div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("""<div style=" background: rgba(30, 30, 63, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 16px; padding: 1.5rem; "> <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;"> <div> <h3 style="color: #F1F5F9; margin: 0; font-size: 1.1rem;">📄 Discovered Pages</h3> <p style="color: #64748B; margin: 0.25rem 0 0; font-size: 0.8rem;">8 pages analyzed</p> </div> <div style="display: flex; gap: 0.5rem;"> <input type="text" placeholder="Search pages..." style=" background: rgba(51, 65, 85, 0.5); border: 1px solid #334155; border-radius: 8px; padding: 0.5rem 1rem; color: #F1F5F9; font-size: 0.85rem; "> </div> </div> </div>""", unsafe_allow_html=True)
     
     # Display pages as cards
     for i, page in enumerate(pages):
         status_color = "#10B981" if page["status"] == "Analyzed" else "#64748B"
         
-        st.markdown(
-            f"""
-            <div style="
-                background: rgba(30, 30, 63, 0.6);
-                border: 1px solid rgba(51, 65, 85, 0.5);
-                border-radius: 12px;
-                padding: 1rem 1.5rem;
-                margin-bottom: 0.75rem;
-                display: flex;
-                align-items: center;
-                gap: 1.5rem;
-            ">
-                <div style="
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 8px;
-                    background: linear-gradient(135deg, #6366F1, #8B5CF6);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 1.25rem;
-                ">📄</div>
-                <div style="flex: 1;">
-                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.25rem;">
-                        <span style="color: #F1F5F9; font-weight: 500;">{page['name']}</span>
-                        <span style="color: #64748B; font-size: 0.8rem;">{page['url']}</span>
-                    </div>
-                    <div style="display: flex; gap: 1rem;">
-                        <span style="color: #64748B; font-size: 0.75rem;">📝 {page['forms']} forms</span>
-                        <span style="color: #64748B; font-size: 0.75rem;">🔘 {page['buttons']} buttons</span>
-                        <span style="color: #64748B; font-size: 0.75rem;">📊 {page['tables']} tables</span>
-                    </div>
-                </div>
-                <div style="text-align: center; padding: 0.5rem 1rem; background: rgba(51, 65, 85, 0.5); border-radius: 8px;">
-                    <p style="color: #64748B; margin: 0; font-size: 0.65rem;">Coverage</p>
-                    <p style="color: #10B981; margin: 0; font-size: 0.95rem; font-weight: 600;">{page['coverage']}</p>
-                </div>
-                <span style="
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    padding: 0.35rem 0.75rem;
-                    border-radius: 9999px;
-                    font-size: 0.75rem;
-                    background: {status_color}20;
-                    color: {status_color};
-                ">
-                    <span style="width: 6px; height: 6px; border-radius: 50%; background: {status_color};"></span>
-                    {page['status']}
-                </span>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown(f"""<div style=" background: rgba(30, 30, 63, 0.6); border: 1px solid rgba(51, 65, 85, 0.5); border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 1.5rem; "> <div style=" width: 40px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, #6366F1, #8B5CF6); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; ">📄</div> <div style="flex: 1;"> <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.25rem;"> <span style="color: #F1F5F9; font-weight: 500;">{page['name']}</span> <span style="color: #64748B; font-size: 0.8rem;">{page['url']}</span> </div> <div style="display: flex; gap: 1rem;"> <span style="color: #64748B; font-size: 0.75rem;">📝 {page['forms']} forms</span> <span style="color: #64748B; font-size: 0.75rem;">🔘 {page['buttons']} buttons</span> <span style="color: #64748B; font-size: 0.75rem;">📊 {page['tables']} tables</span> </div> </div> <div style="text-align: center; padding: 0.5rem 1rem; background: rgba(51, 65, 85, 0.5); border-radius: 8px;"> <p style="color: #64748B; margin: 0; font-size: 0.65rem;">Coverage</p> <p style="color: #10B981; margin: 0; font-size: 0.95rem; font-weight: 600;">{page['coverage']}</p> </div> <span style=" display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; background: {status_color}20; color: {status_color}; "> <span style="width: 6px; height: 6px; border-radius: 50%; background: {status_color};"></span> {page['status']} </span> </div>""", unsafe_allow_html=True)
 
 
 def auto_advance_phases() -> None:
@@ -625,20 +398,7 @@ def render_page_drawer() -> None:
     # Page selector in sidebar
     with st.sidebar:
         st.markdown("---")
-        st.markdown(
-            """
-            <div style="
-                background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(30, 30, 63, 0.9) 100%);
-                border: 1px solid rgba(99, 102, 241, 0.3);
-                border-radius: 12px;
-                padding: 1rem;
-            ">
-                <h4 style="color: #F1F5F9; margin: 0 0 0.75rem; font-size: 0.95rem;">📄 Page Explorer</h4>
-                <p style="color: #94A3B8; margin: 0 0 1rem; font-size: 0.75rem;">Click a page to view details</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown("""<div style=" background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(30, 30, 63, 0.9) 100%); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 12px; padding: 1rem; "> <h4 style="color: #F1F5F9; margin: 0 0 0.75rem; font-size: 0.95rem;">📄 Page Explorer</h4> <p style="color: #94A3B8; margin: 0 0 1rem; font-size: 0.75rem;">Click a page to view details</p> </div>""", unsafe_allow_html=True)
         
         # Page selection
         page_names = [p["name"] for p in MOCK_DISCOVERED_PAGES]
@@ -654,34 +414,7 @@ def render_page_drawer() -> None:
         if selected_page_data:
             with st.expander("📋 Page Details: " + st.session_state.selected_page, expanded=True):
                 # Page Header
-                st.markdown(
-                    f"""
-                    <div style="
-                        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(30, 30, 63, 0.95) 100%);
-                        border-radius: 12px;
-                        padding: 1.25rem;
-                        margin-bottom: 1rem;
-                    ">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div style="
-                                width: 48px;
-                                height: 48px;
-                                border-radius: 12px;
-                                background: linear-gradient(135deg, #6366F1, #8B5CF6);
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                font-size: 1.5rem;
-                            ">📄</div>
-                            <div>
-                                <h3 style="color: #F1F5F9; margin: 0;">{selected_page_data['name']}</h3>
-                                <p style="color: #94A3B8; margin: 0.25rem 0 0; font-size: 0.85rem;">{selected_page_data['url']}</p>
-                            </div>
-                        </div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
-                )
+                st.markdown(f"""<div style=" background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(30, 30, 63, 0.95) 100%); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; "> <div style="display: flex; align-items: center; gap: 1rem;"> <div style=" width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #6366F1, #8B5CF6); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; ">📄</div> <div> <h3 style="color: #F1F5F9; margin: 0;">{selected_page_data['name']}</h3> <p style="color: #94A3B8; margin: 0.25rem 0 0; font-size: 0.85rem;">{selected_page_data['url']}</p> </div> </div> </div>""", unsafe_allow_html=True)
                 
                 # Detected Components
                 st.markdown("### 🔍 Detected Components")
@@ -695,15 +428,7 @@ def render_page_drawer() -> None:
                 }
                 
                 for comp, count in components.items():
-                    st.markdown(
-                        f"""
-                        <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #334155;">
-                            <span style="color: #94A3B8;">{comp}</span>
-                            <span style="color: #F1F5F9; font-weight: 500;">{count}</span>
-                        </div>
-                        """,
-                        unsafe_allow_html=True,
-                    )
+                    st.markdown(f"""<div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #334155;"> <span style="color: #94A3B8;">{comp}</span> <span style="color: #F1F5F9; font-weight: 500;">{count}</span> </div>""", unsafe_allow_html=True)
                 
                 st.markdown("### 📐 DOM Summary")
                 dom_elements = {
@@ -714,15 +439,7 @@ def render_page_drawer() -> None:
                 }
                 
                 for elem, count in dom_elements.items():
-                    st.markdown(
-                        f"""
-                        <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #334155;">
-                            <span style="color: #94A3B8;">{elem}</span>
-                            <span style="color: #F1F5F9; font-weight: 500;">{count}</span>
-                        </div>
-                        """,
-                        unsafe_allow_html=True,
-                    )
+                    st.markdown(f"""<div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #334155;"> <span style="color: #94A3B8;">{elem}</span> <span style="color: #F1F5F9; font-weight: 500;">{count}</span> </div>""", unsafe_allow_html=True)
                 
                 st.markdown("### ✅ Suggested Test Cases")
                 test_cases = [
@@ -735,23 +452,7 @@ def render_page_drawer() -> None:
                 
                 for case, priority in test_cases:
                     priority_color = {"High": "#EF4444", "Medium": "#F59E0B", "Low": "#10B981"}.get(priority, "#64748B")
-                    st.markdown(
-                        f"""
-                        <div style="
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: center;
-                            padding: 0.5rem;
-                            background: rgba(51, 65, 85, 0.3);
-                            border-radius: 6px;
-                            margin-bottom: 0.5rem;
-                        ">
-                            <span style="color: #F1F5F9; font-size: 0.85rem;">{case}</span>
-                            <span style="color: {priority_color}; font-size: 0.75rem;">{priority}</span>
-                        </div>
-                        """,
-                        unsafe_allow_html=True,
-                    )
+                    st.markdown(f"""<div style=" display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: rgba(51, 65, 85, 0.3); border-radius: 6px; margin-bottom: 0.5rem; "> <span style="color: #F1F5F9; font-size: 0.85rem;">{case}</span> <span style="color: {priority_color}; font-size: 0.75rem;">{priority}</span> </div>""", unsafe_allow_html=True)
                 
                 st.markdown("### ⚠️ Potential Risks")
                 risks = [
@@ -761,19 +462,7 @@ def render_page_drawer() -> None:
                 ]
                 
                 for risk in risks:
-                    st.markdown(
-                        f"""
-                        <div style="
-                            padding: 0.5rem 0.75rem;
-                            background: rgba(245, 158, 11, 0.1);
-                            border-left: 3px solid #F59E0B;
-                            margin-bottom: 0.5rem;
-                        ">
-                            <span style="color: #F59E0B; font-size: 0.8rem;">⚠️ {risk}</span>
-                        </div>
-                        """,
-                        unsafe_allow_html=True,
-                    )
+                    st.markdown(f"""<div style=" padding: 0.5rem 0.75rem; background: rgba(245, 158, 11, 0.1); border-left: 3px solid #F59E0B; margin-bottom: 0.5rem; "> <span style="color: #F59E0B; font-size: 0.8rem;">⚠️ {risk}</span> </div>""", unsafe_allow_html=True)
                 
                 st.markdown("### ♿ Accessibility Notes")
                 a11y_notes = [
@@ -785,70 +474,14 @@ def render_page_drawer() -> None:
                 
                 for note in a11y_notes:
                     status_color = "#10B981" if "Good" in note or "Fully" in note else "#F59E0B"
-                    st.markdown(
-                        f"""
-                        <div style="
-                            padding: 0.5rem 0;
-                            border-bottom: 1px solid #334155;
-                            display: flex;
-                            align-items: center;
-                            gap: 0.5rem;
-                        ">
-                            <span style="color: {status_color};">{'✅' if 'Good' in note or 'Fully' in note else '⚠️'}</span>
-                            <span style="color: #94A3B8; font-size: 0.8rem;">{note}</span>
-                        </div>
-                        """,
-                        unsafe_allow_html=True,
-                    )
+                    st.markdown(f"""<div style=" padding: 0.5rem 0; border-bottom: 1px solid #334155; display: flex; align-items: center; gap: 0.5rem; "> <span style="color: {status_color};">{'✅' if 'Good' in note or 'Fully' in note else '⚠️'}</span> <span style="color: #94A3B8; font-size: 0.8rem;">{note}</span> </div>""", unsafe_allow_html=True)
                 
                 # Coverage
                 st.markdown("---")
                 coverage = int(selected_page_data["coverage"].replace("%", ""))
-                st.markdown(
-                    f"""
-                    <div style="
-                        background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(30, 30, 63, 0.9) 100%);
-                        border: 1px solid rgba(16, 185, 129, 0.3);
-                        border-radius: 12px;
-                        padding: 1rem;
-                        text-align: center;
-                    ">
-                        <p style="color: #94A3B8; margin: 0 0 0.5rem; font-size: 0.8rem;">Estimated Coverage</p>
-                        <p style="color: #10B981; margin: 0; font-size: 2rem; font-weight: 700;">{coverage}%</p>
-                        <div style="height: 6px; background: #334155; border-radius: 3px; margin-top: 0.5rem;">
-                            <div style="width: {coverage}%; height: 100%; background: #10B981; border-radius: 3px;"></div>
-                        </div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
-                )
+                st.markdown(f"""<div style=" background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(30, 30, 63, 0.9) 100%); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 1rem; text-align: center; "> <p style="color: #94A3B8; margin: 0 0 0.5rem; font-size: 0.8rem;">Estimated Coverage</p> <p style="color: #10B981; margin: 0; font-size: 2rem; font-weight: 700;">{coverage}%</p> <div style="height: 6px; background: #334155; border-radius: 3px; margin-top: 0.5rem;"> <div style="width: {coverage}%; height: 100%; background: #10B981; border-radius: 3px;"></div> </div> </div>""", unsafe_allow_html=True)
     
     # Show help panel if requested
     if get_intel_data("show_help", False):
         with st.expander("❓ Help & Tips", expanded=True):
-            st.markdown(
-                """
-                <div style="
-                    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(30, 30, 63, 0.9) 100%);
-                    border-radius: 12px;
-                    padding: 1.5rem;
-                ">
-                    <h4 style="color: #F1F5F9; margin: 0 0 1rem;">🚀 Getting Started</h4>
-                    <ol style="color: #94A3B8; padding-left: 1.25rem; font-size: 0.85rem;">
-                        <li style="margin-bottom: 0.5rem;">The AI is currently studying your application</li>
-                        <li style="margin-bottom: 0.5rem;">Each phase analyzes different aspects of your app</li>
-                        <li style="margin-bottom: 0.5rem;">Click on any page to see detailed analysis</li>
-                        <li style="margin-bottom: 0.5rem;">Review suggested test cases for each page</li>
-                        <li>Click "Continue to Automation" when ready</li>
-                    </ol>
-                    
-                    <h4 style="color: #F1F5F9; margin: 1.5rem 0 1rem;">💡 Tips</h4>
-                    <ul style="color: #94A3B8; padding-left: 1.25rem; font-size: 0.85rem;">
-                        <li style="margin-bottom: 0.5rem;">Use "Pause" to stop analysis temporarily</li>
-                        <li style="margin-bottom: 0.5rem;">"Export Blueprint" saves the app map</li>
-                        <li>Higher confidence = better test generation</li>
-                    </ul>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+            st.markdown("""<div style=" background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(30, 30, 63, 0.9) 100%); border-radius: 12px; padding: 1.5rem; "> <h4 style="color: #F1F5F9; margin: 0 0 1rem;">🚀 Getting Started</h4> <ol style="color: #94A3B8; padding-left: 1.25rem; font-size: 0.85rem;"> <li style="margin-bottom: 0.5rem;">The AI is currently studying your application</li> <li style="margin-bottom: 0.5rem;">Each phase analyzes different aspects of your app</li> <li style="margin-bottom: 0.5rem;">Click on any page to see detailed analysis</li> <li style="margin-bottom: 0.5rem;">Review suggested test cases for each page</li> <li>Click "Continue to Automation" when ready</li> </ol> <h4 style="color: #F1F5F9; margin: 1.5rem 0 1rem;">💡 Tips</h4> <ul style="color: #94A3B8; padding-left: 1.25rem; font-size: 0.85rem;"> <li style="margin-bottom: 0.5rem;">Use "Pause" to stop analysis temporarily</li> <li style="margin-bottom: 0.5rem;">"Export Blueprint" saves the app map</li> <li>Higher confidence = better test generation</li> </ul> </div>""", unsafe_allow_html=True)

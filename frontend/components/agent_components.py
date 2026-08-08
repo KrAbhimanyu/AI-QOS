@@ -210,68 +210,7 @@ def agent_header(
         for k in MOCK_ORG_KPIS
     )
 
-    st.markdown(
-        f"""
-        <div style="
-            background:{_GLASS_PANEL_BG};
-            border:1px solid {_GLASS_PANEL_BORDER};
-            border-radius:{BORDERS.RADIUS_XL};
-            padding:{SPACING.SPACE_6};
-            margin-bottom:{SPACING.SPACE_4};
-            box-shadow:{SHADOWS.CARD};
-            position:sticky;top:0;z-index:10;
-            backdrop-filter:blur(12px);
-        ">
-            <div style="display:flex;align-items:center;justify-content:space-between;
-                        flex-wrap:wrap;gap:{SPACING.SPACE_4};margin-bottom:{SPACING.SPACE_4};">
-                <div>
-                    <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};
-                                margin-bottom:{SPACING.SPACE_2};">
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">🏠 Dashboard</span>
-                        <span style="color:{COLORS.TEXT_MUTED};">›</span>
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">Agents</span>
-                        <span style="color:{COLORS.TEXT_MUTED};">›</span>
-                        <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(mission)}</span>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};flex-wrap:wrap;">
-                        <h1 style="margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_2XL};
-                                   color:{COLORS.TEXT_PRIMARY};font-weight:600;">
-                            🤖 Agent Control Tower
-                        </h1>
-                        <span style="display:inline-flex;align-items:center;gap:{SPACING.SPACE_2};
-                                     padding:{SPACING.SPACE_1} {SPACING.SPACE_3};
-                                     background:rgba({health_rgb},0.2);
-                                     color:{health_color};
-                                     border:1px solid rgba({health_rgb},0.4);
-                                     border-radius:{BORDERS.RADIUS_FULL};
-                                     font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">
-                            <span style="width:8px;height:8px;border-radius:50%;
-                                        background:{health_color};
-                                        animation:{ANIMATIONS.PULSE};"></span>
-                            Health {health}%
-                        </span>
-                    </div>
-                </div>
-                <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};flex-wrap:wrap;">
-                    <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};
-                                 border:1px solid {_PANEL_BORDER};border-radius:{BORDERS.RADIUS_MD};
-                                 padding:{SPACING.SPACE_1} {SPACING.SPACE_3};"
-                          title="Search agents">🔍 Search…</span>
-                    <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};
-                                 border:1px solid {_PANEL_BORDER};border-radius:{BORDERS.RADIUS_MD};
-                                 padding:{SPACING.SPACE_1} {SPACING.SPACE_3};"
-                          title="Command palette">⌘K Command</span>
-                    <span style="color:{COLORS.TEXT_MUTED};font-size:1rem;cursor:pointer;"
-                          title="Notifications">🔔</span>
-                    <span style="color:{COLORS.TEXT_MUTED};font-size:1rem;cursor:pointer;"
-                          title="Fullscreen">⛶</span>
-                </div>
-            </div>
-            <div style="display:flex;gap:{SPACING.SPACE_2};flex-wrap:wrap;">{stat_chips}</div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(f"""<div style=" background:{_GLASS_PANEL_BG}; border:1px solid {_GLASS_PANEL_BORDER}; border-radius:{BORDERS.RADIUS_XL}; padding:{SPACING.SPACE_6}; margin-bottom:{SPACING.SPACE_4}; box-shadow:{SHADOWS.CARD}; position:sticky;top:0;z-index:10; backdrop-filter:blur(12px); "> <div style="display:flex;align-items:center;justify-content:space-between; flex-wrap:wrap;gap:{SPACING.SPACE_4};margin-bottom:{SPACING.SPACE_4};"> <div> <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2}; margin-bottom:{SPACING.SPACE_2};"> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">🏠 Dashboard</span> <span style="color:{COLORS.TEXT_MUTED};">›</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">Agents</span> <span style="color:{COLORS.TEXT_MUTED};">›</span> <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(mission)}</span> </div> <div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};flex-wrap:wrap;"> <h1 style="margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_2XL}; color:{COLORS.TEXT_PRIMARY};font-weight:600;"> 🤖 Agent Control Tower </h1> <span style="display:inline-flex;align-items:center;gap:{SPACING.SPACE_2}; padding:{SPACING.SPACE_1} {SPACING.SPACE_3}; background:rgba({health_rgb},0.2); color:{health_color}; border:1px solid rgba({health_rgb},0.4); border-radius:{BORDERS.RADIUS_FULL}; font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;"> <span style="width:8px;height:8px;border-radius:50%; background:{health_color}; animation:{ANIMATIONS.PULSE};"></span> Health {health}% </span> </div> </div> <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};flex-wrap:wrap;"> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM}; border:1px solid {_PANEL_BORDER};border-radius:{BORDERS.RADIUS_MD}; padding:{SPACING.SPACE_1} {SPACING.SPACE_3};" title="Search agents">🔍 Search…</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM}; border:1px solid {_PANEL_BORDER};border-radius:{BORDERS.RADIUS_MD}; padding:{SPACING.SPACE_1} {SPACING.SPACE_3};" title="Command palette">⌘K Command</span> <span style="color:{COLORS.TEXT_MUTED};font-size:1rem;cursor:pointer;" title="Notifications">🔔</span> <span style="color:{COLORS.TEXT_MUTED};font-size:1rem;cursor:pointer;" title="Fullscreen">⛶</span> </div> </div> <div style="display:flex;gap:{SPACING.SPACE_2};flex-wrap:wrap;">{stat_chips}</div> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================

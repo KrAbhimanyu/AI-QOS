@@ -185,29 +185,7 @@ def render_center_panel() -> None:
         status_colors = {"completed": "#10B981", "active": "#6366F1", "pending": "#64748B"}
         color = status_colors.get(step["status"], "#64748B")
         
-        st.markdown(
-            f"""
-            <div style="display: flex; gap: 1rem; margin-bottom: {0 if is_last else 0.75}rem;">
-                <div style="display: flex; flex-direction: column; align-items: center;">
-                    <div style="
-                        width: 28px;
-                        height: 28px;
-                        border-radius: 50%;
-                        background: {color};
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-size: 0.8rem;
-                    ">{step['icon']}</div>
-                    {'' if is_last else f'<div style="width: 2px; flex: 1; min-height: 20px; background: {color};"></div>'}
-                </div>
-                <div style="flex: 1;">
-                    <p style="color: {'#F1F5F9' if step['status'] != 'pending' else '#64748B'}; margin: 0; font-size: 0.85rem;">{step['name']}</p>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown(f"""<div style="display: flex; gap: 1rem; margin-bottom: {0 if is_last else 0.75}rem;"> <div style="display: flex; flex-direction: column; align-items: center;"> <div style=" width: 28px; height: 28px; border-radius: 50%; background: {color}; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; ">{step['icon']}</div> {'' if is_last else f'<div style="width: 2px; flex: 1; min-height: 20px; background: {color};"></div>'} </div> <div style="flex: 1;"> <p style="color: {'#F1F5F9' if step['status'] != 'pending' else '#64748B'}; margin: 0; font-size: 0.85rem;">{step['name']}</p> </div> </div>""", unsafe_allow_html=True)
 
 
 def render_right_panel() -> None:
@@ -262,26 +240,7 @@ def render_bottom_section() -> None:
     
     with right_col:
         # Console Viewer
-        st.markdown(
-            """
-            <div style="
-                background: rgba(30, 30, 63, 0.8);
-                border: 1px solid rgba(99, 102, 241, 0.2);
-                border-radius: 12px;
-                padding: 1rem;
-                margin-bottom: 1rem;
-            ">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <h4 style="color: #F1F5F9; margin: 0; font-size: 0.95rem;">💻 Log Console</h4>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <span style="color: #64748B; font-size: 0.75rem; cursor: pointer;">Clear</span>
-                        <span style="color: #64748B; font-size: 0.75rem; cursor: pointer;">Download</span>
-                    </div>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown("""<div style=" background: rgba(30, 30, 63, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; "> <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;"> <h4 style="color: #F1F5F9; margin: 0; font-size: 0.95rem;">💻 Log Console</h4> <div style="display: flex; gap: 0.5rem;"> <span style="color: #64748B; font-size: 0.75rem; cursor: pointer;">Clear</span> <span style="color: #64748B; font-size: 0.75rem; cursor: pointer;">Download</span> </div> </div> </div>""", unsafe_allow_html=True)
         console_viewer(MOCK_LOGS)
     
     # Network Panel
@@ -301,34 +260,7 @@ def render_bottom_section() -> None:
     
     for i, (col, screenshot) in enumerate(zip([col1, col2, col3], screenshots)):
         with col:
-            st.markdown(
-                f"""
-                <div style="
-                    background: linear-gradient(135deg, rgba(30, 30, 63, 0.9) 0%, rgba(99, 102, 241, 0.1) 100%);
-                    border: 1px solid rgba(99, 102, 241, 0.2);
-                    border-radius: 12px;
-                    padding: 1rem;
-                    text-align: center;
-                    cursor: pointer;
-                    transition: all 0.3s;
-                ">
-                    <div style="
-                        height: 100px;
-                        background: linear-gradient(135deg, #1E1E3F, #2A2A4A);
-                        border-radius: 8px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        margin-bottom: 0.75rem;
-                    ">
-                        <span style="font-size: 2rem;">📷</span>
-                    </div>
-                    <p style="color: #F1F5F9; margin: 0; font-size: 0.85rem;">{screenshot['name']}</p>
-                    <p style="color: #64748B; margin: 0.25rem 0 0; font-size: 0.7rem;">{screenshot['time']}</p>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+            st.markdown(f"""<div style=" background: linear-gradient(135deg, rgba(30, 30, 63, 0.9) 0%, rgba(99, 102, 241, 0.1) 100%); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1rem; text-align: center; cursor: pointer; transition: all 0.3s; "> <div style=" height: 100px; background: linear-gradient(135deg, #1E1E3F, #2A2A4A); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem; "> <span style="font-size: 2rem;">📷</span> </div> <p style="color: #F1F5F9; margin: 0; font-size: 0.85rem;">{screenshot['name']}</p> <p style="color: #64748B; margin: 0.25rem 0 0; font-size: 0.7rem;">{screenshot['time']}</p> </div>""", unsafe_allow_html=True)
 
 
 def auto_update_execution() -> None:
@@ -364,19 +296,7 @@ def render_test_details_drawer() -> None:
     """Render left drawer with test case details."""
     with st.sidebar:
         with st.expander("📋 Test Case Details", expanded=False):
-            st.markdown(
-                """
-                <div style="
-                    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(30, 30, 63, 0.9) 100%);
-                    border: 1px solid rgba(99, 102, 241, 0.3);
-                    border-radius: 12px;
-                    padding: 1rem;
-                ">
-                    <h4 style="color: #F1F5F9; margin: 0 0 1rem;">Current Test Case</h4>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+            st.markdown("""<div style=" background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(30, 30, 63, 0.9) 100%); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 12px; padding: 1rem; "> <h4 style="color: #F1F5F9; margin: 0 0 1rem;">Current Test Case</h4> </div>""", unsafe_allow_html=True)
             
             test_case = {
                 "scenario": "User Login and Dashboard Access",
@@ -416,18 +336,7 @@ def render_dom_inspector() -> None:
     """Render DOM inspector panel."""
     st.markdown("<h4 style='color: #F1F5F9; margin: 1.5rem 0 1rem;'>🔍 DOM Inspector</h4>", unsafe_allow_html=True)
     
-    st.markdown(
-        """
-        <div style="
-            background: rgba(30, 30, 63, 0.8);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 12px;
-            padding: 1rem;
-        ">
-            <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 0.95rem;">Current Element</h4>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("""<div style=" background: rgba(30, 30, 63, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1rem; "> <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 0.95rem;">Current Element</h4>""", unsafe_allow_html=True)
     
     dom_info = [
         ("Tag", "button"),
@@ -442,15 +351,7 @@ def render_dom_inspector() -> None:
     ]
     
     for label, value in dom_info:
-        st.markdown(
-            f"""
-            <div style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid rgba(51, 65, 85, 0.5);">
-                <span style="color: #64748B; font-size: 0.8rem;">{label}</span>
-                <span style="color: #F1F5F9; font-size: 0.8rem; font-family: monospace;">{value}</span>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown(f"""<div style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid rgba(51, 65, 85, 0.5);"> <span style="color: #64748B; font-size: 0.8rem;">{label}</span> <span style="color: #F1F5F9; font-size: 0.8rem; font-family: monospace;">{value}</span> </div>""", unsafe_allow_html=True)
     
     st.markdown("</div>", unsafe_allow_html=True)
     
@@ -465,32 +366,10 @@ def render_dom_inspector() -> None:
     ]
     
     for attr, value in attributes:
-        st.markdown(
-            f"""
-            <div style="display: flex; gap: 0.5rem; padding: 0.3rem 0; font-size: 0.75rem;">
-                <span style="color: #22D3EE;">{attr}</span>
-                <span style="color: #64748B;">=</span>
-                <span style="color: #10B981;">"{value}"</span>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown(f"""<div style="display: flex; gap: 0.5rem; padding: 0.3rem 0; font-size: 0.75rem;"> <span style="color: #22D3EE;">{attr}</span> <span style="color: #64748B;">=</span> <span style="color: #10B981;">"{value}"</span> </div>""", unsafe_allow_html=True)
     
     # Confidence
-    st.markdown(
-        """
-        <div style="margin-top: 1rem; padding: 0.75rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="color: #94A3B8; font-size: 0.8rem;">Locator Confidence</span>
-                <span style="color: #10B981; font-weight: 600;">98%</span>
-            </div>
-            <div style="height: 4px; background: #334155; border-radius: 2px; margin-top: 0.5rem;">
-                <div style="width: 98%; height: 100%; background: #10B981; border-radius: 2px;"></div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("""<div style="margin-top: 1rem; padding: 0.75rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px;"> <div style="display: flex; justify-content: space-between; align-items: center;"> <span style="color: #94A3B8; font-size: 0.8rem;">Locator Confidence</span> <span style="color: #10B981; font-weight: 600;">98%</span> </div> <div style="height: 4px; background: #334155; border-radius: 2px; margin-top: 0.5rem;"> <div style="width: 98%; height: 100%; background: #10B981; border-radius: 2px;"></div> </div> </div>""", unsafe_allow_html=True)
 
 
 def render_ai_explanation_panel() -> None:
@@ -526,21 +405,7 @@ def render_ai_explanation_panel() -> None:
     ]
     
     for exp in explanations:
-        st.markdown(
-            f"""
-            <div style="
-                padding: 0.75rem;
-                background: rgba(30, 30, 63, 0.5);
-                border-left: 3px solid {exp['color']};
-                border-radius: 0 8px 8px 0;
-                margin-bottom: 0.75rem;
-            ">
-                <p style="color: {exp['color']}; margin: 0 0 0.25rem; font-size: 0.75rem; font-weight: 500;">{exp['title']}</p>
-                <p style="color: #94A3B8; margin: 0; font-size: 0.8rem;">{exp['content']}</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown(f"""<div style=" padding: 0.75rem; background: rgba(30, 30, 63, 0.5); border-left: 3px solid {exp['color']}; border-radius: 0 8px 8px 0; margin-bottom: 0.75rem; "> <p style="color: {exp['color']}; margin: 0 0 0.25rem; font-size: 0.75rem; font-weight: 500;">{exp['title']}</p> <p style="color: #94A3B8; margin: 0; font-size: 0.8rem;">{exp['content']}</p> </div>""", unsafe_allow_html=True)
     set_exec_data("exec_start_time", datetime.now())
     set_exec_data("exec_confidence", 0)
 

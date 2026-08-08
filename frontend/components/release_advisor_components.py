@@ -159,58 +159,7 @@ def release_hero_header() -> None:
     )
 
     st.markdown(
-        f"""
-        <div style="
-            background:{_GLASS_BG};border:1px solid {_GLASS_BORDER};
-            border-radius:{BORDERS.RADIUS_XL};padding:{SPACING.SPACE_6};
-            margin-bottom:{SPACING.SPACE_4};box-shadow:{SHADOWS.CARD};
-            position:sticky;top:0;z-index:10;backdrop-filter:blur(12px);">
-            <div style="display:flex;align-items:center;justify-content:space-between;
-                        flex-wrap:wrap;gap:{SPACING.SPACE_4};margin-bottom:{SPACING.SPACE_4};">
-                <div>
-                    <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};margin-bottom:{SPACING.SPACE_2};">
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">🏠 Dashboard</span>
-                        <span style="color:{COLORS.TEXT_MUTED};">›</span>
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">Release</span>
-                        <span style="color:{COLORS.TEXT_MUTED};">›</span>
-                        <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">AI Decision Center</span>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};flex-wrap:wrap;">
-                        <h1 style="margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_2XL};color:{COLORS.TEXT_PRIMARY};font-weight:600;">
-                            🚀 AI Autonomous Release Decision Center
-                        </h1>
-                        <span style="display:inline-flex;align-items:center;gap:{SPACING.SPACE_2};
-                                     padding:{SPACING.SPACE_1} {SPACING.SPACE_3};
-                                     background:rgba({dec_rgb},0.2);color:{dec_color};
-                                     border:1px solid rgba({dec_rgb},0.4);
-                                     border-radius:{BORDERS.RADIUS_FULL};
-                                     font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:600;">
-                            <span style="width:8px;height:8px;border-radius:50%;background:{dec_color};animation:{ANIMATIONS.PULSE};"></span>
-                            {_escape(decision)}
-                        </span>
-                        <span style="display:inline-flex;align-items:center;gap:{SPACING.SPACE_2};
-                                     padding:{SPACING.SPACE_1} {SPACING.SPACE_3};
-                                     background:rgba({conf_rgb},0.2);color:{conf_color};
-                                     border:1px solid rgba({conf_rgb},0.4);
-                                     border-radius:{BORDERS.RADIUS_FULL};
-                                     font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">
-                            🧠 AI {conf}%
-                        </span>
-                    </div>
-                    <p style="margin:{SPACING.SPACE_2} 0 0;color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">
-                        Autonomous Release Control Center • v3.2.1 • Build #1247 • RC-3 • Last analysis 3m ago
-                    </p>
-                </div>
-                <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};flex-wrap:wrap;">
-                    <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};border:1px solid {COLORS.BORDER};border-radius:{BORDERS.RADIUS_MD};padding:{SPACING.SPACE_1} {SPACING.SPACE_3};" title="Search">🔍 Search…</span>
-                    <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};border:1px solid {COLORS.BORDER};border-radius:{BORDERS.RADIUS_MD};padding:{SPACING.SPACE_1} {SPACING.SPACE_3};" title="Command palette">⌘K Command</span>
-                    <span style="color:{COLORS.TEXT_MUTED};font-size:1rem;cursor:pointer;" title="Notifications">🔔</span>
-                    <span style="color:{COLORS.TEXT_MUTED};font-size:1rem;cursor:pointer;" title="Fullscreen">⛶</span>
-                </div>
-            </div>
-            <div style="display:flex;gap:{SPACING.SPACE_2};flex-wrap:wrap;">{chips}</div>
-        </div>
-        """,
+        f"""<div style=" background:{_GLASS_BG};border:1px solid {_GLASS_BORDER}; border-radius:{BORDERS.RADIUS_XL};padding:{SPACING.SPACE_6}; margin-bottom:{SPACING.SPACE_4};box-shadow:{SHADOWS.CARD}; position:sticky;top:0;z-index:10;backdrop-filter:blur(12px);"> <div style="display:flex;align-items:center;justify-content:space-between; flex-wrap:wrap;gap:{SPACING.SPACE_4};margin-bottom:{SPACING.SPACE_4};"> <div> <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};margin-bottom:{SPACING.SPACE_2};"> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">🏠 Dashboard</span> <span style="color:{COLORS.TEXT_MUTED};">›</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">Release</span> <span style="color:{COLORS.TEXT_MUTED};">›</span> <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">AI Decision Center</span> </div> <div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};flex-wrap:wrap;"> <h1 style="margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_2XL};color:{COLORS.TEXT_PRIMARY};font-weight:600;"> 🚀 AI Autonomous Release Decision Center </h1> <span style="display:inline-flex;align-items:center;gap:{SPACING.SPACE_2}; padding:{SPACING.SPACE_1} {SPACING.SPACE_3}; background:rgba({dec_rgb},0.2);color:{dec_color}; border:1px solid rgba({dec_rgb},0.4); border-radius:{BORDERS.RADIUS_FULL}; font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:600;"> <span style="width:8px;height:8px;border-radius:50%;background:{dec_color};animation:{ANIMATIONS.PULSE};"></span> {_escape(decision)} </span> <span style="display:inline-flex;align-items:center;gap:{SPACING.SPACE_2}; padding:{SPACING.SPACE_1} {SPACING.SPACE_3}; background:rgba({conf_rgb},0.2);color:{conf_color}; border:1px solid rgba({conf_rgb},0.4); border-radius:{BORDERS.RADIUS_FULL}; font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;"> 🧠 AI {conf}% </span> </div> <p style="margin:{SPACING.SPACE_2} 0 0;color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};"> Autonomous Release Control Center • v3.2.1 • Build #1247 • RC-3 • Last analysis 3m ago </p> </div> <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};flex-wrap:wrap;"> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};border:1px solid {COLORS.BORDER};border-radius:{BORDERS.RADIUS_MD};padding:{SPACING.SPACE_1} {SPACING.SPACE_3};" title="Search">🔍 Search…</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};border:1px solid {COLORS.BORDER};border-radius:{BORDERS.RADIUS_MD};padding:{SPACING.SPACE_1} {SPACING.SPACE_3};" title="Command palette">⌘K Command</span> <span style="color:{COLORS.TEXT_MUTED};font-size:1rem;cursor:pointer;" title="Notifications">🔔</span> <span style="color:{COLORS.TEXT_MUTED};font-size:1rem;cursor:pointer;" title="Fullscreen">⛶</span> </div> </div> <div style="display:flex;gap:{SPACING.SPACE_2};flex-wrap:wrap;">{chips}</div> </div>""",
         unsafe_allow_html=True,
     )
 
@@ -227,22 +176,7 @@ def _metric_card(title: str, value: str, subtitle: str = "", trend: str = "", ic
         trend_color = COLORS.ERROR
     else:
         trend_color = COLORS.TEXT_MUTED
-    st.markdown(f"""
-    <div style="padding:{SPACING.SPACE_6};background:{_GLASS_BG};border:{BORDERS.WIDTH_THIN} solid {_GLASS_BORDER};
-                border-radius:{BORDERS.RADIUS_LG};margin-bottom:{SPACING.SPACE_4};box-shadow:{SHADOWS.CARD};">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-            <div>
-                <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;letter-spacing:1px;margin-bottom:{SPACING.SPACE_2};">{_escape(title)}</div>
-                <div style="font-size:{TYPOGRAPHY.FONT_SIZE_3XL};font-weight:700;color:{COLORS.TEXT_PRIMARY};font-family:{TYPOGRAPHY.FONT_MONO};">{_escape(str(value))}</div>
-                {f'<div style="font-size:{TYPOGRAPHY.FONT_SIZE_SM};color:{COLORS.TEXT_SECONDARY};margin-top:{SPACING.SPACE_1};">{_escape(subtitle)}</div>' if subtitle else ''}
-            </div>
-            <div style="text-align:right;">
-                <div style="font-size:{TYPOGRAPHY.FONT_SIZE_2XL};margin-bottom:{SPACING.SPACE_2};">{icon}</div>
-                {f'<div style="font-size:{TYPOGRAPHY.FONT_SIZE_BASE};font-weight:600;color:{trend_color};">{trend}</div>' if trend else ''}
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style="padding:{SPACING.SPACE_6};background:{_GLASS_BG};border:{BORDERS.WIDTH_THIN} solid {_GLASS_BORDER}; border-radius:{BORDERS.RADIUS_LG};margin-bottom:{SPACING.SPACE_4};box-shadow:{SHADOWS.CARD};"> <div style="display:flex;justify-content:space-between;align-items:flex-start;"> <div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;letter-spacing:1px;margin-bottom:{SPACING.SPACE_2};">{_escape(title)}</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_3XL};font-weight:700;color:{COLORS.TEXT_PRIMARY};font-family:{TYPOGRAPHY.FONT_MONO};">{_escape(str(value))}</div> {f'<div style="font-size:{TYPOGRAPHY.FONT_SIZE_SM};color:{COLORS.TEXT_SECONDARY};margin-top:{SPACING.SPACE_1};">{_escape(subtitle)}</div>' if subtitle else ''} </div> <div style="text-align:right;"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_2XL};margin-bottom:{SPACING.SPACE_2};">{icon}</div> {f'<div style="font-size:{TYPOGRAPHY.FONT_SIZE_BASE};font-weight:600;color:{trend_color};">{trend}</div>' if trend else ''} </div> </div> </div>""", unsafe_allow_html=True)
 
 
 def release_score_strip() -> None:
@@ -283,22 +217,7 @@ def ai_decision_center() -> None:
 
     col_decision, col_counters = st.columns([1, 2])
     with col_decision:
-        st.markdown(f"""
-        <div style="padding:{SPACING.SPACE_6};background:linear-gradient(135deg, rgba({dec_rgb},0.18), rgba({COLORS.SURFACE_RGB},0.6));
-                    border:1px solid rgba({dec_rgb},0.4);border-radius:{BORDERS.RADIUS_XL};text-align:center;box-shadow:0 0 30px rgba({dec_rgb},0.15);">
-            <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;margin-bottom:{SPACING.SPACE_2};">AI Verdict</div>
-            <div style="font-size:{TYPOGRAPHY.FONT_SIZE_4XL};font-weight:800;color:{dec_color};margin-bottom:{SPACING.SPACE_2};">{_escape(decision)}</div>
-            <div style="margin:0 auto;width:120px;height:120px;border-radius:50%;
-                        background:conic-gradient({conf_color} {pct}%, rgba({COLORS.SURFACE_RGB},0.8) 0%);
-                        display:flex;align-items:center;justify-content:center;
-                        box-shadow:0 0 24px rgba({conf_rgb},0.3);">
-                <div style="width:92px;height:92px;border-radius:50%;background:{COLORS.SURFACE};display:flex;align-items:center;justify-content:center;">
-                    <span style="font-size:{TYPOGRAPHY.FONT_SIZE_XL};font-weight:700;color:{conf_color};">{conf}%</span>
-                </div>
-            </div>
-            <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};margin-top:{SPACING.SPACE_2};text-transform:uppercase;">Confidence</div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_6};background:linear-gradient(135deg, rgba({dec_rgb},0.18), rgba({COLORS.SURFACE_RGB},0.6)); border:1px solid rgba({dec_rgb},0.4);border-radius:{BORDERS.RADIUS_XL};text-align:center;box-shadow:0 0 30px rgba({dec_rgb},0.15);"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;margin-bottom:{SPACING.SPACE_2};">AI Verdict</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_4XL};font-weight:800;color:{dec_color};margin-bottom:{SPACING.SPACE_2};">{_escape(decision)}</div> <div style="margin:0 auto;width:120px;height:120px;border-radius:50%; background:conic-gradient({conf_color} {pct}%, rgba({COLORS.SURFACE_RGB},0.8) 0%); display:flex;align-items:center;justify-content:center; box-shadow:0 0 24px rgba({conf_rgb},0.3);"> <div style="width:92px;height:92px;border-radius:50%;background:{COLORS.SURFACE};display:flex;align-items:center;justify-content:center;"> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_XL};font-weight:700;color:{conf_color};">{conf}%</span> </div> </div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};margin-top:{SPACING.SPACE_2};text-transform:uppercase;">Confidence</div> </div>""", unsafe_allow_html=True)
     with col_counters:
         counters = [
             ("Evidence", evidence_count, COLORS.PRIMARY, "📊"),
@@ -312,30 +231,10 @@ def ai_decision_center() -> None:
         for i, (label, count, color, icon) in enumerate(counters):
             with cols[i % 3]:
                 c_rgb = _hex_to_rgb(color)
-                st.markdown(f"""
-                <div style="padding:{SPACING.SPACE_4};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};border-left:3px solid {color};margin-bottom:{SPACING.SPACE_2};">
-                    <div style="display:flex;justify-content:space-between;align-items:center;">
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};text-transform:uppercase;">{icon} {label}</span>
-                        <span style="color:{color};font-size:{TYPOGRAPHY.FONT_SIZE_2XL};font-weight:700;">{count}</span>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
+                st.markdown(f"""<div style="padding:{SPACING.SPACE_4};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};border-left:3px solid {color};margin-bottom:{SPACING.SPACE_2};"> <div style="display:flex;justify-content:space-between;align-items:center;"> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};text-transform:uppercase;">{icon} {label}</span> <span style="color:{color};font-size:{TYPOGRAPHY.FONT_SIZE_2XL};font-weight:700;">{count}</span> </div> </div>""", unsafe_allow_html=True)
 
     # Reason + recommended action
-    st.markdown(f"""
-    <div style="padding:{SPACING.SPACE_4};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_LG};margin-top:{SPACING.SPACE_3};border-left:3px solid {dec_color};">
-        <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;margin-bottom:{SPACING.SPACE_2};">Reason</div>
-        <div style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_BASE};line-height:1.5;">{_escape(d["reason"])}</div>
-        <div style="display:flex;gap:{SPACING.SPACE_4};margin-top:{SPACING.SPACE_3};flex-wrap:wrap;">
-            <span style="color:{COLORS.TEXT_SECONDARY};">Business Impact: <span style="color:{COLORS.SUCCESS};font-weight:600;">{_escape(d["business_impact"])}</span></span>
-            <span style="color:{COLORS.TEXT_SECONDARY};">Technical Impact: <span style="color:{COLORS.WARNING};font-weight:600;">{_escape(d["technical_impact"])}</span></span>
-        </div>
-    </div>
-    <div style="padding:{SPACING.SPACE_4};background:rgba({_hex_to_rgb(COLORS.SUCCESS)},0.1);border:1px solid rgba({_hex_to_rgb(COLORS.SUCCESS)},0.3);border-radius:{BORDERS.RADIUS_MD};margin-top:{SPACING.SPACE_3};">
-        <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;">🧠 AI Recommendation</div>
-        <div style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_BASE};margin-top:4px;">{_escape(d["recommended_action"])}</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style="padding:{SPACING.SPACE_4};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_LG};margin-top:{SPACING.SPACE_3};border-left:3px solid {dec_color};"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;margin-bottom:{SPACING.SPACE_2};">Reason</div> <div style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_BASE};line-height:1.5;">{_escape(d["reason"])}</div> <div style="display:flex;gap:{SPACING.SPACE_4};margin-top:{SPACING.SPACE_3};flex-wrap:wrap;"> <span style="color:{COLORS.TEXT_SECONDARY};">Business Impact: <span style="color:{COLORS.SUCCESS};font-weight:600;">{_escape(d["business_impact"])}</span></span> <span style="color:{COLORS.TEXT_SECONDARY};">Technical Impact: <span style="color:{COLORS.WARNING};font-weight:600;">{_escape(d["technical_impact"])}</span></span> </div> </div> <div style="padding:{SPACING.SPACE_4};background:rgba({_hex_to_rgb(COLORS.SUCCESS)},0.1);border:1px solid rgba({_hex_to_rgb(COLORS.SUCCESS)},0.3);border-radius:{BORDERS.RADIUS_MD};margin-top:{SPACING.SPACE_3};"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;">🧠 AI Recommendation</div> <div style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_BASE};margin-top:4px;">{_escape(d["recommended_action"])}</div> </div>""", unsafe_allow_html=True)
 
     # Evidence / blocking / non-blocking
     col1, col2, col3 = st.columns(3)
@@ -366,15 +265,7 @@ def decision_explanation() -> None:
         with cols[i % 4]:
             c = _semantic(sig["color"])
             icon = "✓" if sig["status"] == "pass" else "⚠" if sig["status"] == "warn" else "✗"
-            st.markdown(f"""
-            <div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};border-left:3px solid {c};">
-                <div style="display:flex;justify-content:space-between;align-items:center;">
-                    <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">{_escape(sig["label"])}</span>
-                    <span style="color:{c};font-size:{TYPOGRAPHY.FONT_SIZE_LG};">{icon}</span>
-                </div>
-                <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_SECONDARY};margin-top:4px;">{_escape(sig["detail"])}</div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};border-left:3px solid {c};"> <div style="display:flex;justify-content:space-between;align-items:center;"> <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">{_escape(sig["label"])}</span> <span style="color:{c};font-size:{TYPOGRAPHY.FONT_SIZE_LG};">{icon}</span> </div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_SECONDARY};margin-top:4px;">{_escape(sig["detail"])}</div> </div>""", unsafe_allow_html=True)
 
     st.markdown("#### Decision Path")
     for i, step in enumerate(RA_DECISION_PATH):
@@ -407,20 +298,7 @@ def quality_gates_panel(key_prefix: str = "ra") -> None:
             c = _gate_color(gate["status"])
             icon = "✅" if gate["status"] == "pass" else "⚠️" if gate["status"] == "warning" else "❌"
             block_badge = f'<span style="color:{COLORS.ERROR};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;">BLOCKING</span>' if gate["blocking"] else ""
-            st.markdown(f"""
-            <div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};border-left:3px solid {c};">
-                <div style="display:flex;justify-content:space-between;align-items:center;">
-                    <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">{icon} {_escape(gate["gate"])}</span>
-                    {block_badge}
-                </div>
-                <div style="display:flex;justify-content:space-between;margin-top:{SPACING.SPACE_1};">
-                    <span style="color:{c};font-weight:700;">{gate["score"]}</span>
-                    <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">≥ {gate["threshold"]}</span>
-                </div>
-                <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};margin-top:4px;">👤 {_escape(gate["owner"])} • {_escape(gate["last_run"])}</div>
-                <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_SECONDARY};margin-top:2px;">🧠 {_escape(gate["recommendation"])}</div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};border-left:3px solid {c};"> <div style="display:flex;justify-content:space-between;align-items:center;"> <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">{icon} {_escape(gate["gate"])}</span> {block_badge} </div> <div style="display:flex;justify-content:space-between;margin-top:{SPACING.SPACE_1};"> <span style="color:{c};font-weight:700;">{gate["score"]}</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">≥ {gate["threshold"]}</span> </div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};margin-top:4px;">👤 {_escape(gate["owner"])} • {_escape(gate["last_run"])}</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_SECONDARY};margin-top:2px;">🧠 {_escape(gate["recommendation"])}</div> </div>""", unsafe_allow_html=True)
 
 
 def blocking_gates_panel() -> None:
@@ -428,18 +306,7 @@ def blocking_gates_panel() -> None:
     section_header(f"Blocking Gates ({len(RA_BLOCKERS)})", icon="🚫")
     for b in RA_BLOCKERS:
         c = _semantic(b["color"])
-        st.markdown(f"""
-        <div style="padding:{SPACING.SPACE_4};background:rgba({_hex_to_rgb(c)},0.1);border:1px solid rgba({_hex_to_rgb(c)},0.3);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_3};display:flex;justify-content:space-between;align-items:center;">
-            <div>
-                <div style="color:{COLORS.TEXT_PRIMARY};font-weight:600;font-size:{TYPOGRAPHY.FONT_SIZE_BASE};">🚫 {_escape(b["name"])}</div>
-                <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};margin-top:4px;">{_escape(b["type"].upper())} • {_escape(b["detail"])}</div>
-            </div>
-            <div style="text-align:right;">
-                <div style="color:{c};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;text-transform:uppercase;">{_escape(b["severity"])}</div>
-                <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">👤 {_escape(b["owner"])}</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_4};background:rgba({_hex_to_rgb(c)},0.1);border:1px solid rgba({_hex_to_rgb(c)},0.3);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_3};display:flex;justify-content:space-between;align-items:center;"> <div> <div style="color:{COLORS.TEXT_PRIMARY};font-weight:600;font-size:{TYPOGRAPHY.FONT_SIZE_BASE};">🚫 {_escape(b["name"])}</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};margin-top:4px;">{_escape(b["type"].upper())} • {_escape(b["detail"])}</div> </div> <div style="text-align:right;"> <div style="color:{c};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;text-transform:uppercase;">{_escape(b["severity"])}</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">👤 {_escape(b["owner"])}</div> </div> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -456,17 +323,7 @@ def approval_matrix_panel(key_prefix: str = "ra") -> None:
         with cols[i % 4]:
             c = _semantic(a["color"])
             icon = "✅" if a["status"] == "approved" else "⏳" if a["status"] == "pending" else "⚠️"
-            st.markdown(f"""
-            <div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};border-left:3px solid {c};">
-                <div style="display:flex;justify-content:space-between;align-items:center;">
-                    <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">{icon} {_escape(a["role"])}</span>
-                </div>
-                <div style="color:{COLORS.TEXT_SECONDARY};font-size:{TYPOGRAPHY.FONT_SIZE_XS};margin-top:2px;">👤 {_escape(a["name"])}</div>
-                <div style="color:{c};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;text-transform:uppercase;margin-top:2px;">{_escape(a["status"])}</div>
-                <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};margin-top:4px;">🕐 {_escape(a["timestamp"])}</div>
-                <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_SECONDARY};margin-top:2px;font-style:italic;">"{_escape(a["comment"])}"</div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};border-left:3px solid {c};"> <div style="display:flex;justify-content:space-between;align-items:center;"> <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">{icon} {_escape(a["role"])}</span> </div> <div style="color:{COLORS.TEXT_SECONDARY};font-size:{TYPOGRAPHY.FONT_SIZE_XS};margin-top:2px;">👤 {_escape(a["name"])}</div> <div style="color:{c};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;text-transform:uppercase;margin-top:2px;">{_escape(a["status"])}</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};margin-top:4px;">🕐 {_escape(a["timestamp"])}</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_SECONDARY};margin-top:2px;font-style:italic;">"{_escape(a["comment"])}"</div> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -486,37 +343,13 @@ def risk_intelligence_panel(key_prefix: str = "ra") -> None:
             is_sel = i == selected_idx
             bg = f"rgba({COLORS.PRIMARY_RGB},0.22)" if is_sel else f"rgba({COLORS.SURFACE_RGB},0.5)"
             border_w = "2px" if is_sel else "1px"
-            st.markdown(f"""
-            <div style="padding:{SPACING.SPACE_2} {SPACING.SPACE_3};background:{bg};border-left:{border_w} solid {c};border-radius:0 {BORDERS.RADIUS_MD} {BORDERS.RADIUS_MD} 0;margin-bottom:{SPACING.SPACE_1};">
-                <div style="display:flex;justify-content:space-between;align-items:center;">
-                    <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">{_escape(risk["risk"])}</span>
-                    <div style="display:flex;gap:{SPACING.SPACE_2};">
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">P:{risk["probability"]}%</span>
-                        <span style="color:{c};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;text-transform:uppercase;">{_escape(risk["severity"])}</span>
-                    </div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div style="padding:{SPACING.SPACE_2} {SPACING.SPACE_3};background:{bg};border-left:{border_w} solid {c};border-radius:0 {BORDERS.RADIUS_MD} {BORDERS.RADIUS_MD} 0;margin-bottom:{SPACING.SPACE_1};"> <div style="display:flex;justify-content:space-between;align-items:center;"> <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">{_escape(risk["risk"])}</span> <div style="display:flex;gap:{SPACING.SPACE_2};"> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">P:{risk["probability"]}%</span> <span style="color:{c};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;text-transform:uppercase;">{_escape(risk["severity"])}</span> </div> </div> </div>""", unsafe_allow_html=True)
             if st.button("Select", key=f"{key_prefix}_risk_sel_{i}", use_container_width=True, help=f"Inspect {risk['risk']}"):
                 st.session_state.ra_selected_risk = i
                 st.rerun()
     with col_detail:
         c = _semantic(selected["color"])
-        st.markdown(f"""
-        <div style="padding:{SPACING.SPACE_4};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_LG};border:1px solid rgba({_hex_to_rgb(c)},0.3);">
-            <div style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_LG};font-weight:600;margin-bottom:{SPACING.SPACE_2};">{_escape(selected["risk"])}</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:{SPACING.SPACE_2};">
-                <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Category</div><div style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(selected["category"])}</div></div>
-                <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Probability</div><div style="color:{c};font-weight:700;">{selected["probability"]}%</div></div>
-                <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Impact</div><div style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(selected["impact"])}</div></div>
-                <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Severity</div><div style="color:{c};font-weight:700;text-transform:uppercase;">{_escape(selected["severity"])}</div></div>
-                <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Owner</div><div style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(selected["owner"])}</div></div>
-                <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Status</div><div style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(selected["status"])}</div></div>
-            </div>
-            <div style="margin-top:{SPACING.SPACE_2};font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_SECONDARY};"><strong>Mitigation:</strong> {_escape(selected["mitigation"])}</div>
-            <div style="margin-top:{SPACING.SPACE_1};font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_SECONDARY};"><strong>🧠 AI:</strong> {_escape(selected["recommendation"])}</div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_4};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_LG};border:1px solid rgba({_hex_to_rgb(c)},0.3);"> <div style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_LG};font-weight:600;margin-bottom:{SPACING.SPACE_2};">{_escape(selected["risk"])}</div> <div style="display:grid;grid-template-columns:1fr 1fr;gap:{SPACING.SPACE_2};"> <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Category</div><div style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(selected["category"])}</div></div> <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Probability</div><div style="color:{c};font-weight:700;">{selected["probability"]}%</div></div> <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Impact</div><div style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(selected["impact"])}</div></div> <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Severity</div><div style="color:{c};font-weight:700;text-transform:uppercase;">{_escape(selected["severity"])}</div></div> <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Owner</div><div style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(selected["owner"])}</div></div> <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Status</div><div style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(selected["status"])}</div></div> </div> <div style="margin-top:{SPACING.SPACE_2};font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_SECONDARY};"><strong>Mitigation:</strong> {_escape(selected["mitigation"])}</div> <div style="margin-top:{SPACING.SPACE_1};font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_SECONDARY};"><strong>🧠 AI:</strong> {_escape(selected["recommendation"])}</div> </div>""", unsafe_allow_html=True)
 
 
 def risk_heatmap_panel(key_prefix: str = "ra") -> None:
@@ -547,16 +380,7 @@ def risk_heatmap_panel(key_prefix: str = "ra") -> None:
             label = ", ".join(r["risk"].replace(" Risk", "") for r in risks_here) if risks_here else "—"
             cells += f'<td style="padding:{SPACING.SPACE_2};background:rgba({_hex_to_rgb(cc)},0.12);border:1px solid rgba({_hex_to_rgb(cc)},0.3);border-radius:{BORDERS.RADIUS_SM};text-align:center;min-width:90px;"><div style="color:{cc};font-weight:700;font-size:{TYPOGRAPHY.FONT_SIZE_LG};">{count}</div><div style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(label)}</div></td>'
         rows += f'<tr><td style="padding:{SPACING.SPACE_2};color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};text-transform:uppercase;font-weight:600;">{prob}</td>{cells}</tr>'
-    st.markdown(f"""
-    <div style="overflow-x:auto;">
-        <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;margin-bottom:{SPACING.SPACE_2};text-align:center;">Impact →</div>
-        <table style="width:100%;border-collapse:separate;border-spacing:4px;">
-            <thead><tr><th></th>{header}</tr></thead>
-            <tbody>{rows}</tbody>
-        </table>
-        <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;margin-top:{SPACING.SPACE_2};">↑ Probability</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style="overflow-x:auto;"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;margin-bottom:{SPACING.SPACE_2};text-align:center;">Impact →</div> <table style="width:100%;border-collapse:separate;border-spacing:4px;"> <thead><tr><th></th>{header}</tr></thead> <tbody>{rows}</tbody> </table> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;margin-top:{SPACING.SPACE_2};">↑ Probability</div> </div>""", unsafe_allow_html=True)
 
 
 def ai_risk_prediction_panel() -> None:
@@ -564,21 +388,7 @@ def ai_risk_prediction_panel() -> None:
     section_header("AI Risk Prediction", icon="🔮")
     for pred in RA_RISK_PREDICTIONS:
         c = _semantic(pred["color"])
-        st.markdown(f"""
-        <div style="padding:{SPACING.SPACE_4};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_3};border-left:3px solid {c};">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:{SPACING.SPACE_2};">
-                <span style="color:{COLORS.TEXT_PRIMARY};font-weight:600;font-size:{TYPOGRAPHY.FONT_SIZE_BASE};">🔮 {_escape(pred["failure"])}</span>
-                <span style="color:{c};font-weight:700;font-size:{TYPOGRAPHY.FONT_SIZE_LG};">{pred["probability"]}%</span>
-            </div>
-            <div style="display:flex;gap:{SPACING.SPACE_4};flex-wrap:wrap;font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_SECONDARY};">
-                <span>Impact: <span style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(pred["impact"])}</span></span>
-                <span>Confidence: <span style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{pred["confidence"]}%</span></span>
-                <span>Flow: <span style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(pred["affected_flow"])}</span></span>
-                <span>Component: <span style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(pred["affected_component"])}</span></span>
-            </div>
-            <div style="margin-top:{SPACING.SPACE_2};font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_SECONDARY};">🧠 {_escape(pred["recommendation"])}</div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_4};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_3};border-left:3px solid {c};"> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:{SPACING.SPACE_2};"> <span style="color:{COLORS.TEXT_PRIMARY};font-weight:600;font-size:{TYPOGRAPHY.FONT_SIZE_BASE};">🔮 {_escape(pred["failure"])}</span> <span style="color:{c};font-weight:700;font-size:{TYPOGRAPHY.FONT_SIZE_LG};">{pred["probability"]}%</span> </div> <div style="display:flex;gap:{SPACING.SPACE_4};flex-wrap:wrap;font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_SECONDARY};"> <span>Impact: <span style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(pred["impact"])}</span></span> <span>Confidence: <span style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{pred["confidence"]}%</span></span> <span>Flow: <span style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(pred["affected_flow"])}</span></span> <span>Component: <span style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(pred["affected_component"])}</span></span> </div> <div style="margin-top:{SPACING.SPACE_2};font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_SECONDARY};">🧠 {_escape(pred["recommendation"])}</div> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -606,20 +416,7 @@ def coverage_intelligence_panel(key_prefix: str = "ra") -> None:
         col = _semantic(c["color"])
         gap = c["target"] - c["current"]
         gap_str = f'<span style="color:{COLORS.ERROR};">gap {gap}</span>' if gap > 0 else f'<span style="color:{COLORS.SUCCESS};">on target</span>'
-        st.markdown(f"""
-        <div style="padding:{SPACING.SPACE_2} {SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};border-left:3px solid {col};">
-            <div style="display:flex;justify-content:space-between;">
-                <span style="color:{COLORS.TEXT_PRIMARY};font-weight:500;">{_escape(c["area"])}</span>
-                <div style="display:flex;gap:{SPACING.SPACE_3};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">
-                    <span style="color:{COLORS.TEXT_MUTED};">prev {c["previous"]}</span>
-                    <span style="color:{col};font-weight:600;">{c["current"]}</span>
-                    <span style="color:{COLORS.TEXT_MUTED};">target {c["target"]}</span>
-                    <span style="color:{COLORS.SUCCESS};">{_escape(c["trend"])}</span>
-                    {gap_str}
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_2} {SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};border-left:3px solid {col};"> <div style="display:flex;justify-content:space-between;"> <span style="color:{COLORS.TEXT_PRIMARY};font-weight:500;">{_escape(c["area"])}</span> <div style="display:flex;gap:{SPACING.SPACE_3};font-size:{TYPOGRAPHY.FONT_SIZE_XS};"> <span style="color:{COLORS.TEXT_MUTED};">prev {c["previous"]}</span> <span style="color:{col};font-weight:600;">{c["current"]}</span> <span style="color:{COLORS.TEXT_MUTED};">target {c["target"]}</span> <span style="color:{COLORS.SUCCESS};">{_escape(c["trend"])}</span> {gap_str} </div> </div> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -641,38 +438,13 @@ def business_impact_panel(key_prefix: str = "ra") -> None:
             bg = f"rgba({COLORS.PRIMARY_RGB},0.22)" if is_sel else f"rgba({COLORS.SURFACE_RGB},0.5)"
             border_w = "2px" if is_sel else "1px"
             block_badge = f'<span style="color:{COLORS.ERROR};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;">BLOCKING</span>' if flow["blocking"] else ""
-            st.markdown(f"""
-            <div style="padding:{SPACING.SPACE_2} {SPACING.SPACE_3};background:{bg};border-left:{border_w} solid {c};border-radius:0 {BORDERS.RADIUS_MD} {BORDERS.RADIUS_MD} 0;margin-bottom:{SPACING.SPACE_1};">
-                <div style="display:flex;justify-content:space-between;align-items:center;">
-                    <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">{flow["icon"]} {_escape(flow["flow"])}</span>
-                    <div style="display:flex;gap:{SPACING.SPACE_2};align-items:center;">
-                        {block_badge}
-                        <span style="color:{c};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;text-transform:uppercase;">{_escape(flow["risk"])}</span>
-                    </div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div style="padding:{SPACING.SPACE_2} {SPACING.SPACE_3};background:{bg};border-left:{border_w} solid {c};border-radius:0 {BORDERS.RADIUS_MD} {BORDERS.RADIUS_MD} 0;margin-bottom:{SPACING.SPACE_1};"> <div style="display:flex;justify-content:space-between;align-items:center;"> <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">{flow["icon"]} {_escape(flow["flow"])}</span> <div style="display:flex;gap:{SPACING.SPACE_2};align-items:center;"> {block_badge} <span style="color:{c};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;text-transform:uppercase;">{_escape(flow["risk"])}</span> </div> </div> </div>""", unsafe_allow_html=True)
             if st.button("Select", key=f"{key_prefix}_flow_sel_{flow['flow']}", use_container_width=True, help=f"Inspect {flow['flow']}"):
                 st.session_state.ra_selected_flow = flow["flow"]
                 st.rerun()
     with col_detail:
         c = _risk_color(selected["risk"])
-        st.markdown(f"""
-        <div style="padding:{SPACING.SPACE_4};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_LG};border:1px solid rgba({_hex_to_rgb(c)},0.3);">
-            <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};margin-bottom:{SPACING.SPACE_3};">
-                <span style="font-size:24px;">{selected["icon"]}</span>
-                <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_LG};font-weight:600;">{_escape(selected["flow"])}</span>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:{SPACING.SPACE_2};">
-                <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Coverage</div><div style="color:{COLORS.TEXT_PRIMARY};font-weight:700;">{selected["coverage"]}%</div></div>
-                <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Pass Rate</div><div style="color:{COLORS.SUCCESS};font-weight:700;">{selected["pass_rate"]}%</div></div>
-                <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Revenue Impact</div><div style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(selected["revenue_impact"])}</div></div>
-                <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Customer Impact</div><div style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(selected["customer_impact"])}</div></div>
-                <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Risk</div><div style="color:{c};font-weight:700;text-transform:uppercase;">{_escape(selected["risk"])}</div></div>
-                <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">AI Confidence</div><div style="color:{COLORS.PRIMARY};font-weight:700;">{selected["confidence"]}%</div></div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_4};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_LG};border:1px solid rgba({_hex_to_rgb(c)},0.3);"> <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};margin-bottom:{SPACING.SPACE_3};"> <span style="font-size:24px;">{selected["icon"]}</span> <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_LG};font-weight:600;">{_escape(selected["flow"])}</span> </div> <div style="display:grid;grid-template-columns:1fr 1fr;gap:{SPACING.SPACE_2};"> <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Coverage</div><div style="color:{COLORS.TEXT_PRIMARY};font-weight:700;">{selected["coverage"]}%</div></div> <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Pass Rate</div><div style="color:{COLORS.SUCCESS};font-weight:700;">{selected["pass_rate"]}%</div></div> <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Revenue Impact</div><div style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(selected["revenue_impact"])}</div></div> <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Customer Impact</div><div style="color:{COLORS.TEXT_PRIMARY};font-weight:600;">{_escape(selected["customer_impact"])}</div></div> <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">Risk</div><div style="color:{c};font-weight:700;text-transform:uppercase;">{_escape(selected["risk"])}</div></div> <div style="padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};"><div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">AI Confidence</div><div style="color:{COLORS.PRIMARY};font-weight:700;">{selected["confidence"]}%</div></div> </div> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -700,17 +472,7 @@ def release_comparison_panel() -> None:
         status_color = COLORS.SUCCESS if status == "improved" else COLORS.ERROR if status == "regressed" else COLORS.TEXT_MUTED
         arrow = "↑" if diff > 0 else "↓" if diff < 0 else "→"
         diff_disp = round(abs(diff), 2)
-        st.markdown(f"""
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:{SPACING.SPACE_2} {SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};border-left:3px solid {status_color};">
-            <span style="color:{COLORS.TEXT_PRIMARY};font-weight:500;">{_escape(m["metric"])}</span>
-            <div style="display:flex;gap:{SPACING.SPACE_4};align-items:center;">
-                <span style="color:{COLORS.TEXT_SECONDARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{m["previous"]}{m["unit"]}</span>
-                <span style="color:{COLORS.TEXT_MUTED};">→</span>
-                <span style="color:{COLORS.TEXT_PRIMARY};font-weight:700;">{m["current"]}{m["unit"]}</span>
-                <span style="color:{status_color};font-weight:600;font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{arrow} {diff_disp}{m["unit"]}</span>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div style="display:flex;justify-content:space-between;align-items:center;padding:{SPACING.SPACE_2} {SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};border-left:3px solid {status_color};"> <span style="color:{COLORS.TEXT_PRIMARY};font-weight:500;">{_escape(m["metric"])}</span> <div style="display:flex;gap:{SPACING.SPACE_4};align-items:center;"> <span style="color:{COLORS.TEXT_SECONDARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{m["previous"]}{m["unit"]}</span> <span style="color:{COLORS.TEXT_MUTED};">→</span> <span style="color:{COLORS.TEXT_PRIMARY};font-weight:700;">{m["current"]}{m["unit"]}</span> <span style="color:{status_color};font-weight:600;font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{arrow} {diff_disp}{m["unit"]}</span> </div> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -754,18 +516,7 @@ def rollback_readiness_panel() -> None:
     col_status, col_details = st.columns([1, 2])
     with col_status:
         pct = rb["confidence"]
-        st.markdown(f"""
-        <div style="padding:{SPACING.SPACE_6};background:linear-gradient(135deg, rgba({status_rgb},0.15), rgba({COLORS.SURFACE_RGB},0.6));border:1px solid rgba({status_rgb},0.3);border-radius:{BORDERS.RADIUS_XL};text-align:center;">
-            <div style="font-size:{TYPOGRAPHY.FONT_SIZE_4XL};">↩️</div>
-            <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XL};font-weight:700;color:{status_color};margin-top:{SPACING.SPACE_2};">{_escape(rb["status"])}</div>
-            <div style="margin:{SPACING.SPACE_3} auto;width:110px;height:110px;border-radius:50%;background:conic-gradient({conf_color} {pct}%, rgba({COLORS.SURFACE_RGB},0.8) 0%);display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba({_hex_to_rgb(conf_color)},0.3);">
-                <div style="width:84px;height:84px;border-radius:50%;background:{COLORS.SURFACE};display:flex;align-items:center;justify-content:center;">
-                    <span style="font-size:{TYPOGRAPHY.FONT_SIZE_XL};font-weight:700;color:{conf_color};">{pct}%</span>
-                </div>
-            </div>
-            <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;">Rollback Confidence</div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_6};background:linear-gradient(135deg, rgba({status_rgb},0.15), rgba({COLORS.SURFACE_RGB},0.6));border:1px solid rgba({status_rgb},0.3);border-radius:{BORDERS.RADIUS_XL};text-align:center;"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_4XL};">↩️</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XL};font-weight:700;color:{status_color};margin-top:{SPACING.SPACE_2};">{_escape(rb["status"])}</div> <div style="margin:{SPACING.SPACE_3} auto;width:110px;height:110px;border-radius:50%;background:conic-gradient({conf_color} {pct}%, rgba({COLORS.SURFACE_RGB},0.8) 0%);display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba({_hex_to_rgb(conf_color)},0.3);"> <div style="width:84px;height:84px;border-radius:50%;background:{COLORS.SURFACE};display:flex;align-items:center;justify-content:center;"> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_XL};font-weight:700;color:{conf_color};">{pct}%</span> </div> </div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;">Rollback Confidence</div> </div>""", unsafe_allow_html=True)
     with col_details:
         checks = [
             ("Rollback Version", rb["version"], COLORS.PRIMARY),
@@ -779,25 +530,12 @@ def rollback_readiness_panel() -> None:
         cols = st.columns(4)
         for i, (label, value, color) in enumerate(checks):
             with cols[i % 4]:
-                st.markdown(f"""
-                <div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};border-left:3px solid {color};">
-                    <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;">{_escape(label)}</div>
-                    <div style="color:{color};font-weight:700;font-size:{TYPOGRAPHY.FONT_SIZE_BASE};">{_escape(str(value))}</div>
-                </div>
-                """, unsafe_allow_html=True)
+                st.markdown(f"""<div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};border-left:3px solid {color};"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;">{_escape(label)}</div> <div style="color:{color};font-weight:700;font-size:{TYPOGRAPHY.FONT_SIZE_BASE};">{_escape(str(value))}</div> </div>""", unsafe_allow_html=True)
 
         st.markdown("#### Rollback Steps")
         for step in rb["steps"]:
             c = _semantic(step["color"])
-            st.markdown(f"""
-            <div style="padding:{SPACING.SPACE_2} {SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};display:flex;justify-content:space-between;align-items:center;border-left:3px solid {c};">
-                <span style="color:{COLORS.TEXT_PRIMARY};">✅ {_escape(step["step"])}</span>
-                <div style="display:flex;gap:{SPACING.SPACE_3};">
-                    <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">⏱ {_escape(step["duration"])}</span>
-                    <span style="color:{c};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;text-transform:uppercase;">{_escape(step["status"])}</span>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div style="padding:{SPACING.SPACE_2} {SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};display:flex;justify-content:space-between;align-items:center;border-left:3px solid {c};"> <span style="color:{COLORS.TEXT_PRIMARY};">✅ {_escape(step["step"])}</span> <div style="display:flex;gap:{SPACING.SPACE_3};"> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">⏱ {_escape(step["duration"])}</span> <span style="color:{c};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;text-transform:uppercase;">{_escape(step["status"])}</span> </div> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -815,12 +553,7 @@ def release_impact_simulation(key_prefix: str = "ra") -> None:
     c = _semantic(sim["color"])
     c_rgb = _hex_to_rgb(c)
 
-    st.markdown(f"""
-    <div style="padding:{SPACING.SPACE_6};background:linear-gradient(135deg, rgba({c_rgb},0.15), rgba({COLORS.SURFACE_RGB},0.6));border:1px solid rgba({c_rgb},0.3);border-radius:{BORDERS.RADIUS_LG};margin-bottom:{SPACING.SPACE_3};">
-        <div style="font-size:{TYPOGRAPHY.FONT_SIZE_LG};font-weight:700;color:{c};margin-bottom:{SPACING.SPACE_2};"> {_escape(selected)}</div>
-        <div style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_BASE};line-height:1.5;">{_escape(sim["summary"])}</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style="padding:{SPACING.SPACE_6};background:linear-gradient(135deg, rgba({c_rgb},0.15), rgba({COLORS.SURFACE_RGB},0.6));border:1px solid rgba({c_rgb},0.3);border-radius:{BORDERS.RADIUS_LG};margin-bottom:{SPACING.SPACE_3};"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_LG};font-weight:700;color:{c};margin-bottom:{SPACING.SPACE_2};"> {_escape(selected)}</div> <div style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_BASE};line-height:1.5;">{_escape(sim["summary"])}</div> </div>""", unsafe_allow_html=True)
 
     cols = st.columns(5)
     fields = [
@@ -832,12 +565,7 @@ def release_impact_simulation(key_prefix: str = "ra") -> None:
     ]
     for i, (label, value, color) in enumerate(fields):
         with cols[i]:
-            st.markdown(f"""
-            <div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};text-align:center;border-left:3px solid {color};">
-                <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;">{_escape(label)}</div>
-                <div style="color:{color};font-weight:700;font-size:{TYPOGRAPHY.FONT_SIZE_BASE};">{_escape(str(value))}</div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_MD};text-align:center;border-left:3px solid {color};"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;">{_escape(label)}</div> <div style="color:{color};font-weight:700;font-size:{TYPOGRAPHY.FONT_SIZE_BASE};">{_escape(str(value))}</div> </div>""", unsafe_allow_html=True)
     st.markdown(f'<div style="margin-top:{SPACING.SPACE_3};color:{COLORS.TEXT_SECONDARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">🧠 Simulation confidence: <span style="color:{get_confidence_color(sim["confidence"])};font-weight:600;">{sim["confidence"]}%</span></div>', unsafe_allow_html=True)
 
 
@@ -851,17 +579,7 @@ def ai_recommendations_panel() -> None:
     for rec in RA_RECOMMENDATIONS:
         c = _semantic(rec["color"])
         c_rgb = _hex_to_rgb(c)
-        st.markdown(f"""
-        <div style="padding:{SPACING.SPACE_4};background:rgba({COLORS.SURFACE_RGB},0.6);border-left:3px solid {c};border-radius:0 {BORDERS.RADIUS_MD} {BORDERS.RADIUS_MD} 0;margin-bottom:{SPACING.SPACE_3};">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:{SPACING.SPACE_2};">
-                <span style="padding:2px 8px;background:rgba({c_rgb},0.2);color:{c};border-radius:{BORDERS.RADIUS_SM};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;text-transform:uppercase;">{_escape(rec["priority"])}</span>
-                <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">AI confidence: {rec["confidence"]}%</span>
-            </div>
-            <div style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_BASE};margin-bottom:{SPACING.SPACE_1};"><strong>Finding:</strong> {_escape(rec["finding"])}</div>
-            <div style="color:{COLORS.TEXT_SECONDARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};margin-bottom:{SPACING.SPACE_1};"><strong>Recommendation:</strong> {_escape(rec["recommendation"])}</div>
-            <div style="color:{COLORS.SUCCESS};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">Expected: {_escape(rec["expected"])}</div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_4};background:rgba({COLORS.SURFACE_RGB},0.6);border-left:3px solid {c};border-radius:0 {BORDERS.RADIUS_MD} {BORDERS.RADIUS_MD} 0;margin-bottom:{SPACING.SPACE_3};"> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:{SPACING.SPACE_2};"> <span style="padding:2px 8px;background:rgba({c_rgb},0.2);color:{c};border-radius:{BORDERS.RADIUS_SM};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;text-transform:uppercase;">{_escape(rec["priority"])}</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">AI confidence: {rec["confidence"]}%</span> </div> <div style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_BASE};margin-bottom:{SPACING.SPACE_1};"><strong>Finding:</strong> {_escape(rec["finding"])}</div> <div style="color:{COLORS.TEXT_SECONDARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};margin-bottom:{SPACING.SPACE_1};"><strong>Recommendation:</strong> {_escape(rec["recommendation"])}</div> <div style="color:{COLORS.SUCCESS};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">Expected: {_escape(rec["expected"])}</div> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================

@@ -21,39 +21,10 @@ def render_mission_planner() -> None:
     init_wizard_state()
     
     # Page configuration
-    st.markdown(
-        """
-        <style>
-        .mission-planner-header {
-            padding: 1rem 0;
-            border-bottom: 1px solid #334155;
-            margin-bottom: 1.5rem;
-        }
-        .stColumn > div:first-child {
-            padding-top: 0;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("""<style> .mission-planner-header { padding: 1rem 0; border-bottom: 1px solid #334155; margin-bottom: 1.5rem; } .stColumn > div:first-child { padding-top: 0; } </style>""", unsafe_allow_html=True)
     
     # Header
-    st.markdown(
-        """
-        <div class="mission-planner-header">
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <span style="font-size: 2rem;">🎯</span>
-                <div>
-                    <h1 style="margin: 0; font-size: 1.75rem; color: #F1F5F9;">Mission Planner</h1>
-                    <p style="margin: 0.25rem 0 0; color: #94A3B8; font-size: 0.875rem;">
-                        Create and configure your AI-powered testing mission
-                    </p>
-                </div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("""<div class="mission-planner-header"> <div style="display: flex; align-items: center; gap: 1rem;"> <span style="font-size: 2rem;">🎯</span> <div> <h1 style="margin: 0; font-size: 1.75rem; color: #F1F5F9;">Mission Planner</h1> <p style="margin: 0.25rem 0 0; color: #94A3B8; font-size: 0.875rem;"> Create and configure your AI-powered testing mission </p> </div> </div> </div>""", unsafe_allow_html=True)
     
     # Progress stepper
     wizard_stepper(st.session_state.wizard_step)
@@ -67,30 +38,7 @@ def render_mission_planner() -> None:
         progress_sidebar(st.session_state.wizard_step)
         
         # Quick stats
-        st.markdown(
-            """
-            <div style="
-                background: rgba(30, 30, 63, 0.5);
-                border-radius: 12px;
-                padding: 1rem;
-            ">
-                <h4 style="color: #F1F5F9; margin: 0 0 0.75rem; font-size: 0.9rem;">📊 Quick Stats</h4>
-                <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #334155;">
-                    <span style="color: #94A3B8; font-size: 0.8rem;">Testing Types</span>
-                    <span style="color: #6366F1; font-size: 0.8rem;">""" + str(len(get_wizard_data("testing_types", []))) + """</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #334155;">
-                    <span style="color: #94A3B8; font-size: 0.8rem;">Files</span>
-                    <span style="color: #22D3EE; font-size: 0.8rem;">""" + str(len(get_wizard_data("uploaded_files", []))) + """</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
-                    <span style="color: #94A3B8; font-size: 0.8rem;">Est. Coverage</span>
-                    <span style="color: #10B981; font-size: 0.8rem;">""" + str(min(95, 30 + len(get_wizard_data("testing_types", [])) * 12)) + """%</span>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown("""<div style=" background: rgba(30, 30, 63, 0.5); border-radius: 12px; padding: 1rem; "> <h4 style="color: #F1F5F9; margin: 0 0 0.75rem; font-size: 0.9rem;">📊 Quick Stats</h4> <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #334155;"> <span style="color: #94A3B8; font-size: 0.8rem;">Testing Types</span> <span style="color: #6366F1; font-size: 0.8rem;">""" + str(len(get_wizard_data("testing_types", []))) + """</span> </div> <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #334155;"> <span style="color: #94A3B8; font-size: 0.8rem;">Files</span> <span style="color: #22D3EE; font-size: 0.8rem;">""" + str(len(get_wizard_data("uploaded_files", []))) + """</span> </div> <div style="display: flex; justify-content: space-between; padding: 0.5rem 0;"> <span style="color: #94A3B8; font-size: 0.8rem;">Est. Coverage</span> <span style="color: #10B981; font-size: 0.8rem;">""" + str(min(95, 30 + len(get_wizard_data("testing_types", [])) * 12)) + """%</span> </div> </div>""", unsafe_allow_html=True)
     
     # Main content area
     with main_col:
@@ -294,19 +242,7 @@ def render_step_1() -> None:
     st.markdown("<br>", unsafe_allow_html=True)
     
     # Authentication section
-    st.markdown(
-        """
-        <div style="
-            background: rgba(30, 30, 63, 0.8);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 12px;
-            padding: 1.25rem;
-            margin-top: 1rem;
-        ">
-            <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 0.95rem;">🔐 Authentication (Optional)</h4>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("""<div style=" background: rgba(30, 30, 63, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1.25rem; margin-top: 1rem; "> <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 0.95rem;">🔐 Authentication (Optional)</h4>""", unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
     
@@ -409,24 +345,7 @@ def render_step_2() -> None:
         for j, file_type in enumerate(file_types[i:i+3]):
             with cols[j]:
                 # Card header
-                st.markdown(
-                    f"""
-                    <div style="
-                        background: linear-gradient(135deg, rgba(30, 30, 63, 0.9) 0%, rgba(99, 102, 241, 0.1) 100%);
-                        border: 1px solid rgba(99, 102, 241, 0.2);
-                        border-radius: 12px;
-                        padding: 1rem;
-                        text-align: center;
-                        margin-bottom: 0.5rem;
-                    ">
-                        <div style="font-size: 1.75rem; margin-bottom: 0.25rem;">{file_type['icon']}</div>
-                        <h4 style="color: #F1F5F9; margin: 0 0 0.25rem; font-size: 0.9rem;">{file_type['name']}</h4>
-                        <p style="color: #94A3B8; margin: 0 0 0.5rem; font-size: 0.7rem;">{file_type['description']}</p>
-                        <p style="color: #64748B; margin: 0; font-size: 0.65rem;">.{', .'.join(file_type['extensions'])}</p>
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
-                )
+                st.markdown(f"""<div style=" background: linear-gradient(135deg, rgba(30, 30, 63, 0.9) 0%, rgba(99, 102, 241, 0.1) 100%); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1rem; text-align: center; margin-bottom: 0.5rem; "> <div style="font-size: 1.75rem; margin-bottom: 0.25rem;">{file_type['icon']}</div> <h4 style="color: #F1F5F9; margin: 0 0 0.25rem; font-size: 0.9rem;">{file_type['name']}</h4> <p style="color: #94A3B8; margin: 0 0 0.5rem; font-size: 0.7rem;">{file_type['description']}</p> <p style="color: #64748B; margin: 0; font-size: 0.65rem;">.{', .'.join(file_type['extensions'])}</p> </div>""", unsafe_allow_html=True)
                 
                 # File uploader
                 uploaded_file = st.file_uploader(
@@ -457,36 +376,13 @@ def render_step_2() -> None:
     # Display uploaded files
     uploaded_files = get_wizard_data("uploaded_files", [])
     if uploaded_files:
-        st.markdown(
-            """
-            <div style="
-                background: rgba(30, 30, 63, 0.8);
-                border: 1px solid rgba(99, 102, 241, 0.2);
-                border-radius: 12px;
-                padding: 1.25rem;
-                margin-top: 1rem;
-            ">
-                <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 0.95rem;">📁 Uploaded Files</h4>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown("""<div style=" background: rgba(30, 30, 63, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1.25rem; margin-top: 1rem; "> <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 0.95rem;">📁 Uploaded Files</h4>""", unsafe_allow_html=True)
         
         for i, file in enumerate(uploaded_files):
             col1, col2, col3 = st.columns([3, 1, 1])
             
             with col1:
-                st.markdown(
-                    f"""
-                    <div style="display: flex; align-items: center; gap: 0.75rem;">
-                        <span style="font-size: 1.25rem;">📄</span>
-                        <div>
-                            <p style="margin: 0; color: #F1F5F9; font-size: 0.85rem;">{file['name']}</p>
-                            <p style="margin: 0; color: #64748B; font-size: 0.7rem;">{file['type']} • {file['size']} bytes</p>
-                        </div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
-                )
+                st.markdown(f"""<div style="display: flex; align-items: center; gap: 0.75rem;"> <span style="font-size: 1.25rem;">📄</span> <div> <p style="margin: 0; color: #F1F5F9; font-size: 0.85rem;">{file['name']}</p> <p style="margin: 0; color: #64748B; font-size: 0.7rem;">{file['type']} • {file['size']} bytes</p> </div> </div>""", unsafe_allow_html=True)
             
             with col3:
                 if st.button("🗑️", key=f"remove_file_{i}"):
@@ -632,76 +528,12 @@ def render_step_3() -> None:
                     set_wizard_data("testing_types", selected_types)
                 
                 # Card display
-                st.markdown(
-                    f"""
-                    <div style="
-                        background: {bg_color};
-                        border: 2px solid {border_color};
-                        border-radius: 12px;
-                        padding: 1rem;
-                        margin-top: -45px;
-                        transition: all 0.2s ease;
-                    ">
-                        <div style="display: flex; align-items: start; gap: 1rem;">
-                            <div style="
-                                width: 40px;
-                                height: 40px;
-                                border-radius: 10px;
-                                background: rgba(99, 102, 241, 0.2);
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                font-size: 1.25rem;
-                                flex-shrink: 0;
-                            ">{test_type['icon']}</div>
-                            <div style="flex: 1;">
-                                <h4 style="color: #F1F5F9; margin: 0 0 0.25rem; font-size: 0.95rem;">{test_type['name']}</h4>
-                                <p style="color: #94A3B8; margin: 0 0 0.5rem; font-size: 0.8rem;">{test_type['description']}</p>
-                                <span style="
-                                    display: inline-flex;
-                                    align-items: center;
-                                    gap: 0.25rem;
-                                    padding: 0.2rem 0.5rem;
-                                    background: rgba(99, 102, 241, 0.2);
-                                    border-radius: 4px;
-                                    font-size: 0.7rem;
-                                    color: #6366F1;
-                                ">⏱️ {test_type['estimated_time']}</span>
-                            </div>
-                            <div style="
-                                width: 24px;
-                                height: 24px;
-                                border-radius: 50%;
-                                border: 2px solid {border_color};
-                                background: {'#6366F1' if is_selected else 'transparent'};
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                color: white;
-                                font-size: 0.8rem;
-                                flex-shrink: 0;
-                            ">{'✓' if is_selected else ''}</div>
-                        </div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
-                )
+                st.markdown(f"""<div style=" background: {bg_color}; border: 2px solid {border_color}; border-radius: 12px; padding: 1rem; margin-top: -45px; transition: all 0.2s ease; "> <div style="display: flex; align-items: start; gap: 1rem;"> <div style=" width: 40px; height: 40px; border-radius: 10px; background: rgba(99, 102, 241, 0.2); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; ">{test_type['icon']}</div> <div style="flex: 1;"> <h4 style="color: #F1F5F9; margin: 0 0 0.25rem; font-size: 0.95rem;">{test_type['name']}</h4> <p style="color: #94A3B8; margin: 0 0 0.5rem; font-size: 0.8rem;">{test_type['description']}</p> <span style=" display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.2rem 0.5rem; background: rgba(99, 102, 241, 0.2); border-radius: 4px; font-size: 0.7rem; color: #6366F1; ">⏱️ {test_type['estimated_time']}</span> </div> <div style=" width: 24px; height: 24px; border-radius: 50%; border: 2px solid {border_color}; background: {'#6366F1' if is_selected else 'transparent'}; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem; flex-shrink: 0; ">{'✓' if is_selected else ''}</div> </div> </div>""", unsafe_allow_html=True)
                 
                 st.markdown("<br>", unsafe_allow_html=True)
     
     # Quick selection buttons
-    st.markdown(
-        """
-        <div style="
-            background: rgba(30, 30, 63, 0.5);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-top: 1rem;
-        ">
-            <h4 style="color: #F1F5F9; margin: 0 0 0.75rem; font-size: 0.9rem;">⚡ Quick Select</h4>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("""<div style=" background: rgba(30, 30, 63, 0.5); border-radius: 12px; padding: 1rem; margin-top: 1rem; "> <h4 style="color: #F1F5F9; margin: 0 0 0.75rem; font-size: 0.9rem;">⚡ Quick Select</h4>""", unsafe_allow_html=True)
     
     col1, col2, col3, col4 = st.columns(4)
     
@@ -742,15 +574,7 @@ def render_step_4() -> None:
     )
     
     # Execution Mode
-    st.markdown(
-        """
-        <div style="margin-bottom: 1.5rem;">
-            <h4 style="color: #F1F5F9; margin: 0 0 0.75rem; font-size: 0.95rem;">🎛️ Execution Mode</h4>
-            <p style="color: #64748B; font-size: 0.8rem; margin: 0 0 1rem;">Select how AI should handle test execution and reporting</p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("""<div style="margin-bottom: 1.5rem;"> <h4 style="color: #F1F5F9; margin: 0 0 0.75rem; font-size: 0.95rem;">🎛️ Execution Mode</h4> <p style="color: #64748B; font-size: 0.8rem; margin: 0 0 1rem;">Select how AI should handle test execution and reporting</p> </div>""", unsafe_allow_html=True)
     
     execution_modes = [
         {"label": "Autonomous", "icon": "🤖", "description": "AI runs tests independently", "color": "#10B981"},
@@ -774,17 +598,7 @@ def render_step_4() -> None:
                 set_wizard_data("execution_mode", mode["label"])
                 st.rerun()
             
-            st.markdown(
-                f"""
-                <p style="
-                    text-align: center;
-                    margin: -0.5rem 0 0;
-                    color: {'#6366F1' if is_selected else '#64748B'};
-                    font-size: 0.7rem;
-                ">{mode['description']}</p>
-                """,
-                unsafe_allow_html=True,
-            )
+            st.markdown(f"""<p style=" text-align: center; margin: -0.5rem 0 0; color: {'#6366F1' if is_selected else '#64748B'}; font-size: 0.7rem; ">{mode['description']}</p>""", unsafe_allow_html=True)
     
     st.markdown("<hr style='margin: 1.5rem 0; border-color: #334155;'>", unsafe_allow_html=True)
     
@@ -792,18 +606,7 @@ def render_step_4() -> None:
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown(
-            """
-            <div style="
-                background: rgba(30, 30, 63, 0.8);
-                border: 1px solid rgba(99, 102, 241, 0.2);
-                border-radius: 12px;
-                padding: 1.25rem;
-            ">
-                <h4 style="color: #F1F5F9; margin: 0 0 0.75rem; font-size: 0.95rem;">🔀 Parallel Execution</h4>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown("""<div style=" background: rgba(30, 30, 63, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1.25rem; "> <h4 style="color: #F1F5F9; margin: 0 0 0.75rem; font-size: 0.95rem;">🔀 Parallel Execution</h4>""", unsafe_allow_html=True)
         
         workers = st.slider(
             "Number of Workers",
@@ -821,18 +624,7 @@ def render_step_4() -> None:
         st.markdown("</div>", unsafe_allow_html=True)
     
     with col2:
-        st.markdown(
-            """
-            <div style="
-                background: rgba(30, 30, 63, 0.8);
-                border: 1px solid rgba(99, 102, 241, 0.2);
-                border-radius: 12px;
-                padding: 1.25rem;
-            ">
-                <h4 style="color: #F1F5F9; margin: 0 0 0.75rem; font-size: 0.95rem;">🌐 Browser Selection</h4>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown("""<div style=" background: rgba(30, 30, 63, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1.25rem; "> <h4 style="color: #F1F5F9; margin: 0 0 0.75rem; font-size: 0.95rem;">🌐 Browser Selection</h4>""", unsafe_allow_html=True)
         
         browsers = ["Chrome", "Firefox", "Edge", "Safari"]
         current_browser = get_wizard_data("browser")
@@ -849,18 +641,7 @@ def render_step_4() -> None:
     st.markdown("<hr style='margin: 1.5rem 0; border-color: #334155;'>", unsafe_allow_html=True)
     
     # Advanced Configuration
-    st.markdown(
-        """
-        <div style="
-            background: rgba(30, 30, 63, 0.8);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 12px;
-            padding: 1.25rem;
-        ">
-            <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 0.95rem;">⚡ Advanced Settings</h4>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("""<div style=" background: rgba(30, 30, 63, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1.25rem; "> <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 0.95rem;">⚡ Advanced Settings</h4>""", unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns(3)
     
@@ -942,34 +723,7 @@ def render_step_5() -> None:
     data = st.session_state.wizard_data
     
     # Summary Card
-    st.markdown(
-        """
-        <div style="
-            background: linear-gradient(135deg, rgba(30, 30, 63, 0.95) 0%, rgba(99, 102, 241, 0.15) 100%);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 16px;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-        ">
-            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-                <div style="
-                    width: 56px;
-                    height: 56px;
-                    border-radius: 12px;
-                    background: linear-gradient(135deg, #6366F1, #8B5CF6);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 1.75rem;
-                ">🎯</div>
-                <div>
-                    <h2 style="color: #F1F5F9; margin: 0; font-size: 1.5rem;">""" + data.get("mission_name", "Unnamed Mission") + """</h2>
-                    <p style="color: #94A3B8; margin: 0.25rem 0 0; font-size: 0.9rem;">""" + (data.get("mission_description", "No description") if data.get("mission_description") else "No description provided") + """</p>
-                </div>
-            </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("""<div style=" background: linear-gradient(135deg, rgba(30, 30, 63, 0.95) 0%, rgba(99, 102, 241, 0.15) 100%); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; "> <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;"> <div style=" width: 56px; height: 56px; border-radius: 12px; background: linear-gradient(135deg, #6366F1, #8B5CF6); display: flex; align-items: center; justify-content: center; font-size: 1.75rem; ">🎯</div> <div> <h2 style="color: #F1F5F9; margin: 0; font-size: 1.5rem;">""" + data.get("mission_name", "Unnamed Mission") + """</h2> <p style="color: #94A3B8; margin: 0.25rem 0 0; font-size: 0.9rem;">""" + (data.get("mission_description", "No description") if data.get("mission_description") else "No description provided") + """</p> </div> </div>""", unsafe_allow_html=True)
     
     # Details grid
     col1, col2 = st.columns(2)
@@ -992,86 +746,25 @@ def render_step_5() -> None:
     # Testing Types
     testing_types = data.get("testing_types", [])
     if testing_types:
-        st.markdown(
-            """
-            <div style="
-                background: rgba(30, 30, 63, 0.8);
-                border: 1px solid rgba(99, 102, 241, 0.2);
-                border-radius: 12px;
-                padding: 1.25rem;
-                margin-bottom: 1.5rem;
-            ">
-                <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 0.95rem;">🧪 Selected Testing Types</h4>
-                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown("""<div style=" background: rgba(30, 30, 63, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; "> <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 0.95rem;">🧪 Selected Testing Types</h4> <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">""", unsafe_allow_html=True)
         
         for test_type in testing_types:
-            st.markdown(
-                f"""
-                <span style="
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.25rem;
-                    padding: 0.4rem 0.75rem;
-                    background: rgba(99, 102, 241, 0.2);
-                    border: 1px solid rgba(99, 102, 241, 0.3);
-                    border-radius: 20px;
-                    font-size: 0.8rem;
-                    color: #818CF8;
-                ">{test_type}</span>
-                """,
-                unsafe_allow_html=True,
-            )
+            st.markdown(f"""<span style=" display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.4rem 0.75rem; background: rgba(99, 102, 241, 0.2); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 20px; font-size: 0.8rem; color: #818CF8; ">{test_type}</span>""", unsafe_allow_html=True)
         
         st.markdown("</div></div>", unsafe_allow_html=True)
     
     # Uploaded Files
     uploaded_files = data.get("uploaded_files", [])
     if uploaded_files:
-        st.markdown(
-            """
-            <div style="
-                background: rgba(30, 30, 63, 0.8);
-                border: 1px solid rgba(99, 102, 241, 0.2);
-                border-radius: 12px;
-                padding: 1.25rem;
-                margin-bottom: 1.5rem;
-            ">
-                <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 0.95rem;">📄 Uploaded Documents</h4>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown("""<div style=" background: rgba(30, 30, 63, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; "> <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 0.95rem;">📄 Uploaded Documents</h4>""", unsafe_allow_html=True)
         
         for file in uploaded_files:
-            st.markdown(
-                f"""
-                <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0; border-bottom: 1px solid #334155;">
-                    <span>📄</span>
-                    <span style="color: #F1F5F9;">{file['name']}</span>
-                    <span style="color: #64748B; font-size: 0.8rem;">({file['type']})</span>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+            st.markdown(f"""<div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0; border-bottom: 1px solid #334155;"> <span>📄</span> <span style="color: #F1F5F9;">{file['name']}</span> <span style="color: #64748B; font-size: 0.8rem;">({file['type']})</span> </div>""", unsafe_allow_html=True)
         
         st.markdown("</div>", unsafe_allow_html=True)
     
     # Execution Configuration
-    st.markdown(
-        """
-        <div style="
-            background: rgba(30, 30, 63, 0.8);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 12px;
-            padding: 1.25rem;
-            margin-bottom: 1.5rem;
-        ">
-            <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 0.95rem;">⚙️ Execution Configuration</h4>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("""<div style=" background: rgba(30, 30, 63, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; "> <h4 style="color: #F1F5F9; margin: 0 0 1rem; font-size: 0.95rem;">⚙️ Execution Configuration</h4>""", unsafe_allow_html=True)
     
     col1, col2, col3, col4 = st.columns(4)
     
@@ -1107,18 +800,7 @@ def render_step_5() -> None:
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown(
-            """
-            <div style="
-                background: rgba(30, 30, 63, 0.8);
-                border: 1px solid rgba(99, 102, 241, 0.2);
-                border-radius: 12px;
-                padding: 1.25rem;
-            ">
-                <h4 style="color: #F1F5F9; margin: 0 0 0.75rem; font-size: 0.9rem;">📸 Capture</h4>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown("""<div style=" background: rgba(30, 30, 63, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1.25rem; "> <h4 style="color: #F1F5F9; margin: 0 0 0.75rem; font-size: 0.9rem;">📸 Capture</h4>""", unsafe_allow_html=True)
         if capture_opts:
             for opt in capture_opts:
                 st.markdown(f"<span style='color: #94A3B8; font-size: 0.85rem;'>{opt}</span>", unsafe_allow_html=True)
@@ -1127,18 +809,7 @@ def render_step_5() -> None:
         st.markdown("</div>", unsafe_allow_html=True)
     
     with col2:
-        st.markdown(
-            """
-            <div style="
-                background: rgba(30, 30, 63, 0.8);
-                border: 1px solid rgba(99, 102, 241, 0.2);
-                border-radius: 12px;
-                padding: 1.25rem;
-            ">
-                <h4 style="color: #F1F5F9; margin: 0 0 0.75rem; font-size: 0.9rem;">📊 Reports</h4>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown("""<div style=" background: rgba(30, 30, 63, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1.25rem; "> <h4 style="color: #F1F5F9; margin: 0 0 0.75rem; font-size: 0.9rem;">📊 Reports</h4>""", unsafe_allow_html=True)
         if report_opts:
             for opt in report_opts:
                 st.markdown(f"<span style='color: #94A3B8; font-size: 0.85rem;'>{opt}</span>", unsafe_allow_html=True)
@@ -1150,27 +821,4 @@ def render_step_5() -> None:
     coverage = min(95, 30 + len(testing_types) * 12)
     estimated_cost = f"${5 + len(testing_types) * 2}.00"
     
-    st.markdown(
-        f"""
-        <div style="
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(30, 30, 63, 0.9) 100%);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-top: 1rem;
-        ">
-            <h4 style="color: #10B981; margin: 0 0 1rem; font-size: 0.95rem;">📊 Mission Estimates</h4>
-            <div style="display: flex; gap: 2rem;">
-                <div>
-                    <p style="color: #94A3B8; margin: 0; font-size: 0.8rem;">Estimated Coverage</p>
-                    <p style="color: #10B981; margin: 0.25rem 0 0; font-size: 1.5rem; font-weight: 600;">{coverage}%</p>
-                </div>
-                <div>
-                    <p style="color: #94A3B8; margin: 0; font-size: 0.8rem;">Estimated Cost</p>
-                    <p style="color: #F1F5F9; margin: 0.25rem 0 0; font-size: 1.5rem; font-weight: 600;">{estimated_cost}</p>
-                </div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(f"""<div style=" background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(30, 30, 63, 0.9) 100%); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 1.5rem; margin-top: 1rem; "> <h4 style="color: #10B981; margin: 0 0 1rem; font-size: 0.95rem;">📊 Mission Estimates</h4> <div style="display: flex; gap: 2rem;"> <div> <p style="color: #94A3B8; margin: 0; font-size: 0.8rem;">Estimated Coverage</p> <p style="color: #10B981; margin: 0.25rem 0 0; font-size: 1.5rem; font-weight: 600;">{coverage}%</p> </div> <div> <p style="color: #94A3B8; margin: 0; font-size: 0.8rem;">Estimated Cost</p> <p style="color: #F1F5F9; margin: 0.25rem 0 0; font-size: 1.5rem; font-weight: 600;">{estimated_cost}</p> </div> </div> </div>""", unsafe_allow_html=True)

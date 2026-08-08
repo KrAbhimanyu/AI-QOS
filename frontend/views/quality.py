@@ -67,7 +67,7 @@ def render_quality() -> None:
             xaxis=dict(showgrid=False, color="#94A3B8"),
             yaxis=dict(showgrid=True, gridcolor="rgba(51, 65, 85, 0.5)", color="#94A3B8", range=[70, 100]),
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="quality_risk_chart")
     
     with right_col:
         st.markdown("### Issue Distribution")
@@ -87,7 +87,7 @@ def render_quality() -> None:
             xaxis=dict(showgrid=False, color="#94A3B8"),
             yaxis=dict(showgrid=True, gridcolor="rgba(51, 65, 85, 0.5)", color="#94A3B8"),
         )
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, use_container_width=True, key="quality_trend_chart")
     
     st.markdown("---")
     
@@ -105,26 +105,4 @@ def render_quality() -> None:
     
     for metric in metrics_data:
         color = "#10B981" if metric["score"] >= 90 else "#F59E0B" if metric["score"] >= 70 else "#EF4444"
-        st.markdown(
-            f"""
-            <div style="
-                background: #1E1E3F;
-                border-radius: 8px;
-                padding: 1rem;
-                margin-bottom: 0.5rem;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            ">
-                <span style="color: #F1F5F9;">{metric['category']}</span>
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                    <div style="width: 150px; height: 6px; background: #334155; border-radius: 3px;">
-                        <div style="width: {metric['score']}%; height: 100%; background: {color}; border-radius: 3px;"></div>
-                    </div>
-                    <span style="color: {color}; font-weight: 600; width: 50px; text-align: right;">{metric['score']}%</span>
-                    <span style="color: #10B981; width: 50px; text-align: right;">{metric['change']}</span>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown(f"""<div style=" background: #1E1E3F; border-radius: 8px; padding: 1rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; "> <span style="color: #F1F5F9;">{metric['category']}</span> <div style="display: flex; align-items: center; gap: 1rem;"> <div style="width: 150px; height: 6px; background: #334155; border-radius: 3px;"> <div style="width: {metric['score']}%; height: 100%; background: {color}; border-radius: 3px;"></div> </div> <span style="color: {color}; font-weight: 600; width: 50px; text-align: right;">{metric['score']}%</span> <span style="color: #10B981; width: 50px; text-align: right;">{metric['change']}</span> </div> </div>""", unsafe_allow_html=True)

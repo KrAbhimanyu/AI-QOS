@@ -57,7 +57,7 @@ def render_human_review_center() -> None:
     
     # CENTER PANEL - Browser View
     with center_col:
-        browser_comparison()
+        browser_comparison(key_prefix="review_browser")
         
         # Review Tabs
         st.markdown("<br>", unsafe_allow_html=True)

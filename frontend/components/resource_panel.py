@@ -47,21 +47,12 @@ def render_metric_gauge(
     fig.update_layout(
         height=140,
         margin=dict(l=10, r=10, t=10, b=10),
-        paper_bgcolor='transparent',
+        paper_bgcolor='rgba(0,0,0,0)',
         font=dict(color='#94a3b8'),
     )
     
-    st.plotly_chart(fig, use_container_width=True)
-    st.markdown(f"""
-        <div style="text-align: center; margin-top: -10px;">
-            <span style="
-                font-size: 11px;
-                color: #64748b;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-            ">{label}</span>
-        </div>
-    """, unsafe_allow_html=True)
+    st.plotly_chart(fig, use_container_width=True, key="resource_cpu_chart")
+    st.markdown(f"""<div style="text-align: center; margin-top: -10px;"> <span style=" font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; ">{label}</span> </div>""", unsafe_allow_html=True)
 
 
 def render_linear_progress(
@@ -74,50 +65,7 @@ def render_linear_progress(
     """Render a linear progress bar with label."""
     percentage = min(100, (value / max_value) * 100) if max_value > 0 else 0
     
-    st.markdown(f"""
-    <div style="margin-bottom: 16px;">
-        <div style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
-        ">
-            <span style="font-size: 12px; color: #94a3b8;">{label}</span>
-            <span style="
-                font-size: 14px;
-                font-weight: 600;
-                font-family: 'JetBrains Mono', monospace;
-                color: {color};
-            ">{value:.1f}{'%' if isinstance(value, float) else ''}</span>
-        </div>
-        <div style="
-            width: 100%;
-            height: 8px;
-            background: rgba(51, 65, 85, 0.5);
-            border-radius: 4px;
-            overflow: hidden;
-        ">
-            <div style="
-                width: {percentage}%;
-                height: 100%;
-                background: linear-gradient(90deg, {color}, {color}cc);
-                border-radius: 4px;
-                transition: width 0.5s ease;
-                position: relative;
-            ">
-                <div style="
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-                    animation: shimmer 2s infinite;
-                "></div>
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style="margin-bottom: 16px;"> <div style=" display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; "> <span style="font-size: 12px; color: #94a3b8;">{label}</span> <span style=" font-size: 14px; font-weight: 600; font-family: 'JetBrains Mono', monospace; color: {color}; ">{value:.1f}{'%' if isinstance(value, float) else ''}</span> </div> <div style=" width: 100%; height: 8px; background: rgba(51, 65, 85, 0.5); border-radius: 4px; overflow: hidden; "> <div style=" width: {percentage}%; height: 100%; background: linear-gradient(90deg, {color}, {color}cc); border-radius: 4px; transition: width 0.5s ease; position: relative; "> <div style=" position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); animation: shimmer 2s infinite; "></div> </div> </div> </div>""", unsafe_allow_html=True)
 
 
 def render_token_usage_chart(token_data: dict[str, int]) -> None:
@@ -139,8 +87,8 @@ def render_token_usage_chart(token_data: dict[str, int]) -> None:
     fig.update_layout(
         height=180,
         margin=dict(l=10, r=10, t=10, b=10),
-        paper_bgcolor='transparent',
-        plot_bgcolor='transparent',
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
         font=dict(color='#94a3b8'),
         xaxis=dict(
             showgrid=False,
@@ -162,7 +110,7 @@ def render_token_usage_chart(token_data: dict[str, int]) -> None:
         marker=dict(line=dict(color='transparent')),
     )
     
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="resource_memory_chart")
 
 
 def render_latency_chart(latency_data: dict[str, float]) -> None:
@@ -186,8 +134,8 @@ def render_latency_chart(latency_data: dict[str, float]) -> None:
     fig.update_layout(
         height=180,
         margin=dict(l=10, r=10, t=10, b=10),
-        paper_bgcolor='transparent',
-        plot_bgcolor='transparent',
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
         font=dict(color='#94a3b8'),
         xaxis=dict(
             showgrid=False,
@@ -202,7 +150,7 @@ def render_latency_chart(latency_data: dict[str, float]) -> None:
         ),
     )
     
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="resource_disk_chart")
 
 
 def render_queue_chart(queue_data: dict[str, int]) -> None:
@@ -244,8 +192,8 @@ def render_queue_chart(queue_data: dict[str, int]) -> None:
     fig.update_layout(
         height=120,
         margin=dict(l=10, r=10, t=10, b=10),
-        paper_bgcolor='transparent',
-        plot_bgcolor='transparent',
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
         font=dict(color='#94a3b8'),
         barmode='stack',
         xaxis=dict(showgrid=False, title=None),
@@ -266,7 +214,7 @@ def render_queue_chart(queue_data: dict[str, int]) -> None:
         ),
     )
     
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="resource_network_chart")
 
 
 def resource_panel(metrics: dict[str, Any]) -> None:
@@ -282,118 +230,29 @@ def resource_panel(metrics: dict[str, Any]) -> None:
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        st.markdown("""
-        <div style="
-            padding: 16px;
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 12px;
-            text-align: center;
-        ">
-            <div style="font-size: 32px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: #6366f1;">
-                {}%
-            </div>
-            <div style="font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;">
-                Total CPU
-            </div>
-        </div>
-        """.format(metrics['total_cpu']), unsafe_allow_html=True)
+        st.markdown("""<div style=" padding: 16px; background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; text-align: center; "> <div style="font-size: 32px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: #6366f1;"> {}% </div> <div style="font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;"> Total CPU </div> </div>""".format(metrics['total_cpu']), unsafe_allow_html=True)
     
     with col2:
-        st.markdown("""
-        <div style="
-            padding: 16px;
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(34, 211, 238, 0.2);
-            border-radius: 12px;
-            text-align: center;
-        ">
-            <div style="font-size: 32px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: #22d3ee;">
-                {}%
-            </div>
-            <div style="font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;">
-                Total Memory
-            </div>
-        </div>
-        """.format(metrics['total_memory']), unsafe_allow_html=True)
+        st.markdown("""<div style=" padding: 16px; background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(34, 211, 238, 0.2); border-radius: 12px; text-align: center; "> <div style="font-size: 32px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: #22d3ee;"> {}% </div> <div style="font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;"> Total Memory </div> </div>""".format(metrics['total_memory']), unsafe_allow_html=True)
     
     with col3:
-        st.markdown("""
-        <div style="
-            padding: 16px;
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(236, 72, 153, 0.2);
-            border-radius: 12px;
-            text-align: center;
-        ">
-            <div style="font-size: 32px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: #ec4899;">
-                {}%
-            </div>
-            <div style="font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;">
-                Total GPU
-            </div>
-        </div>
-        """.format(metrics['total_gpu']), unsafe_allow_html=True)
+        st.markdown("""<div style=" padding: 16px; background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(236, 72, 153, 0.2); border-radius: 12px; text-align: center; "> <div style="font-size: 32px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: #ec4899;"> {}% </div> <div style="font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;"> Total GPU </div> </div>""".format(metrics['total_gpu']), unsafe_allow_html=True)
     
     with col4:
-        st.markdown("""
-        <div style="
-            padding: 16px;
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            border-radius: 12px;
-            text-align: center;
-        ">
-            <div style="font-size: 32px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: #10b981;">
-                {:,}
-            </div>
-            <div style="font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;">
-                Requests
-            </div>
-        </div>
-        """.format(metrics['requests']['total']), unsafe_allow_html=True)
+        st.markdown("""<div style=" padding: 16px; background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; text-align: center; "> <div style="font-size: 32px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: #10b981;"> {:,} </div> <div style="font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;"> Requests </div> </div>""".format(metrics['requests']['total']), unsafe_allow_html=True)
     
     st.markdown("")  # Spacer
     
     # Token Usage Section
-    st.markdown("""
-    <div style="
-        padding: 12px 16px;
-        background: linear-gradient(90deg, rgba(99, 102, 241, 0.1), rgba(34, 211, 238, 0.1));
-        border-radius: 8px;
-        margin-bottom: 12px;
-    ">
-        <span style="font-size: 13px; font-weight: 600; color: #f8fafc;">💎 Token Usage</span>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("""<div style=" padding: 12px 16px; background: linear-gradient(90deg, rgba(99, 102, 241, 0.1), rgba(34, 211, 238, 0.1)); border-radius: 8px; margin-bottom: 12px; "> <span style="font-size: 13px; font-weight: 600; color: #f8fafc;">💎 Token Usage</span> </div>""", unsafe_allow_html=True)
     render_token_usage_chart(metrics['token_usage'])
     
     # Latency Section
-    st.markdown("""
-    <div style="
-        padding: 12px 16px;
-        background: linear-gradient(90deg, rgba(245, 158, 11, 0.1), rgba(239, 68, 68, 0.1));
-        border-radius: 8px;
-        margin-bottom: 12px;
-        margin-top: 16px;
-    ">
-        <span style="font-size: 13px; font-weight: 600; color: #f8fafc;">⏱️ Latency</span>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("""<div style=" padding: 12px 16px; background: linear-gradient(90deg, rgba(245, 158, 11, 0.1), rgba(239, 68, 68, 0.1)); border-radius: 8px; margin-bottom: 12px; margin-top: 16px; "> <span style="font-size: 13px; font-weight: 600; color: #f8fafc;">⏱️ Latency</span> </div>""", unsafe_allow_html=True)
     render_latency_chart(metrics['latency'])
     
     # Queue Section
-    st.markdown("""
-    <div style="
-        padding: 12px 16px;
-        background: linear-gradient(90deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
-        border-radius: 8px;
-        margin-bottom: 12px;
-        margin-top: 16px;
-    ">
-        <span style="font-size: 13px; font-weight: 600; color: #f8fafc;">📬 Queue Status</span>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("""<div style=" padding: 12px 16px; background: linear-gradient(90deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1)); border-radius: 8px; margin-bottom: 12px; margin-top: 16px; "> <span style="font-size: 13px; font-weight: 600; color: #f8fafc;">📬 Queue Status</span> </div>""", unsafe_allow_html=True)
     render_queue_chart(metrics['queue'])
     
     # Detailed metrics

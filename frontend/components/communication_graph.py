@@ -327,7 +327,7 @@ def render_communication_graph(
             ],
         )
     
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="comm_graph")
 
 
 def render_simple_communication_flow(
@@ -335,97 +335,7 @@ def render_simple_communication_flow(
     agents: list[dict[str, Any]]
 ) -> None:
     """Render a simplified vertical flow diagram."""
-    st.markdown("""
-    <style>
-    .comm-flow {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0;
-        padding: 20px 0;
-    }
-    
-    .comm-node {
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #1e293b, #0f172a);
-        border: 2px solid #6366f1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        position: relative;
-    }
-    
-    .comm-node:hover {
-        transform: scale(1.1);
-        border-color: #22d3ee;
-        box-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
-    }
-    
-    .comm-node.active {
-        border-color: #10b981;
-        box-shadow: 0 0 25px rgba(16, 185, 129, 0.5);
-    }
-    
-    .comm-node-label {
-        font-size: 9px;
-        color: #94a3b8;
-        text-align: center;
-        margin-top: 2px;
-        max-width: 80px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    
-    .comm-connector {
-        width: 3px;
-        height: 30px;
-        background: linear-gradient(180deg, #6366f1, #22d3ee);
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .comm-connector::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 10px;
-        background: linear-gradient(180deg, #22d3ee, transparent);
-        animation: flowDown 1.5s infinite;
-    }
-    
-    @keyframes flowDown {
-        0% { top: -10px; opacity: 1; }
-        100% { top: 100%; opacity: 0; }
-    }
-    
-    .comm-message {
-        position: absolute;
-        left: 80px;
-        background: rgba(34, 211, 238, 0.2);
-        border: 1px solid rgba(34, 211, 238, 0.4);
-        border-radius: 6px;
-        padding: 4px 10px;
-        font-size: 10px;
-        color: #22d3ee;
-        white-space: nowrap;
-        animation: messageFloat 3s infinite;
-    }
-    
-    @keyframes messageFloat {
-        0%, 100% { opacity: 0.7; transform: translateX(0); }
-        50% { opacity: 1; transform: translateX(5px); }
-    }
-    </style>
-    """, unsafe_allow_html=True)
+    st.markdown("""<style> .comm-flow { display: flex; flex-direction: column; align-items: center; gap: 0; padding: 20px 0; } .comm-node { width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px solid #6366f1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 24px; transition: all 0.3s ease; cursor: pointer; position: relative; } .comm-node:hover { transform: scale(1.1); border-color: #22d3ee; box-shadow: 0 0 20px rgba(34, 211, 238, 0.4); } .comm-node.active { border-color: #10b981; box-shadow: 0 0 25px rgba(16, 185, 129, 0.5); } .comm-node-label { font-size: 9px; color: #94a3b8; text-align: center; margin-top: 2px; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .comm-connector { width: 3px; height: 30px; background: linear-gradient(180deg, #6366f1, #22d3ee); position: relative; overflow: hidden; } .comm-connector::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 10px; background: linear-gradient(180deg, #22d3ee, transparent); animation: flowDown 1.5s infinite; } @keyframes flowDown { 0% { top: -10px; opacity: 1; } 100% { top: 100%; opacity: 0; } } .comm-message { position: absolute; left: 80px; background: rgba(34, 211, 238, 0.2); border: 1px solid rgba(34, 211, 238, 0.4); border-radius: 6px; padding: 4px 10px; font-size: 10px; color: #22d3ee; white-space: nowrap; animation: messageFloat 3s infinite; } @keyframes messageFloat { 0%, 100% { opacity: 0.7; transform: translateX(0); } 50% { opacity: 1; transform: translateX(5px); } } </style>""", unsafe_allow_html=True)
     
     # Build flow HTML
     nodes = list(dict.fromkeys([p[0] for p in pipeline] + [p[1] for p in pipeline]))

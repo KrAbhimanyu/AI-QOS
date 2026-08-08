@@ -73,7 +73,7 @@ def render_monitoring() -> None:
             yaxis=dict(showgrid=True, gridcolor="rgba(51, 65, 85, 0.5)", color="#94A3B8"),
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="monitoring_chart")
         
         # Throughput Chart
         st.markdown("### Request Throughput")
@@ -100,7 +100,7 @@ def render_monitoring() -> None:
             xaxis=dict(showgrid=False, color="#94A3B8", showticklabels=False),
             yaxis=dict(showgrid=True, gridcolor="rgba(51, 65, 85, 0.5)", color="#94A3B8"),
         )
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, use_container_width=True, key="monitoring_chart2")
     
     with right_col:
         # Agent Status
@@ -117,26 +117,7 @@ def render_monitoring() -> None:
         
         for name, status, health in agents:
             color = "#10B981" if status == "Active" else "#64748B"
-            st.markdown(
-                f"""
-                <div style="
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 0.5rem;
-                    background: #1E1E3F;
-                    border-radius: 8px;
-                    margin-bottom: 0.5rem;
-                ">
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <span style="width: 8px; height: 8px; border-radius: 50%; background: {color};"></span>
-                        <span style="color: #F1F5F9;">{name}</span>
-                    </div>
-                    <span style="color: #64748B;">{health}</span>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+            st.markdown(f"""<div style=" display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: #1E1E3F; border-radius: 8px; margin-bottom: 0.5rem; "> <div style="display: flex; align-items: center; gap: 0.5rem;"> <span style="width: 8px; height: 8px; border-radius: 50%; background: {color};"></span> <span style="color: #F1F5F9;">{name}</span> </div> <span style="color: #64748B;">{health}</span> </div>""", unsafe_allow_html=True)
         
         # Logs Preview
         st.markdown("### Recent Logs")
@@ -151,16 +132,4 @@ def render_monitoring() -> None:
         
         for level, message in logs:
             color = "#10B981" if level == "INFO" else "#F59E0B" if level == "WARN" else "#EF4444"
-            st.markdown(
-                f"""
-                <div style="
-                    font-size: 0.75rem;
-                    padding: 0.25rem 0;
-                    border-bottom: 1px solid #334155;
-                ">
-                    <span style="color: {color}; font-weight: 600;">{level}</span>
-                    <span style="color: #64748B;"> {message}</span>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+            st.markdown(f"""<div style=" font-size: 0.75rem; padding: 0.25rem 0; border-bottom: 1px solid #334155; "> <span style="color: {color}; font-weight: 600;">{level}</span> <span style="color: #64748B;"> {message}</span> </div>""", unsafe_allow_html=True)

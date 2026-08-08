@@ -257,78 +257,7 @@ def kg_header(info: dict) -> None:
     )
 
     st.markdown(
-        f"""
-        <div style="
-            background:{_GLASS_PANEL_BG};
-            border:1px solid {_GLASS_PANEL_BORDER};
-            border-radius:{BORDERS.RADIUS_XL};
-            padding:{SPACING.SPACE_6};
-            margin-bottom:{SPACING.SPACE_4};
-            box-shadow:{SHADOWS.CARD};
-            position:sticky;top:0;z-index:10;
-            backdrop-filter:blur(12px);
-        ">
-            <div style="display:flex;align-items:center;justify-content:space-between;
-                        flex-wrap:wrap;gap:{SPACING.SPACE_4};margin-bottom:{SPACING.SPACE_4};">
-                <div>
-                    <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};
-                                margin-bottom:{SPACING.SPACE_2};">
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">🏠 Dashboard</span>
-                        <span style="color:{COLORS.TEXT_MUTED};">›</span>
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">Knowledge Graph</span>
-                        <span style="color:{COLORS.TEXT_MUTED};">›</span>
-                        <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(info.get("application", "E-Commerce Platform"))}</span>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};flex-wrap:wrap;">
-                        <h1 style="margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_2XL};
-                                   color:{COLORS.TEXT_PRIMARY};font-weight:600;">
-                            🧠 AI Cognitive Intelligence Center
-                        </h1>
-                        <span style="display:inline-flex;align-items:center;gap:{SPACING.SPACE_2};
-                                     padding:{SPACING.SPACE_1} {SPACING.SPACE_3};
-                                     background:rgba({health_rgb},0.2);
-                                     color:{health_color};
-                                     border:1px solid rgba({health_rgb},0.4);
-                                     border-radius:{BORDERS.RADIUS_FULL};
-                                     font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">
-                            <span style="width:8px;height:8px;border-radius:50%;
-                                        background:{health_color};
-                                        animation:{ANIMATIONS.PULSE};"></span>
-                            Graph Health {health}%
-                        </span>
-                        <span style="display:inline-flex;align-items:center;gap:{SPACING.SPACE_2};
-                                     padding:{SPACING.SPACE_1} {SPACING.SPACE_3};
-                                     background:rgba({_hex_to_rgb(conf_color)},0.2);
-                                     color:{conf_color};
-                                     border:1px solid rgba({_hex_to_rgb(conf_color)},0.4);
-                                     border-radius:{BORDERS.RADIUS_FULL};
-                                     font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">
-                            🧠 Confidence {confidence}%
-                        </span>
-                    </div>
-                    <p style="margin:{SPACING.SPACE_2} 0 0;color:{COLORS.TEXT_MUTED};
-                              font-size:{TYPOGRAPHY.FONT_SIZE_SM};">
-                        Explore the living AI-QOS brain • Knowledge Version {_escape(str(info.get("knowledge_version", "2.0")))} • {_escape(info.get("mission", ""))}
-                    </p>
-                </div>
-                <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};flex-wrap:wrap;">
-                    <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};
-                                 border:1px solid {_PANEL_BORDER};border-radius:{BORDERS.RADIUS_MD};
-                                 padding:{SPACING.SPACE_1} {SPACING.SPACE_3};"
-                          title="Search knowledge graph">🔍 Search…</span>
-                    <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};
-                                 border:1px solid {_PANEL_BORDER};border-radius:{BORDERS.RADIUS_MD};
-                                 padding:{SPACING.SPACE_1} {SPACING.SPACE_3};"
-                          title="Command palette">⌘K Command</span>
-                    <span style="color:{COLORS.TEXT_MUTED};font-size:1rem;cursor:pointer;"
-                          title="Notifications">🔔</span>
-                    <span style="color:{COLORS.TEXT_MUTED};font-size:1rem;cursor:pointer;"
-                          title="Fullscreen">⛶</span>
-                </div>
-            </div>
-            <div style="display:flex;gap:{SPACING.SPACE_2};flex-wrap:wrap;">{stat_chips}</div>
-        </div>
-        """,
+        f"""<div style=" background:{_GLASS_PANEL_BG}; border:1px solid {_GLASS_PANEL_BORDER}; border-radius:{BORDERS.RADIUS_XL}; padding:{SPACING.SPACE_6}; margin-bottom:{SPACING.SPACE_4}; box-shadow:{SHADOWS.CARD}; position:sticky;top:0;z-index:10; backdrop-filter:blur(12px); "> <div style="display:flex;align-items:center;justify-content:space-between; flex-wrap:wrap;gap:{SPACING.SPACE_4};margin-bottom:{SPACING.SPACE_4};"> <div> <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2}; margin-bottom:{SPACING.SPACE_2};"> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">🏠 Dashboard</span> <span style="color:{COLORS.TEXT_MUTED};">›</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">Knowledge Graph</span> <span style="color:{COLORS.TEXT_MUTED};">›</span> <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(info.get("application", "E-Commerce Platform"))}</span> </div> <div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};flex-wrap:wrap;"> <h1 style="margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_2XL}; color:{COLORS.TEXT_PRIMARY};font-weight:600;"> 🧠 AI Cognitive Intelligence Center </h1> <span style="display:inline-flex;align-items:center;gap:{SPACING.SPACE_2}; padding:{SPACING.SPACE_1} {SPACING.SPACE_3}; background:rgba({health_rgb},0.2); color:{health_color}; border:1px solid rgba({health_rgb},0.4); border-radius:{BORDERS.RADIUS_FULL}; font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;"> <span style="width:8px;height:8px;border-radius:50%; background:{health_color}; animation:{ANIMATIONS.PULSE};"></span> Graph Health {health}% </span> <span style="display:inline-flex;align-items:center;gap:{SPACING.SPACE_2}; padding:{SPACING.SPACE_1} {SPACING.SPACE_3}; background:rgba({_hex_to_rgb(conf_color)},0.2); color:{conf_color}; border:1px solid rgba({_hex_to_rgb(conf_color)},0.4); border-radius:{BORDERS.RADIUS_FULL}; font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;"> 🧠 Confidence {confidence}% </span> </div> <p style="margin:{SPACING.SPACE_2} 0 0;color:{COLORS.TEXT_MUTED}; font-size:{TYPOGRAPHY.FONT_SIZE_SM};"> Explore the living AI-QOS brain • Knowledge Version {_escape(str(info.get("knowledge_version", "2.0")))} • {_escape(info.get("mission", ""))} </p> </div> <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};flex-wrap:wrap;"> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM}; border:1px solid {_PANEL_BORDER};border-radius:{BORDERS.RADIUS_MD}; padding:{SPACING.SPACE_1} {SPACING.SPACE_3};" title="Search knowledge graph">🔍 Search…</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM}; border:1px solid {_PANEL_BORDER};border-radius:{BORDERS.RADIUS_MD}; padding:{SPACING.SPACE_1} {SPACING.SPACE_3};" title="Command palette">⌘K Command</span> <span style="color:{COLORS.TEXT_MUTED};font-size:1rem;cursor:pointer;" title="Notifications">🔔</span> <span style="color:{COLORS.TEXT_MUTED};font-size:1rem;cursor:pointer;" title="Fullscreen">⛶</span> </div> </div> <div style="display:flex;gap:{SPACING.SPACE_2};flex-wrap:wrap;">{stat_chips}</div> </div>""",
         unsafe_allow_html=True,
     )
 
@@ -414,24 +343,7 @@ def _render_node_card(node: dict[str, Any], accent_color: str) -> None:
     bg = f"rgba({COLORS.PRIMARY_RGB},0.22)" if is_selected else f"rgba({COLORS.SURFACE_RGB},0.5)"
     border_w = "2px" if is_selected else "1px"
 
-    st.markdown(f"""
-    <div style="
-        padding:{SPACING.SPACE_2} {SPACING.SPACE_3};
-        background:{bg};
-        border-left:{border_w} solid {accent_color};
-        border-radius:0 {BORDERS.RADIUS_MD} {BORDERS.RADIUS_MD} 0;
-        margin:{SPACING.SPACE_1} 0 {SPACING.SPACE_1} {SPACING.SPACE_4};
-        {'animation:' + ANIMATIONS.FADE_IN + ';' if is_selected else ''}
-    ">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-            <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">{_escape(node["name"])}</span>
-            <div style="display:flex;gap:{SPACING.SPACE_2};">
-                <span style="color:{coverage_color};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{coverage:.0f}%</span>
-                <span style="color:{risk_color};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(str(node.get("risk", "low"))).upper()}</span>
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style=" padding:{SPACING.SPACE_2} {SPACING.SPACE_3}; background:{bg}; border-left:{border_w} solid {accent_color}; border-radius:0 {BORDERS.RADIUS_MD} {BORDERS.RADIUS_MD} 0; margin:{SPACING.SPACE_1} 0 {SPACING.SPACE_1} {SPACING.SPACE_4}; {'animation:' + ANIMATIONS.FADE_IN + ';' if is_selected else ''} "> <div style="display:flex;justify-content:space-between;align-items:center;"> <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">{_escape(node["name"])}</span> <div style="display:flex;gap:{SPACING.SPACE_2};"> <span style="color:{coverage_color};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{coverage:.0f}%</span> <span style="color:{risk_color};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(str(node.get("risk", "low"))).upper()}</span> </div> </div> </div>""", unsafe_allow_html=True)
 
     if st.button(
         "Inspect",
@@ -612,23 +524,7 @@ def node_inspector(node: dict[str, Any], title: str = "Node Inspector") -> None:
     type_color = _type_color(node.get("type", ""))
     type_rgb = _hex_to_rgb(type_color)
 
-    st.markdown(f"""
-    <div style="
-        padding:{SPACING.SPACE_6};
-        background:linear-gradient(135deg, rgba({COLORS.PRIMARY_RGB},0.12), rgba({COLORS.SECONDARY_RGB},0.12));
-        border:1px solid rgba({type_rgb},0.35);
-        border-radius:{BORDERS.RADIUS_LG};
-        margin-bottom:{SPACING.SPACE_4};
-    ">
-        <div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};">
-            <span style="font-size:32px;">{icon}</span>
-            <div>
-                <h3 style="margin:0;color:{COLORS.TEXT_PRIMARY};">{_escape(node['name'])}</h3>
-                <span style="font-size:{TYPOGRAPHY.FONT_SIZE_SM};color:{COLORS.TEXT_MUTED};">{_escape(node.get('type', 'unknown').replace('_', ' ').title())}</span>
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style=" padding:{SPACING.SPACE_6}; background:linear-gradient(135deg, rgba({COLORS.PRIMARY_RGB},0.12), rgba({COLORS.SECONDARY_RGB},0.12)); border:1px solid rgba({type_rgb},0.35); border-radius:{BORDERS.RADIUS_LG}; margin-bottom:{SPACING.SPACE_4}; "> <div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};"> <span style="font-size:32px;">{icon}</span> <div> <h3 style="margin:0;color:{COLORS.TEXT_PRIMARY};">{_escape(node['name'])}</h3> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_SM};color:{COLORS.TEXT_MUTED};">{_escape(node.get('type', 'unknown').replace('_', ' ').title())}</span> </div> </div> </div>""", unsafe_allow_html=True)
 
     risk_color = _risk_color(node.get("risk", "low"))
     coverage = node.get("automation_coverage", 0)
@@ -703,18 +599,7 @@ def ai_reasoning_panel(node: dict[str, Any], title: str = "AI Reasoning") -> Non
     from utils.knowledge_graph_data import generate_ai_reasoning
     reasoning = generate_ai_reasoning(node)
 
-    st.markdown(f"""
-    <div style="
-        padding:{SPACING.SPACE_4};
-        background:linear-gradient(135deg, rgba({COLORS.PRIMARY_RGB},0.15), rgba({COLORS.SECONDARY_RGB},0.15));
-        border:1px solid rgba({COLORS.PRIMARY_RGB},0.3);
-        border-radius:{BORDERS.RADIUS_LG};
-        margin-bottom:{SPACING.SPACE_4};
-    ">
-        <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;margin-bottom:{SPACING.SPACE_2};">Why Exists</div>
-        <div style="font-size:{TYPOGRAPHY.FONT_SIZE_BASE};color:{COLORS.TEXT_PRIMARY};line-height:1.5;">{_escape(reasoning['why_exists'])}</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style=" padding:{SPACING.SPACE_4}; background:linear-gradient(135deg, rgba({COLORS.PRIMARY_RGB},0.15), rgba({COLORS.SECONDARY_RGB},0.15)); border:1px solid rgba({COLORS.PRIMARY_RGB},0.3); border-radius:{BORDERS.RADIUS_LG}; margin-bottom:{SPACING.SPACE_4}; "> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;margin-bottom:{SPACING.SPACE_2};">Why Exists</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_BASE};color:{COLORS.TEXT_PRIMARY};line-height:1.5;">{_escape(reasoning['why_exists'])}</div> </div>""", unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
     with col1:
@@ -727,17 +612,7 @@ def ai_reasoning_panel(node: dict[str, Any], title: str = "AI Reasoning") -> Non
         st.markdown(_info_tile("Automation", reasoning['automation_importance'], COLORS.SUCCESS), unsafe_allow_html=True)
 
     st.markdown("#### 🚀 AI Recommendation")
-    st.markdown(f"""
-    <div style="
-        padding:{SPACING.SPACE_4};
-        background:rgba({COLORS.SUCCESS_RGB},0.1);
-        border:1px solid rgba({COLORS.SUCCESS_RGB},0.25);
-        border-radius:{BORDERS.RADIUS_MD};
-    ">
-        <div style="font-size:{TYPOGRAPHY.FONT_SIZE_BASE};color:{COLORS.TEXT_PRIMARY};">{_escape(reasoning['recommendation'])}</div>
-        <div style="font-size:{TYPOGRAPHY.FONT_SIZE_SM};color:{COLORS.TEXT_SECONDARY};margin-top:{SPACING.SPACE_2};">{_escape(reasoning['future_impact'])}</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style=" padding:{SPACING.SPACE_4}; background:rgba({COLORS.SUCCESS_RGB},0.1); border:1px solid rgba({COLORS.SUCCESS_RGB},0.25); border-radius:{BORDERS.RADIUS_MD}; "> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_BASE};color:{COLORS.TEXT_PRIMARY};">{_escape(reasoning['recommendation'])}</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_SM};color:{COLORS.TEXT_SECONDARY};margin-top:{SPACING.SPACE_2};">{_escape(reasoning['future_impact'])}</div> </div>""", unsafe_allow_html=True)
 
     st.markdown("#### 🧭 Reasoning Trace")
     for i, step in enumerate(KG_REASONING_TRACE):
@@ -789,12 +664,7 @@ def impact_analysis_panel(node_id: str, title: str = "Impact Analysis") -> None:
     affected = analysis["affected"]
     total = analysis["total_affected"]
 
-    st.markdown(f"""
-    <div style="text-align:center;padding:{SPACING.SPACE_6};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_LG};margin-bottom:{SPACING.SPACE_4};border:1px solid rgba({COLORS.PRIMARY_RGB},0.25);">
-        <div style="font-size:48px;font-weight:700;color:{COLORS.PRIMARY};">{total}</div>
-        <div style="font-size:{TYPOGRAPHY.FONT_SIZE_SM};color:{COLORS.TEXT_MUTED};text-transform:uppercase;">Nodes Affected by {_escape(node['name'])}</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style="text-align:center;padding:{SPACING.SPACE_6};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_LG};margin-bottom:{SPACING.SPACE_4};border:1px solid rgba({COLORS.PRIMARY_RGB},0.25);"> <div style="font-size:48px;font-weight:700;color:{COLORS.PRIMARY};">{total}</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_SM};color:{COLORS.TEXT_MUTED};text-transform:uppercase;">Nodes Affected by {_escape(node['name'])}</div> </div>""", unsafe_allow_html=True)
 
     cat_icons = {
         "pages": "📄", "components": "🧩", "apis": "🔌",
@@ -940,22 +810,7 @@ def ai_recommendations_panel(recommendations: list[dict[str, Any]], title: str =
         icon = category_icons.get(rec.get("category", ""), "💡")
         priority_color = _priority_color(rec.get("priority", "medium"))
 
-        st.markdown(f"""
-        <div style="
-            padding:{SPACING.SPACE_4};
-            background:rgba({COLORS.SURFACE_RGB},0.6);
-            border-left:3px solid {priority_color};
-            border-radius:0 {BORDERS.RADIUS_MD} {BORDERS.RADIUS_MD} 0;
-            margin-bottom:{SPACING.SPACE_3};
-        ">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:{SPACING.SPACE_2};">
-                <span style="font-size:16px;">{icon}</span>
-                <span style="padding:2px 8px;background:rgba({_hex_to_rgb(priority_color)},0.2);border-radius:{BORDERS.RADIUS_SM};font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{priority_color};text-transform:uppercase;font-weight:600;">{_escape(str(rec.get('priority', 'medium')))}</span>
-            </div>
-            <div style="font-size:{TYPOGRAPHY.FONT_SIZE_BASE};color:{COLORS.TEXT_PRIMARY};margin-bottom:{SPACING.SPACE_2};">{_escape(rec.get('recommendation', ''))}</div>
-            <div style="font-size:{TYPOGRAPHY.FONT_SIZE_SM};color:{COLORS.TEXT_SECONDARY};">{_escape(rec.get('reason', ''))}</div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div style=" padding:{SPACING.SPACE_4}; background:rgba({COLORS.SURFACE_RGB},0.6); border-left:3px solid {priority_color}; border-radius:0 {BORDERS.RADIUS_MD} {BORDERS.RADIUS_MD} 0; margin-bottom:{SPACING.SPACE_3}; "> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:{SPACING.SPACE_2};"> <span style="font-size:16px;">{icon}</span> <span style="padding:2px 8px;background:rgba({_hex_to_rgb(priority_color)},0.2);border-radius:{BORDERS.RADIUS_SM};font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{priority_color};text-transform:uppercase;font-weight:600;">{_escape(str(rec.get('priority', 'medium')))}</span> </div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_BASE};color:{COLORS.TEXT_PRIMARY};margin-bottom:{SPACING.SPACE_2};">{_escape(rec.get('recommendation', ''))}</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_SM};color:{COLORS.TEXT_SECONDARY};">{_escape(rec.get('reason', ''))}</div> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -1066,17 +921,7 @@ def coverage_map_panel(coverage_data: dict[str, Any], title: str = "Automation C
         color = {"good": COLORS.SUCCESS, "medium": COLORS.WARNING, "low": COLORS.ERROR}.get(status, COLORS.TEXT_MUTED)
         category_name = category.replace("_", " ").title()
 
-        st.markdown(f"""
-        <div style="margin-bottom:{SPACING.SPACE_3};">
-            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-                <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{category_name}</span>
-                <span style="color:{color};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:600;">{coverage}%</span>
-            </div>
-            <div style="width:100%;height:6px;background:rgba({COLORS.SURFACE_RGB},0.8);border-radius:3px;overflow:hidden;">
-                <div style="width:{coverage}%;height:100%;background:{color};border-radius:3px;"></div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div style="margin-bottom:{SPACING.SPACE_3};"> <div style="display:flex;justify-content:space-between;margin-bottom:4px;"> <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{category_name}</span> <span style="color:{color};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:600;">{coverage}%</span> </div> <div style="width:100%;height:6px;background:rgba({COLORS.SURFACE_RGB},0.8);border-radius:3px;overflow:hidden;"> <div style="width:{coverage}%;height:100%;background:{color};border-radius:3px;"></div> </div> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -1168,14 +1013,7 @@ def graph_timeline_panel(timeline_data: list[dict[str, Any]], title: str = "Grap
 
     st.markdown("**Version History:**")
     for t in timeline_data:
-        st.markdown(f"""
-        <div style="display:flex;justify-content:space-between;padding:{SPACING.SPACE_2} {SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_SM};margin-bottom:4px;">
-            <span style="color:{COLORS.SECONDARY};">v{_escape(str(t['version']))}</span>
-            <span style="color:{COLORS.TEXT_SECONDARY};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(str(t['date']))}</span>
-            <span style="color:{COLORS.SUCCESS};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">+{t['nodes_added']}</span>
-            <span style="color:{COLORS.ERROR};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">-{t['nodes_removed']}</span>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div style="display:flex;justify-content:space-between;padding:{SPACING.SPACE_2} {SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_SM};margin-bottom:4px;"> <span style="color:{COLORS.SECONDARY};">v{_escape(str(t['version']))}</span> <span style="color:{COLORS.TEXT_SECONDARY};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(str(t['date']))}</span> <span style="color:{COLORS.SUCCESS};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">+{t['nodes_added']}</span> <span style="color:{COLORS.ERROR};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">-{t['nodes_removed']}</span> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -1353,16 +1191,7 @@ def recommendation_panel(recommendations: list[dict[str, Any]], title: str = "AI
     for rec in recommendations:
         priority = rec.get("priority", "medium")
         color = _priority_color(priority)
-        st.markdown(f"""
-        <div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-left:3px solid {color};border-radius:0 {BORDERS.RADIUS_MD} {BORDERS.RADIUS_MD} 0;margin-bottom:{SPACING.SPACE_3};">
-            <div style="display:flex;justify-content:space-between;margin-bottom:{SPACING.SPACE_2};">
-                <span style="color:{color};font-size:{TYPOGRAPHY.FONT_SIZE_XS};text-transform:uppercase;font-weight:600;">{_escape(priority)}</span>
-                <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(rec.get('category', ''))}</span>
-            </div>
-            <div style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_BASE};margin-bottom:{SPACING.SPACE_2};">{_escape(rec.get('recommendation', ''))}</div>
-            <div style="color:{COLORS.TEXT_SECONDARY};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(rec.get('reason', ''))}</div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);border-left:3px solid {color};border-radius:0 {BORDERS.RADIUS_MD} {BORDERS.RADIUS_MD} 0;margin-bottom:{SPACING.SPACE_3};"> <div style="display:flex;justify-content:space-between;margin-bottom:{SPACING.SPACE_2};"> <span style="color:{color};font-size:{TYPOGRAPHY.FONT_SIZE_XS};text-transform:uppercase;font-weight:600;">{_escape(priority)}</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(rec.get('category', ''))}</span> </div> <div style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_BASE};margin-bottom:{SPACING.SPACE_2};">{_escape(rec.get('recommendation', ''))}</div> <div style="color:{COLORS.TEXT_SECONDARY};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(rec.get('reason', ''))}</div> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -1376,13 +1205,7 @@ def execution_history_panel(history: list[dict[str, Any]], title: str = "Executi
     for item in history:
         status_color = COLORS.SUCCESS if item.get("status") == "passed" else COLORS.ERROR
         status_icon = "✅" if item.get("status") == "passed" else "❌"
-        st.markdown(f"""
-        <div style="display:flex;justify-content:space-between;padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};border-left:3px solid {status_color};">
-            <span style="color:{status_color};">{status_icon} {_escape(str(item.get('status', 'unknown')))}</span>
-            <span style="color:{COLORS.TEXT_SECONDARY};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{item.get('duration', 0)}s</span>
-            <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(str(item.get('agent', '')))}</span>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div style="display:flex;justify-content:space-between;padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};border-left:3px solid {status_color};"> <span style="color:{status_color};">{status_icon} {_escape(str(item.get('status', 'unknown')))}</span> <span style="color:{COLORS.TEXT_SECONDARY};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{item.get('duration', 0)}s</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(str(item.get('agent', '')))}</span> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -1412,15 +1235,7 @@ def latest_changes_panel(changes: list[dict[str, Any]], title: str = "Latest Cha
         else:
             time_str = str(time_val)
 
-        st.markdown(f"""
-        <div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};">
-            <span style="font-size:14px;">{icon}</span>
-            <div style="flex:1;">
-                <div style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(change.get('item', ''))}</div>
-                <div style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(change.get('type', '').replace('_', ' '))} • {time_str}</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};padding:{SPACING.SPACE_2};background:rgba({COLORS.SURFACE_RGB},0.4);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};"> <span style="font-size:14px;">{icon}</span> <div style="flex:1;"> <div style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(change.get('item', ''))}</div> <div style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(change.get('type', '').replace('_', ' '))} • {time_str}</div> </div> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -1472,28 +1287,7 @@ def _render_relationships_tab() -> None:
         target_node = get_node_by_id(rel["target"])
         if source_node and target_node:
             color = _rel_color(rel.get("type", "default"))
-            st.markdown(f"""
-            <div style="
-                display:flex;align-items:center;gap:{SPACING.SPACE_3};
-                padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6);
-                border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};
-                border-left:3px solid {color};
-            ">
-                <div style="flex:1;">
-                    <span style="color:{COLORS.TEXT_PRIMARY};">{_escape(source_node['name'])}</span>
-                </div>
-                <div style="
-                    padding:4px 8px;background:rgba({_hex_to_rgb(color)},0.2);
-                    border-radius:{BORDERS.RADIUS_SM};font-size:{TYPOGRAPHY.FONT_SIZE_XS};
-                    color:{color};font-weight:600;
-                ">
-                    {_escape(rel.get('label', rel.get('type', '')))}
-                </div>
-                <div style="flex:1;text-align:right;">
-                    <span style="color:{COLORS.TEXT_PRIMARY};">{_escape(target_node['name'])}</span>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div style=" display:flex;align-items:center;gap:{SPACING.SPACE_3}; padding:{SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.6); border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2}; border-left:3px solid {color}; "> <div style="flex:1;"> <span style="color:{COLORS.TEXT_PRIMARY};">{_escape(source_node['name'])}</span> </div> <div style=" padding:4px 8px;background:rgba({_hex_to_rgb(color)},0.2); border-radius:{BORDERS.RADIUS_SM};font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{color};font-weight:600; "> {_escape(rel.get('label', rel.get('type', '')))} </div> <div style="flex:1;text-align:right;"> <span style="color:{COLORS.TEXT_PRIMARY};">{_escape(target_node['name'])}</span> </div> </div>""", unsafe_allow_html=True)
 
     spacer(1)
     st.markdown("#### 📊 Relationship Types")

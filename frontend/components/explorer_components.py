@@ -5,6 +5,48 @@ from typing import Any, Callable, Optional
 import streamlit as st
 import plotly.graph_objects as go
 
+from themes.tokens import (
+    COLORS, SPACING, TYPOGRAPHY, BORDERS, SHADOWS, ANIMATIONS,
+    get_health_color, get_confidence_color, get_status_color, get_priority_color,
+)
+
+
+# ============================================================================
+# Layout / styling helpers (token-driven, no hardcoded colors)
+# ============================================================================
+
+def _hex_to_rgb(hex_color: str) -> str:
+    """Convert a hex color to an 'r, g, b' string for rgba() usage."""
+    h = hex_color.lstrip('#')
+    return f"{int(h[0:2], 16)}, {int(h[2:4], 16)}, {int(h[4:6], 16)}"
+
+
+def _coverage_color(coverage: float) -> str:
+    """Semantic coverage color from a 0-100 value."""
+    if coverage >= 80:
+        return COLORS.SUCCESS
+    if coverage >= 50:
+        return COLORS.WARNING
+    return COLORS.ERROR
+
+
+def _risk_color(risk: str) -> str:
+    return {"Low": COLORS.SUCCESS, "Medium": COLORS.WARNING,
+            "High": COLORS.ERROR, "Critical": COLORS.ERROR}.get(risk, COLORS.TEXT_MUTED)
+
+
+def _severity_color(severity: str) -> str:
+    return {"critical": COLORS.ERROR, "high": COLORS.WARNING,
+            "medium": COLORS.INFO, "low": COLORS.TEXT_MUTED,
+            "info": COLORS.INFO}.get(severity, COLORS.TEXT_MUTED)
+
+
+def _escape(text: Any) -> str:
+    """Escape text for safe HTML rendering."""
+    if text is None:
+        return ""
+    return str(text).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
 
 # ============================================================================
 # Session State Management
@@ -59,87 +101,34 @@ def render_tree_node(
     node_id = node["id"]
     is_expanded = node_id in st.session_state.expanded_nodes
     has_children = bool(node.get("children"))
-    
-    # Indentation
-    indent = "　　" * level
-    
-    # Status color
-    status_colors = {"active": "#10b981", "partial": "#f59e0b", "inactive": "#64748b"}
-    status_color = status_colors.get(node.get("status", "active"), "#64748b")
-    
-    # Coverage color
+
+    # Coverage / confidence colors (token-driven)
     coverage = node.get("coverage", 0)
-    if coverage >= 80:
-        coverage_color = "#10b981"
-    elif coverage >= 50:
-        coverage_color = "#f59e0b"
-    else:
-        coverage_color = "#ef4444"
-    
+    cov_color = _coverage_color(coverage)
+    confidence = node.get("confidence", 0)
+
     # Node type icons
-    type_icons = {
-        "application": "🏪",
-        "module": "📁",
-        "page": "📄",
-    }
+    type_icons = {"application": "🏪", "module": "📁", "page": "📄"}
     icon = type_icons.get(node.get("type", "page"), "📄")
-    
-    # Build the row HTML
-    col1, col2, col3 = st.columns([4, 1, 1])
-    
-    with col1:
-        # Expand/collapse button for nodes with children
+
+    # Indentation via CSS padding-left (no Unicode full-width spaces)
+    indent_px = level * 16
+
+    # Expand/collapse glyph
+    expand_glyph = "▼" if (has_children and is_expanded) else "▶" if has_children else "•"
+
+    # Single stable HTML flex row: [glyph][icon][name flex:1 truncate][coverage badge][confidence badge]
+    st.markdown(f"""<div style=" display:flex; align-items:center; gap:{SPACING.SPACE_2}; padding:{SPACING.SPACE_1} {SPACING.SPACE_2}; padding-left:{indent_px}px; background:rgba({COLORS.SURFACE_RGB}, 0.4); border-radius:{BORDERS.RADIUS_SM}; margin-bottom:{SPACING.SPACE_1}; box-sizing:border-box; min-width:0; max-width:100%; "> <span style="flex-shrink:0; font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_MUTED}; width:14px; text-align:center;">{expand_glyph}</span> <span style="flex-shrink:0; font-size:{TYPOGRAPHY.FONT_SIZE_BASE};">{icon}</span> <span style=" flex:1; min-width:0; color:{COLORS.TEXT_PRIMARY}; font-size:{TYPOGRAPHY.FONT_SIZE_SM}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; ">{_escape(node['name'])}</span> <span style=" flex-shrink:0; padding:2px {SPACING.SPACE_2}; background:rgba({_hex_to_rgb(cov_color)}, 0.15); border:{BORDERS.WIDTH_THIN} solid rgba({_hex_to_rgb(cov_color)}, 0.4); border-radius:{BORDERS.RADIUS_SM}; font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{cov_color}; white-space:nowrap; ">{coverage:.0f}%</span> <span style=" flex-shrink:0; padding:2px {SPACING.SPACE_2}; background:rgba({COLORS.PRIMARY_RGB}, 0.15); border:{BORDERS.WIDTH_THIN} solid rgba({COLORS.PRIMARY_RGB}, 0.3); border-radius:{BORDERS.RADIUS_SM}; font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.PRIMARY}; white-space:nowrap; ">{confidence:.0f}%</span> </div>""", unsafe_allow_html=True)
+
+    # Interaction button (full-width, stable height) — separate from the visual row
+    button_label = f"{expand_glyph} {icon} {node['name']}"
+    if st.button(button_label, key=f"tree_{node_id}", use_container_width=True):
         if has_children:
-            if st.button(
-                f"{'▼' if is_expanded else '▶'} {indent}{icon} {node['name']}",
-                key=f"tree_{node_id}",
-                use_container_width=True,
-            ):
-                toggle_node_expansion(node_id)
-                st.rerun()
+            toggle_node_expansion(node_id)
         else:
-            # Leaf node - clickable
-            if st.button(
-                f"　 {indent}{icon} {node['name']}",
-                key=f"tree_{node_id}",
-                use_container_width=True,
-            ):
-                select_page(node)
-                st.rerun()
-    
-    with col2:
-        # Coverage badge
-        st.markdown(f"""
-        <div style="
-            padding: 4px 8px;
-            background: {coverage_color}20;
-            border: 1px solid {coverage_color}50;
-            border-radius: 4px;
-            font-size: 11px;
-            text-align: center;
-            color: {coverage_color};
-        ">
-            {coverage:.0f}%
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col3:
-        # Confidence badge
-        confidence = node.get("confidence", 0)
-        st.markdown(f"""
-        <div style="
-            padding: 4px 8px;
-            background: rgba(99, 102, 241, 0.2);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 4px;
-            font-size: 11px;
-            text-align: center;
-            color: #818cf8;
-        ">
-            {confidence:.0f}%
-        </div>
-        """, unsafe_allow_html=True)
-    
+            select_page(node)
+        st.rerun()
+
     # Render children if expanded
     if has_children and is_expanded:
         for child in node.get("children", []):
@@ -198,78 +187,34 @@ def _render_tree_summary(tree: dict[str, Any]) -> None:
 def page_card(page: dict[str, Any], columns: int = 3) -> None:
     """Render a page as a card."""
     with st.container():
-        # Screenshot placeholder
-        st.markdown(f"""
-        <div style="
-            height: 150px;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(34, 211, 238, 0.1));
-            border: 1px solid rgba(148, 163, 184, 0.1);
-            border-radius: 12px 12px 0 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-        ">
-            {page.get('icon', '📄')}
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Card content
         coverage = page.get("coverage", 0)
         risk = page.get("risk", "Low")
-        
-        coverage_color = "#10b981" if coverage >= 80 else "#f59e0b" if coverage >= 50 else "#ef4444"
-        risk_colors = {"Low": "#10b981", "Medium": "#f59e0b", "High": "#ef4444", "Critical": "#dc2626"}
-        risk_color = risk_colors.get(risk, "#64748b")
-        
-        st.markdown(f"""
-        <div style="
-            padding: 16px;
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(148, 163, 184, 0.1);
-            border-top: none;
-            border-radius: 0 0 12px 12px;
-        ">
-            <h4 style="margin: 0 0 8px; color: #f8fafc; font-size: 14px;">
-                {page['name']}
-            </h4>
-            <div style="font-size: 11px; color: #64748b; margin-bottom: 12px;">
-                {page.get('url', '/')}
-            </div>
-            
-            <div style="display: flex; gap: 8px; margin-bottom: 12px;">
-                <span style="
-                    padding: 2px 8px;
-                    background: {coverage_color}20;
-                    border-radius: 4px;
-                    font-size: 10px;
-                    color: {coverage_color};
-                ">
-                    {coverage:.0f}% Covered
-                </span>
-                <span style="
-                    padding: 2px 8px;
-                    background: {risk_color}20;
-                    border-radius: 4px;
-                    font-size: 10px;
-                    color: {risk_color};
-                ">
-                    {risk} Risk
-                </span>
-            </div>
-            
-            <div style="
-                font-size: 11px;
-                color: #818cf8;
-                font-family: 'JetBrains Mono', monospace;
-            ">
-                Confidence: {page.get('confidence', 0):.0f}%
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Action button
-        if st.button(f"Inspect →", key=f"inspect_{page['id']}", use_container_width=True):
+        cov_color = _coverage_color(coverage)
+        risk_color = _risk_color(risk)
+        cov_rgb = _hex_to_rgb(cov_color)
+        risk_rgb = _hex_to_rgb(risk_color)
+        icon = page.get('icon', '📄')
+        name = _escape(page['name'])
+        url = _escape(page.get('url', '/'))
+        conf = page.get('confidence', 0)
+
+        # Single-line HTML to prevent Streamlit code-block rendering of indented markup
+        st.markdown(
+            f'<div style="height:120px;background:linear-gradient(135deg,rgba({COLORS.PRIMARY_RGB},0.1),rgba({COLORS.SECONDARY_RGB},0.1));border:{BORDERS.WIDTH_THIN} solid rgba({COLORS.BORDER_RGB},0.2);border-radius:{BORDERS.RADIUS_LG} {BORDERS.RADIUS_LG} 0 0;display:flex;align-items:center;justify-content:center;font-size:{TYPOGRAPHY.FONT_SIZE_3XL};box-sizing:border-box;overflow:hidden;">{icon}</div>'
+            f'<div style="padding:{SPACING.SPACE_4};background:{COLORS.GLASS_LIGHT};border:{BORDERS.WIDTH_THIN} solid rgba({COLORS.BORDER_RGB},0.15);border-top:none;border-radius:0 0 {BORDERS.RADIUS_LG} {BORDERS.RADIUS_LG};box-sizing:border-box;min-width:0;max-width:100%;">'
+            f'<h4 style="margin:0 0 {SPACING.SPACE_2};color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_BASE};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{name}</h4>'
+            f'<div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};margin-bottom:{SPACING.SPACE_3};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:{TYPOGRAPHY.FONT_MONO};">{url}</div>'
+            f'<div style="display:flex;gap:{SPACING.SPACE_2};margin-bottom:{SPACING.SPACE_3};flex-wrap:wrap;min-width:0;">'
+            f'<span style="padding:2px {SPACING.SPACE_2};background:rgba({cov_rgb},0.15);border-radius:{BORDERS.RADIUS_SM};font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{cov_color};white-space:nowrap;">{coverage:.0f}% Covered</span>'
+            f'<span style="padding:2px {SPACING.SPACE_2};background:rgba({risk_rgb},0.15);border-radius:{BORDERS.RADIUS_SM};font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{risk_color};white-space:nowrap;">{risk} Risk</span>'
+            f'</div>'
+            f'<div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.PRIMARY};font-family:{TYPOGRAPHY.FONT_MONO};white-space:nowrap;">Confidence: {conf:.0f}%</div>'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
+
+        # Action button — stable full width
+        if st.button("Inspect →", key=f"inspect_{page['id']}", use_container_width=True):
             select_page(page)
             st.rerun()
 
@@ -295,26 +240,8 @@ def page_gallery(pages: list[dict[str, Any]], title: str = "Page Gallery") -> No
 
 def page_workspace(page: dict[str, Any]) -> None:
     """Render detailed page workspace."""
-    st.markdown(f"""
-    <div style="
-        padding: 20px;
-        background: rgba(30, 41, 59, 0.6);
-        border: 1px solid rgba(148, 163, 184, 0.1);
-        border-radius: 12px;
-        margin-bottom: 20px;
-    ">
-        <div style="display: flex; align-items: center; gap: 16px;">
-            <span style="font-size: 48px;">{page.get('icon', '📄')}</span>
-            <div>
-                <h2 style="margin: 0; color: #f8fafc;">{page['name']}</h2>
-                <div style="font-size: 14px; color: #64748b; margin-top: 4px;">
-                    {page.get('url', '/')} • {page.get('framework', 'React')}
-                </div>
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
+    st.markdown(f"""<div style=" padding: {SPACING.SPACE_6}; background: {COLORS.GLASS_LIGHT}; border: {BORDERS.WIDTH_THIN} solid rgba({COLORS.BORDER_RGB}, 0.15); border-radius: {BORDERS.RADIUS_LG}; margin-bottom: {SPACING.SPACE_6}; box-sizing: border-box; min-width:0; max-width:100%; "> <div style="display: flex; align-items: center; gap: {SPACING.SPACE_4}; min-width:0; flex-wrap:wrap;"> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_3XL}; flex-shrink:0;">{page.get('icon', '📄')}</span> <div style="min-width:0; flex:1;"> <h2 style="margin: 0; color: {COLORS.TEXT_PRIMARY}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{_escape(page['name'])}</h2> <div style="font-size: {TYPOGRAPHY.FONT_SIZE_SM}; color: {COLORS.TEXT_MUTED}; margin-top: {SPACING.SPACE_1}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"> {_escape(page.get('url', '/'))} • {_escape(page.get('framework', 'React'))} </div> </div> </div> </div>""", unsafe_allow_html=True)
+
     # Component metrics
     col1, col2, col3, col4 = st.columns(4)
     with col1:
@@ -325,21 +252,21 @@ def page_workspace(page: dict[str, Any]) -> None:
         st.metric("Buttons", page.get("buttons", 0))
     with col4:
         st.metric("Coverage", f"{page.get('coverage', 0):.1f}%")
-    
+
     st.markdown("---")
-    
+
     # Detailed sections
     tab1, tab2, tab3, tab4 = st.tabs(["Overview", "Components", "Rules", "Issues"])
-    
+
     with tab1:
         _render_page_overview(page)
-    
+
     with tab2:
         _render_page_components(page)
-    
+
     with tab3:
         _render_page_rules(page)
-    
+
     with tab4:
         _render_page_issues(page)
 
@@ -347,158 +274,65 @@ def page_workspace(page: dict[str, Any]) -> None:
 def _render_page_overview(page: dict[str, Any]) -> None:
     """Render page overview."""
     st.markdown("#### 📊 Scores")
-    
+
     col1, col2, col3 = st.columns(3)
     with col1:
         acc_score = page.get("accessibility_score", 0)
-        st.markdown(f"""
-        <div style="padding: 16px; background: rgba(30, 41, 59, 0.6); border-radius: 12px; text-align: center;">
-            <div style="font-size: 32px; font-weight: 700; color: {'#10b981' if acc_score >= 90 else '#f59e0b' if acc_score >= 70 else '#ef4444'};">
-                {acc_score:.0f}
-            </div>
-            <div style="font-size: 12px; color: #64748b; text-transform: uppercase;">Accessibility</div>
-        </div>
-        """, unsafe_allow_html=True)
-    
+        acc_color = COLORS.SUCCESS if acc_score >= 90 else COLORS.WARNING if acc_score >= 70 else COLORS.ERROR
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_4}; background:{COLORS.GLASS_LIGHT}; border-radius:{BORDERS.RADIUS_LG}; text-align:center; box-sizing:border-box; min-width:0;"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_3XL}; font-weight:700; color:{acc_color};">{acc_score:.0f}</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_MUTED}; text-transform:uppercase;">Accessibility</div> </div>""", unsafe_allow_html=True)
+
     with col2:
         perf_score = page.get("performance_score", 0)
-        st.markdown(f"""
-        <div style="padding: 16px; background: rgba(30, 41, 59, 0.6); border-radius: 12px; text-align: center;">
-            <div style="font-size: 32px; font-weight: 700; color: {'#10b981' if perf_score >= 80 else '#f59e0b' if perf_score >= 60 else '#ef4444'};">
-                {perf_score:.0f}
-            </div>
-            <div style="font-size: 12px; color: #64748b; text-transform: uppercase;">Performance</div>
-        </div>
-        """, unsafe_allow_html=True)
-    
+        perf_color = COLORS.SUCCESS if perf_score >= 80 else COLORS.WARNING if perf_score >= 60 else COLORS.ERROR
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_4}; background:{COLORS.GLASS_LIGHT}; border-radius:{BORDERS.RADIUS_LG}; text-align:center; box-sizing:border-box; min-width:0;"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_3XL}; font-weight:700; color:{perf_color};">{perf_score:.0f}</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_MUTED}; text-transform:uppercase;">Performance</div> </div>""", unsafe_allow_html=True)
+
     with col3:
         sec_score = page.get("security_score", 0)
-        st.markdown(f"""
-        <div style="padding: 16px; background: rgba(30, 41, 59, 0.6); border-radius: 12px; text-align: center;">
-            <div style="font-size: 32px; font-weight: 700; color: {'#10b981' if sec_score >= 85 else '#f59e0b' if sec_score >= 70 else '#ef4444'};">
-                {sec_score:.0f}
-            </div>
-            <div style="font-size: 12px; color: #64748b; text-transform: uppercase;">Security</div>
-        </div>
-        """, unsafe_allow_html=True)
-    
+        sec_color = COLORS.SUCCESS if sec_score >= 85 else COLORS.WARNING if sec_score >= 70 else COLORS.ERROR
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_4}; background:{COLORS.GLASS_LIGHT}; border-radius:{BORDERS.RADIUS_LG}; text-align:center; box-sizing:border-box; min-width:0;"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_3XL}; font-weight:700; color:{sec_color};">{sec_score:.0f}</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_MUTED}; text-transform:uppercase;">Security</div> </div>""", unsafe_allow_html=True)
+
     st.markdown("#### 💡 AI Summary")
-    st.markdown(f"""
-    <div style="
-        padding: 16px;
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(34, 211, 238, 0.1));
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        border-radius: 12px;
-        font-size: 14px;
-        line-height: 1.6;
-        color: #94a3b8;
-    ">
-        {page.get('ai_summary', 'No summary available.')}
-    </div>
-    """, unsafe_allow_html=True)
-    
+    st.markdown(f"""<div style=" padding:{SPACING.SPACE_4}; background: linear-gradient(135deg, rgba({COLORS.PRIMARY_RGB}, 0.1), rgba({COLORS.SECONDARY_RGB}, 0.1)); border: {BORDERS.WIDTH_THIN} solid rgba({COLORS.PRIMARY_RGB}, 0.2); border-radius: {BORDERS.RADIUS_LG}; font-size: {TYPOGRAPHY.FONT_SIZE_SM}; line-height: 1.6; color: {COLORS.TEXT_SECONDARY}; box-sizing:border-box; min-width:0; max-width:100%; overflow-wrap:anywhere; word-break:normal; "> {_escape(page.get('ai_summary', 'No summary available.'))} </div>""", unsafe_allow_html=True)
+
     # AI Explanation
     st.markdown("#### 🎯 AI Explanation")
     explanation = page.get('why_discovered', 'Discovered through automated analysis.')
-    evidence = page.get('evidence', [])
     importance = page.get('business_importance', 'Medium')
     complexity = page.get('automation_complexity', 'Moderate')
-    
-    st.markdown(f"""
-    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
-        <div style="padding: 12px; background: rgba(30, 41, 59, 0.6); border-radius: 8px;">
-            <div style="font-size: 10px; color: #64748b; text-transform: uppercase;">Why Discovered</div>
-            <div style="font-size: 13px; color: #f8fafc; margin-top: 4px;">{explanation}</div>
-        </div>
-        <div style="padding: 12px; background: rgba(30, 41, 59, 0.6); border-radius: 8px;">
-            <div style="font-size: 10px; color: #64748b; text-transform: uppercase;">Business Importance</div>
-            <div style="font-size: 13px; color: #f8fafc; margin-top: 4px;">{importance}</div>
-        </div>
-        <div style="padding: 12px; background: rgba(30, 41, 59, 0.6); border-radius: 8px;">
-            <div style="font-size: 10px; color: #64748b; text-transform: uppercase;">Automation Complexity</div>
-            <div style="font-size: 13px; color: #f8fafc; margin-top: 4px;">{complexity}</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+
+    st.markdown(f"""<div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:{SPACING.SPACE_3}; box-sizing:border-box; min-width:0; max-width:100%;"> <div style="padding:{SPACING.SPACE_3}; background:{COLORS.GLASS_LIGHT}; border-radius:{BORDERS.RADIUS_MD}; min-width:0; overflow:hidden;"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_MUTED}; text-transform:uppercase;">Why Discovered</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_SM}; color:{COLORS.TEXT_PRIMARY}; margin-top:{SPACING.SPACE_1}; overflow-wrap:anywhere;">{_escape(explanation)}</div> </div> <div style="padding:{SPACING.SPACE_3}; background:{COLORS.GLASS_LIGHT}; border-radius:{BORDERS.RADIUS_MD}; min-width:0; overflow:hidden;"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_MUTED}; text-transform:uppercase;">Business Importance</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_SM}; color:{COLORS.TEXT_PRIMARY}; margin-top:{SPACING.SPACE_1}; overflow-wrap:anywhere;">{_escape(importance)}</div> </div> <div style="padding:{SPACING.SPACE_3}; background:{COLORS.GLASS_LIGHT}; border-radius:{BORDERS.RADIUS_MD}; min-width:0; overflow:hidden;"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_MUTED}; text-transform:uppercase;">Automation Complexity</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_SM}; color:{COLORS.TEXT_PRIMARY}; margin-top:{SPACING.SPACE_1}; overflow-wrap:anywhere;">{_escape(complexity)}</div> </div> </div>""", unsafe_allow_html=True)
 
 
 def _render_page_components(page: dict[str, Any]) -> None:
     """Render page components list."""
     components = page.get("components_detail", [])
-    
+
     if not components:
         st.info("No component details available.")
         return
-    
+
     for comp in components:
         comp_type = comp.get("type", {}).value if hasattr(comp.get("type", {}), 'value') else str(comp.get("type", "Unknown"))
-        
+
         status_icons = "✅" if comp.get("automation_ready", False) else "⚠️"
         flaky_indicator = " (Flaky!)" if comp.get("is_flaky", False) else ""
-        
-        st.markdown(f"""
-        <div style="
-            padding: 12px;
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(148, 163, 184, 0.1);
-            border-radius: 8px;
-            margin-bottom: 8px;
-        ">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    <span style="font-size: 14px; color: #f8fafc;">{comp['name']}</span>
-                    <span style="font-size: 11px; color: #64748b; margin-left: 8px;">{comp_type}{flaky_indicator}</span>
-                </div>
-                <div style="display: flex; gap: 12px;">
-                    {status_icons}
-                    <span style="font-size: 11px; color: #818cf8;">
-                        Test ID: {comp.get('test_id', 'N/A')}
-                    </span>
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+
+        st.markdown(f"""<div style=" padding:{SPACING.SPACE_3}; background:{COLORS.GLASS_LIGHT}; border:{BORDERS.WIDTH_THIN} solid rgba({COLORS.BORDER_RGB}, 0.15); border-radius:{BORDERS.RADIUS_MD}; margin-bottom:{SPACING.SPACE_2}; box-sizing:border-box; min-width:0; max-width:100%; "> <div style="display:flex; justify-content:space-between; align-items:center; gap:{SPACING.SPACE_2}; min-width:0;"> <div style="min-width:0; overflow:hidden;"> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_SM}; color:{COLORS.TEXT_PRIMARY}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{_escape(comp['name'])}</span> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_MUTED}; margin-left:{SPACING.SPACE_2};">{_escape(comp_type)}{_escape(flaky_indicator)}</span> </div> <div style="display:flex; gap:{SPACING.SPACE_3}; flex-shrink:0; align-items:center;"> {status_icons} <span style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.PRIMARY}; white-space:nowrap;"> Test ID: {_escape(str(comp.get('test_id', 'N/A')))} </span> </div> </div> </div>""", unsafe_allow_html=True)
 
 
 def _render_page_rules(page: dict[str, Any]) -> None:
     """Render page business rules."""
     rules = page.get("business_rules_detail", [])
-    
+
     if not rules:
         st.info("No business rules available.")
         return
-    
-    complexity_colors = {"Low": "#10b981", "Medium": "#f59e0b", "High": "#ef4444"}
-    
+
+    complexity_colors = {"Low": COLORS.SUCCESS, "Medium": COLORS.WARNING, "High": COLORS.ERROR}
+
     for rule in rules:
-        color = complexity_colors.get(rule.get("complexity", "Low"), "#64748b")
-        st.markdown(f"""
-        <div style="
-            padding: 14px;
-            background: rgba(30, 41, 59, 0.6);
-            border-left: 3px solid {color};
-            border-radius: 0 8px 8px 0;
-            margin-bottom: 10px;
-        ">
-            <div style="display: flex; justify-content: space-between;">
-                <span style="font-size: 14px; color: #f8fafc; font-weight: 500;">
-                    {rule['name']}
-                </span>
-                <span style="
-                    padding: 2px 8px;
-                    background: {color}20;
-                    border-radius: 4px;
-                    font-size: 10px;
-                    color: {color};
-                ">
-                    {rule.get('complexity', 'Low')}
-                </span>
-            </div>
-            <div style="font-size: 12px; color: #94a3b8; margin-top: 6px;">
-                {rule.get('description', '')}
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        color = complexity_colors.get(rule.get("complexity", "Low"), COLORS.TEXT_MUTED)
+        st.markdown(f"""<div style=" padding:{SPACING.SPACE_4}; background:{COLORS.GLASS_LIGHT}; border-left:3px solid {color}; border-radius:0 {BORDERS.RADIUS_MD} {BORDERS.RADIUS_MD} 0; margin-bottom:{SPACING.SPACE_3}; box-sizing:border-box; min-width:0; max-width:100%; "> <div style="display:flex; justify-content:space-between; gap:{SPACING.SPACE_2}; min-width:0;"> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_SM}; color:{COLORS.TEXT_PRIMARY}; font-weight:500; overflow-wrap:anywhere; min-width:0;"> {_escape(rule['name'])} </span> <span style=" flex-shrink:0; padding:2px {SPACING.SPACE_2}; background:rgba({_hex_to_rgb(color)}, 0.15); border-radius:{BORDERS.RADIUS_SM}; font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{color}; white-space:nowrap; "> {_escape(rule.get('complexity', 'Low'))} </span> </div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_SECONDARY}; margin-top:{SPACING.SPACE_2}; overflow-wrap:anywhere; word-break:normal;"> {_escape(rule.get('description', ''))} </div> </div>""", unsafe_allow_html=True)
 
 
 def _render_page_issues(page: dict[str, Any]) -> None:
@@ -507,38 +341,22 @@ def _render_page_issues(page: dict[str, Any]) -> None:
     st.markdown("#### ♿ Accessibility Issues")
     acc_issues = page.get("accessibility_issues", [])
     for issue in acc_issues:
-        severity_colors = {"high": "#ef4444", "medium": "#f59e0b", "low": "#64748b"}
-        color = severity_colors.get(issue.get("severity", "low"), "#64748b")
-        st.markdown(f"""
-        <div style="padding: 10px; background: rgba(239, 68, 68, 0.1); border-left: 3px solid {color}; border-radius: 0 6px 6px 0; margin-bottom: 8px;">
-            <span style="font-size: 12px; color: #f8fafc;">{issue.get('issue', '')}</span>
-            <span style="font-size: 10px; color: #64748b; margin-left: 8px;">{issue.get('element', '')}</span>
-        </div>
-        """, unsafe_allow_html=True)
-    
+        color = _severity_color(issue.get("severity", "low"))
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_3}; background:rgba({COLORS.ERROR_RGB}, 0.1); border-left:3px solid {color}; border-radius:0 {BORDERS.RADIUS_SM} {BORDERS.RADIUS_SM} 0; margin-bottom:{SPACING.SPACE_2}; box-sizing:border-box; min-width:0; overflow-wrap:anywhere; word-break:normal;"> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_PRIMARY};">{_escape(issue.get('issue', ''))}</span> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_MUTED}; margin-left:{SPACING.SPACE_2};">{_escape(issue.get('element', ''))}</span> </div>""", unsafe_allow_html=True)
+
     # Performance
     st.markdown("#### ⚡ Performance Issues")
     perf_issues = page.get("performance_issues", [])
     for issue in perf_issues:
-        color = "#f59e0b" if issue.get("severity") == "medium" else "#ef4444"
-        st.markdown(f"""
-        <div style="padding: 10px; background: rgba(245, 158, 11, 0.1); border-left: 3px solid {color}; border-radius: 0 6px 6px 0; margin-bottom: 8px;">
-            <span style="font-size: 12px; color: #f8fafc;">{issue.get('issue', '')}</span>
-            <span style="font-size: 10px; color: #94a3b8; margin-left: 8px;">{issue.get('impact', '')}</span>
-        </div>
-        """, unsafe_allow_html=True)
-    
+        color = COLORS.WARNING if issue.get("severity") == "medium" else COLORS.ERROR
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_3}; background:rgba({COLORS.WARNING_RGB}, 0.1); border-left:3px solid {color}; border-radius:0 {BORDERS.RADIUS_SM} {BORDERS.RADIUS_SM} 0; margin-bottom:{SPACING.SPACE_2}; box-sizing:border-box; min-width:0; overflow-wrap:anywhere; word-break:normal;"> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_PRIMARY};">{_escape(issue.get('issue', ''))}</span> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_SECONDARY}; margin-left:{SPACING.SPACE_2};">{_escape(issue.get('impact', ''))}</span> </div>""", unsafe_allow_html=True)
+
     # Security
     st.markdown("#### 🔒 Security Warnings")
     sec_warnings = page.get("security_warnings", [])
     for warning in sec_warnings:
-        color = "#ef4444" if warning.get("severity") == "critical" else "#f59e0b"
-        st.markdown(f"""
-        <div style="padding: 10px; background: rgba(239, 68, 68, 0.1); border-left: 3px solid {color}; border-radius: 0 6px 6px 0; margin-bottom: 8px;">
-            <span style="font-size: 12px; color: #f8fafc;">{warning.get('warning', '')}</span>
-            <span style="font-size: 10px; color: #64748b; margin-left: 8px;">{warning.get('location', '')}</span>
-        </div>
-        """, unsafe_allow_html=True)
+        color = COLORS.ERROR if warning.get("severity") == "critical" else COLORS.WARNING
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_3}; background:rgba({COLORS.ERROR_RGB}, 0.1); border-left:3px solid {color}; border-radius:0 {BORDERS.RADIUS_SM} {BORDERS.RADIUS_SM} 0; margin-bottom:{SPACING.SPACE_2}; box-sizing:border-box; min-width:0; overflow-wrap:anywhere; word-break:normal;"> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_PRIMARY};">{_escape(warning.get('warning', ''))}</span> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_MUTED}; margin-left:{SPACING.SPACE_2};">{_escape(warning.get('location', ''))}</span> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -562,12 +380,12 @@ def application_map(connections: list[dict[str, Any]], title: str = "Application
         x1, y1 = node_positions[conn["to"]]
         
         type_colors = {
-            "navigation": "#6366f1",
-            "action": "#22d3ee",
-            "auth": "#f59e0b",
-            "direct": "#10b981",
+            "navigation": COLORS.PRIMARY,
+            "action": COLORS.SECONDARY,
+            "auth": COLORS.WARNING,
+            "direct": COLORS.SUCCESS,
         }
-        color = type_colors.get(conn.get("type", "navigation"), "#6366f1")
+        color = type_colors.get(conn.get("type", "navigation"), COLORS.PRIMARY)
         
         fig.add_trace(go.Scatter(
             x=[x0, x1],
@@ -585,10 +403,10 @@ def application_map(connections: list[dict[str, Any]], title: str = "Application
             x=[x],
             y=[y],
             mode='markers+text',
-            marker=dict(size=30, color='#6366f1', line=dict(color='#fff', width=2)),
+            marker=dict(size=30, color=COLORS.PRIMARY, line=dict(color=COLORS.TEXT_PRIMARY, width=2)),
             text=[node],
             textposition='middle center',
-            textfont=dict(size=10, color='#f8fafc'),
+            textfont=dict(size=10, color=COLORS.TEXT_PRIMARY),
             hovertemplate=f"<b>{node}</b><extra></extra>",
             showlegend=False,
         ))
@@ -596,32 +414,17 @@ def application_map(connections: list[dict[str, Any]], title: str = "Application
     fig.update_layout(
         height=300,
         showlegend=False,
-        paper_bgcolor='transparent',
-        plot_bgcolor='transparent',
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
         margin=dict(l=20, r=20, t=20, b=20),
         xaxis=dict(showgrid=False, zeroline=False, showticklabels=False, range=[-0.5, 3.5]),
         yaxis=dict(showgrid=False, zeroline=False, showticklabels=False, range=[-0.5, 3.5]),
     )
     
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="app_map_chart")
     
     # Legend
-    st.markdown("""
-    <div style="display: flex; gap: 16px; justify-content: center; margin-top: 12px;">
-        <span style="display: flex; align-items: center; gap: 6px;">
-            <span style="width: 20px; height: 3px; background: #6366f1; border-radius: 2px;"></span>
-            <span style="font-size: 11px; color: #94a3b8;">Navigation</span>
-        </span>
-        <span style="display: flex; align-items: center; gap: 6px;">
-            <span style="width: 20px; height: 3px; background: #22d3ee; border-radius: 2px;"></span>
-            <span style="font-size: 11px; color: #94a3b8;">Action</span>
-        </span>
-        <span style="display: flex; align-items: center; gap: 6px;">
-            <span style="width: 20px; height: 3px; background: #f59e0b; border-radius: 2px;"></span>
-            <span style="font-size: 11px; color: #94a3b8;">Auth</span>
-        </span>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style="display:flex; gap:{SPACING.SPACE_4}; justify-content:center; margin-top:{SPACING.SPACE_3}; flex-wrap:wrap; box-sizing:border-box; min-width:0;"> <span style="display:flex; align-items:center; gap:{SPACING.SPACE_2};"> <span style="width:20px; height:3px; background:{COLORS.PRIMARY}; border-radius:2px; flex-shrink:0;"></span> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_SECONDARY}; white-space:nowrap;">Navigation</span> </span> <span style="display:flex; align-items:center; gap:{SPACING.SPACE_2};"> <span style="width:20px; height:3px; background:{COLORS.SECONDARY}; border-radius:2px; flex-shrink:0;"></span> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_SECONDARY}; white-space:nowrap;">Action</span> </span> <span style="display:flex; align-items:center; gap:{SPACING.SPACE_2};"> <span style="width:20px; height:3px; background:{COLORS.WARNING}; border-radius:2px; flex-shrink:0;"></span> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_SECONDARY}; white-space:nowrap;">Auth</span> </span> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -660,30 +463,15 @@ def statistics_dashboard(stats: dict[str, Any], title: str = "Statistics") -> No
     coverage_col1, coverage_col2, coverage_col3 = st.columns(3)
     with coverage_col1:
         ui_cov = coverage.get("ui_coverage", 0)
-        st.markdown(f"""
-        <div style="padding: 16px; background: rgba(30, 41, 59, 0.6); border-radius: 12px; text-align: center;">
-            <div style="font-size: 28px; font-weight: 700; color: #6366f1;">{ui_cov:.1f}%</div>
-            <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">UI Coverage</div>
-        </div>
-        """, unsafe_allow_html=True)
-    
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_4}; background:{COLORS.GLASS_LIGHT}; border-radius:{BORDERS.RADIUS_LG}; text-align:center; box-sizing:border-box; min-width:0;"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_3XL}; font-weight:700; color:{COLORS.PRIMARY};">{ui_cov:.1f}%</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_MUTED}; text-transform:uppercase;">UI Coverage</div> </div>""", unsafe_allow_html=True)
+
     with coverage_col2:
         api_cov = coverage.get("api_coverage", 0)
-        st.markdown(f"""
-        <div style="padding: 16px; background: rgba(30, 41, 59, 0.6); border-radius: 12px; text-align: center;">
-            <div style="font-size: 28px; font-weight: 700; color: #22d3ee;">{api_cov:.1f}%</div>
-            <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">API Coverage</div>
-        </div>
-        """, unsafe_allow_html=True)
-    
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_4}; background:{COLORS.GLASS_LIGHT}; border-radius:{BORDERS.RADIUS_LG}; text-align:center; box-sizing:border-box; min-width:0;"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_3XL}; font-weight:700; color:{COLORS.SECONDARY};">{api_cov:.1f}%</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_MUTED}; text-transform:uppercase;">API Coverage</div> </div>""", unsafe_allow_html=True)
+
     with coverage_col3:
         overall = coverage.get("overall", 0)
-        st.markdown(f"""
-        <div style="padding: 16px; background: rgba(30, 41, 59, 0.6); border-radius: 12px; text-align: center;">
-            <div style="font-size: 28px; font-weight: 700; color: #10b981;">{overall:.1f}%</div>
-            <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">Overall</div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_4}; background:{COLORS.GLASS_LIGHT}; border-radius:{BORDERS.RADIUS_LG}; text-align:center; box-sizing:border-box; min-width:0;"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_3XL}; font-weight:700; color:{COLORS.SUCCESS};">{overall:.1f}%</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_MUTED}; text-transform:uppercase;">Overall</div> </div>""", unsafe_allow_html=True)
     
     st.markdown("---")
     
@@ -733,50 +521,18 @@ def ai_discoveries_panel(discoveries: list[dict[str, Any]], title: str = "AI Dis
     }
     
     severity_colors = {
-        "critical": "#ef4444",
-        "high": "#f59e0b",
-        "medium": "#3b82f6",
-        "low": "#64748b",
-        "info": "#22d3ee",
+        "critical": COLORS.ERROR,
+        "high": COLORS.WARNING,
+        "medium": COLORS.INFO,
+        "low": COLORS.TEXT_MUTED,
+        "info": COLORS.SECONDARY,
     }
     
     for discovery in discoveries:
         icon = type_icons.get(discovery.get("type", ""), "📋")
-        color = severity_colors.get(discovery.get("severity", "info"), "#64748b")
-        
-        st.markdown(f"""
-        <div style="
-            padding: 14px;
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid {color}30;
-            border-radius: 10px;
-            margin-bottom: 10px;
-        ">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <span style="font-size: 24px;">{icon}</span>
-                    <div>
-                        <div style="font-size: 14px; color: #f8fafc; font-weight: 500;">
-                            {discovery.get('type', 'Unknown').replace('_', ' ').title()}
-                        </div>
-                        <div style="font-size: 12px; color: #94a3b8;">
-                            {discovery.get('description', '')}
-                        </div>
-                    </div>
-                </div>
-                <div style="
-                    padding: 6px 12px;
-                    background: {color}20;
-                    border-radius: 6px;
-                    font-size: 18px;
-                    font-weight: 700;
-                    color: {color};
-                ">
-                    {discovery.get('count', 0)}
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        color = severity_colors.get(discovery.get("severity", "info"), COLORS.TEXT_MUTED)
+
+        st.markdown(f"""<div style=" padding:{SPACING.SPACE_4}; background:{COLORS.GLASS_LIGHT}; border:{BORDERS.WIDTH_THIN} solid {color}30; border-radius:{BORDERS.RADIUS_MD}; margin-bottom:{SPACING.SPACE_3}; box-sizing:border-box; min-width:0; max-width:100%; "> <div style="display:flex; justify-content:space-between; align-items:center; gap:{SPACING.SPACE_3}; min-width:0;"> <div style="display:flex; align-items:center; gap:{SPACING.SPACE_3}; min-width:0;"> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_3XL}; flex-shrink:0;">{icon}</span> <div style="min-width:0; overflow:hidden;"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_SM}; color:{COLORS.TEXT_PRIMARY}; font-weight:500; overflow-wrap:anywhere;"> {_escape(discovery.get('type', 'Unknown').replace('_', ' ').title())} </div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_SECONDARY}; overflow-wrap:anywhere; word-break:normal;"> {_escape(discovery.get('description', ''))} </div> </div> </div> <div style=" flex-shrink:0; padding:{SPACING.SPACE_2} {SPACING.SPACE_3}; background:{color}20; border-radius:{BORDERS.RADIUS_SM}; font-size:{TYPOGRAPHY.FONT_SIZE_2XL}; font-weight:700; color:{color}; white-space:nowrap; "> {discovery.get('count', 0)} </div> </div> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -829,13 +585,13 @@ def discovery_timeline(timeline: list[dict[str, Any]], title: str = "Discovery T
     st.markdown(f"### 📅 {title}")
     
     status_colors = {
-        "completed": "#10b981",
-        "in_progress": "#f59e0b",
-        "pending": "#64748b",
+        "completed": COLORS.SUCCESS,
+        "in_progress": COLORS.WARNING,
+        "pending": COLORS.TEXT_MUTED,
     }
     
     for i, item in enumerate(timeline):
-        color = status_colors.get(item.get("status", "pending"), "#64748b")
+        color = status_colors.get(item.get("status", "pending"), COLORS.TEXT_MUTED)
         is_last = i == len(timeline) - 1
         
         # Time formatting
@@ -847,31 +603,7 @@ def discovery_timeline(timeline: list[dict[str, Any]], title: str = "Discovery T
         else:
             time_str = f"{int(time_diff.days)}d ago"
         
-        st.markdown(f"""
-        <div style="display: flex; gap: 16px; margin-bottom: {0 if is_last else 16}px;">
-            <div style="display: flex; flex-direction: column; align-items: center;">
-                <div style="
-                    width: 16px;
-                    height: 16px;
-                    border-radius: 50%;
-                    background: {color};
-                    box-shadow: 0 0 10px {color}50;
-                "></div>
-                {"<div style='width: 2px; flex: 1; background: linear-gradient(180deg, " + color + ", transparent);'></div>" if not is_last else ""}
-            </div>
-            <div style="flex: 1; padding-bottom: {16 if not is_last else 0}px;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-size: 14px; color: #f8fafc; font-weight: 500;">
-                        Step {item['step']}: {item['name']}
-                    </span>
-                    <span style="font-size: 11px; color: #64748b;">{time_str}</span>
-                </div>
-                <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
-                    {item.get('details', '')}
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div style="display:flex; gap:{SPACING.SPACE_4}; margin-bottom:{0 if is_last else 16}px; min-width:0; box-sizing:border-box;"> <div style="display:flex; flex-direction:column; align-items:center; flex-shrink:0;"> <div style=" width:16px; height:16px; border-radius:50%; background:{color}; box-shadow:0 0 10px {color}50; flex-shrink:0; "></div> {"<div style='width:2px; flex:1; background:linear-gradient(180deg, " + color + ", transparent);'></div>" if not is_last else ""} </div> <div style="flex:1; padding-bottom:{16 if not is_last else 0}px; min-width:0; overflow:hidden;"> <div style="display:flex; justify-content:space-between; align-items:center; gap:{SPACING.SPACE_2}; min-width:0;"> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_SM}; color:{COLORS.TEXT_PRIMARY}; font-weight:500; overflow-wrap:anywhere; min-width:0;"> Step {item['step']}: {_escape(item['name'])} </span> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_MUTED}; white-space:nowrap; flex-shrink:0;">{time_str}</span> </div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_SECONDARY}; margin-top:4px; overflow-wrap:anywhere; word-break:normal;"> {_escape(item.get('details', ''))} </div> </div> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================

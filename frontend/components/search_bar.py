@@ -9,58 +9,9 @@ def render_search_input(
     key: str = "search_input"
 ) -> str:
     """Render styled search input."""
-    st.markdown("""
-    <style>
-    .search-container {
-        position: relative;
-        margin-bottom: 16px;
-    }
+    st.markdown("""<style> .search-container { position: relative; margin-bottom: 16px; } .search-input { width: 100%; padding: 12px 16px 12px 44px; background: rgba(51, 65, 85, 0.5); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: 10px; color: #f8fafc; font-size: 14px; transition: all 0.2s ease; } .search-input:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); background: rgba(51, 65, 85, 0.7); } .search-input::placeholder { color: #64748b; } .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 16px; } </style>""", unsafe_allow_html=True)
     
-    .search-input {
-        width: 100%;
-        padding: 12px 16px 12px 44px;
-        background: rgba(51, 65, 85, 0.5);
-        border: 1px solid rgba(148, 163, 184, 0.1);
-        border-radius: 10px;
-        color: #f8fafc;
-        font-size: 14px;
-        transition: all 0.2s ease;
-    }
-    
-    .search-input:focus {
-        outline: none;
-        border-color: #6366f1;
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-        background: rgba(51, 65, 85, 0.7);
-    }
-    
-    .search-input::placeholder {
-        color: #64748b;
-    }
-    
-    .search-icon {
-        position: absolute;
-        left: 14px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #64748b;
-        font-size: 16px;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-    
-    st.markdown(f'''
-    <div class="search-container">
-        <span class="search-icon">🔍</span>
-        <input 
-            type="text" 
-            class="search-input" 
-            id="search_{key}"
-            placeholder="{placeholder}"
-            onkeyup="handleSearch(this.value)"
-        >
-    </div>
-    ''', unsafe_allow_html=True)
+    st.markdown(f"""<div class="search-container"> <span class="search-icon">🔍</span> <input type="text" class="search-input" id="search_{key}" placeholder="{placeholder}" onkeyup="handleSearch(this.value)" > </div>""", unsafe_allow_html=True)
     
     # Use Streamlit's text_input as actual input
     query = st.text_input(
@@ -80,23 +31,7 @@ def render_filter_dropdown(
     key: str
 ) -> str:
     """Render styled filter dropdown."""
-    st.markdown(f"""
-    <div style="
-        padding: 8px 12px;
-        background: rgba(51, 65, 85, 0.5);
-        border: 1px solid rgba(148, 163, 184, 0.1);
-        border-radius: 8px;
-    ">
-        <label style="
-            font-size: 10px;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: block;
-            margin-bottom: 4px;
-        ">{label}</label>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style=" padding: 8px 12px; background: rgba(51, 65, 85, 0.5); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: 8px; "> <label style=" font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px; ">{label}</label> </div>""", unsafe_allow_html=True)
     
     return st.selectbox(
         label,
@@ -114,49 +49,7 @@ def render_quick_filters(
     selected_status: str
 ) -> tuple[str, str]:
     """Render quick filter chips."""
-    st.markdown("""
-    <style>
-    .filter-chips {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-bottom: 16px;
-    }
-    
-    .filter-chip {
-        padding: 6px 14px;
-        background: rgba(51, 65, 85, 0.5);
-        border: 1px solid rgba(148, 163, 184, 0.1);
-        border-radius: 20px;
-        font-size: 12px;
-        color: #94a3b8;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-    }
-    
-    .filter-chip:hover {
-        background: rgba(99, 102, 241, 0.2);
-        border-color: rgba(99, 102, 241, 0.3);
-        color: #f8fafc;
-    }
-    
-    .filter-chip.active {
-        background: rgba(99, 102, 241, 0.3);
-        border-color: #6366f1;
-        color: #f8fafc;
-    }
-    
-    .filter-chip .count {
-        background: rgba(255, 255, 255, 0.1);
-        padding: 2px 6px;
-        border-radius: 10px;
-        font-size: 10px;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+    st.markdown("""<style> .filter-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; } .filter-chip { padding: 6px 14px; background: rgba(51, 65, 85, 0.5); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: 20px; font-size: 12px; color: #94a3b8; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 6px; } .filter-chip:hover { background: rgba(99, 102, 241, 0.2); border-color: rgba(99, 102, 241, 0.3); color: #f8fafc; } .filter-chip.active { background: rgba(99, 102, 241, 0.3); border-color: #6366f1; color: #f8fafc; } .filter-chip .count { background: rgba(255, 255, 255, 0.1); padding: 2px 6px; border-radius: 10px; font-size: 10px; } </style>""", unsafe_allow_html=True)
     
     # Category chips
     st.markdown("#### Categories")
@@ -249,19 +142,6 @@ def search_bar(
     filtered_count = len(agents)
     total_count = filtered_count
     
-    st.markdown(f"""
-    <div style="
-        padding: 10px 14px;
-        background: rgba(99, 102, 241, 0.1);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        border-radius: 8px;
-        margin-top: 16px;
-    ">
-        <span style="font-size: 13px; color: #94a3b8;">
-            Showing <strong style="color: #f8fafc;">{filtered_count}</strong> 
-            of <strong style="color: #f8fafc;">{total_count}</strong> agents
-        </span>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"""<div style=" padding: 10px 14px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 8px; margin-top: 16px; "> <span style="font-size: 13px; color: #94a3b8;"> Showing <strong style="color: #f8fafc;">{filtered_count}</strong> of <strong style="color: #f8fafc;">{total_count}</strong> agents </span> </div>""", unsafe_allow_html=True)
     
     return search_query, selected_category, selected_status

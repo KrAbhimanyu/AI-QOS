@@ -416,9 +416,15 @@ LAYOUT = Layout()
 # COMPONENT STYLES
 # =============================================================================
 
+def _hex_to_rgb(hex_color: str) -> str:
+    """Convert a hex color (#RRGGBB) to an 'r, g, b' string for rgba() usage."""
+    h = hex_color.lstrip('#')
+    return f"{int(h[0:2], 16)}, {int(h[2:4], 16)}, {int(h[4:6], 16)}"
+
+
 class ComponentStyles:
     """Pre-built component style strings."""
-    
+
     # Card Styles
     @staticmethod
     def card(padding: str = SPACING.PADDING_LG) -> str:
@@ -428,6 +434,9 @@ class ComponentStyles:
             border-radius: {BORDERS.RADIUS_CARD};
             padding: {padding};
             box-shadow: {SHADOWS.CARD};
+            box-sizing: border-box;
+            max-width: 100%;
+            min-width: 0;
         """
     
     @staticmethod
@@ -446,8 +455,11 @@ class ComponentStyles:
             border-radius: {BORDERS.RADIUS_CARD};
             padding: {padding};
             backdrop-filter: blur(12px);
+            box-sizing: border-box;
+            max-width: 100%;
+            min-width: 0;
         """
-    
+
     @staticmethod
     def metric_card() -> str:
         return f"""
@@ -456,6 +468,9 @@ class ComponentStyles:
             border-radius: {BORDERS.RADIUS_CARD};
             padding: {SPACING.PADDING_LG};
             text-align: center;
+            box-sizing: border-box;
+            max-width: 100%;
+            min-width: 0;
         """
     
     # Badge Styles
@@ -467,11 +482,12 @@ class ComponentStyles:
             align-items: center;
             gap: {SPACING.SPACE_1};
             padding: {SPACING.SPACE_1} {SPACING.SPACE_3};
-            background: rgba({color.lstrip('#')}, 0.2);
+            background: rgba({_hex_to_rgb(color)}, 0.2);
             color: {color};
             border-radius: {BORDERS.RADIUS_BADGE};
             font-size: {TYPOGRAPHY.FONT_SIZE_SM};
             font-weight: {TYPOGRAPHY.FONT_WEIGHT_MEDIUM};
+            white-space: nowrap;
         """
     
     @staticmethod
@@ -645,8 +661,7 @@ def glass_background(opacity: float = 0.8) -> str:
 
 def border_color(color: str = COLORS.PRIMARY, opacity: float = 0.2) -> str:
     """Generate glass-like border color."""
-    rgb = color.lstrip('#')
-    return f"border-color: rgba({int(rgb[0:2], 16)}, {int(rgb[2:4], 16)}, {int(rgb[4:6], 16)}, {opacity});"
+    return f"border-color: rgba({_hex_to_rgb(color)}, {opacity});"
 
 
 # =============================================================================

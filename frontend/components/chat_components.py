@@ -202,68 +202,7 @@ def chat_header(
         for s in MOCK_HERO_STATS
     )
 
-    st.markdown(
-        f"""
-        <div style="
-            background:{_GLASS_PANEL_BG};
-            border:1px solid {_GLASS_PANEL_BORDER};
-            border-radius:{BORDERS.RADIUS_XL};
-            padding:{SPACING.SPACE_6};
-            margin-bottom:{SPACING.SPACE_4};
-            box-shadow:{SHADOWS.CARD};
-            position:sticky;top:0;z-index:10;
-            backdrop-filter:blur(12px);
-        ">
-            <div style="display:flex;align-items:center;justify-content:space-between;
-                        flex-wrap:wrap;gap:{SPACING.SPACE_4};margin-bottom:{SPACING.SPACE_4};">
-                <div>
-                    <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};
-                                margin-bottom:{SPACING.SPACE_2};">
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">🏠 Dashboard</span>
-                        <span style="color:{COLORS.TEXT_MUTED};">›</span>
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">AI Chat</span>
-                        <span style="color:{COLORS.TEXT_MUTED};">›</span>
-                        <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(mission_name)}</span>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};flex-wrap:wrap;">
-                        <h1 style="margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_2XL};
-                                   color:{COLORS.TEXT_PRIMARY};font-weight:600;">
-                            💬 AI Chat Workspace
-                        </h1>
-                        <span style="display:inline-flex;align-items:center;gap:{SPACING.SPACE_2};
-                                     padding:{SPACING.SPACE_1} {SPACING.SPACE_3};
-                                     background:rgba({status_rgb},0.2);
-                                     color:{status_color};
-                                     border:1px solid rgba({status_rgb},0.4);
-                                     border-radius:{BORDERS.RADIUS_FULL};
-                                     font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">
-                            <span style="width:8px;height:8px;border-radius:50%;
-                                        background:{status_color};
-                                        animation:{ANIMATIONS.PULSE};"></span>
-                            {_escape(mission_status)}
-                        </span>
-                    </div>
-                </div>
-                <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};flex-wrap:wrap;">
-                    <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};
-                                 border:1px solid {_PANEL_BORDER};border-radius:{BORDERS.RADIUS_MD};
-                                 padding:{SPACING.SPACE_1} {SPACING.SPACE_3};"
-                          title="Search conversations">🔍 Search…</span>
-                    <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};
-                                 border:1px solid {_PANEL_BORDER};border-radius:{BORDERS.RADIUS_MD};
-                                 padding:{SPACING.SPACE_1} {SPACING.SPACE_3};"
-                          title="Command palette">⌘K Command</span>
-                    <span style="color:{COLORS.TEXT_MUTED};font-size:1rem;cursor:pointer;"
-                          title="Notifications">🔔</span>
-                    <span style="color:{COLORS.TEXT_MUTED};font-size:1rem;cursor:pointer;"
-                          title="Fullscreen">⛶</span>
-                </div>
-            </div>
-            <div style="display:flex;gap:{SPACING.SPACE_2};flex-wrap:wrap;">{stat_chips}</div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(f"""<div style=" background:{_GLASS_PANEL_BG}; border:1px solid {_GLASS_PANEL_BORDER}; border-radius:{BORDERS.RADIUS_XL}; padding:{SPACING.SPACE_6}; margin-bottom:{SPACING.SPACE_4}; box-shadow:{SHADOWS.CARD}; position:sticky;top:0;z-index:10; backdrop-filter:blur(12px); "> <div style="display:flex;align-items:center;justify-content:space-between; flex-wrap:wrap;gap:{SPACING.SPACE_4};margin-bottom:{SPACING.SPACE_4};"> <div> <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2}; margin-bottom:{SPACING.SPACE_2};"> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">🏠 Dashboard</span> <span style="color:{COLORS.TEXT_MUTED};">›</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">AI Chat</span> <span style="color:{COLORS.TEXT_MUTED};">›</span> <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(mission_name)}</span> </div> <div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};flex-wrap:wrap;"> <h1 style="margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_2XL}; color:{COLORS.TEXT_PRIMARY};font-weight:600;"> 💬 AI Chat Workspace </h1> <span style="display:inline-flex;align-items:center;gap:{SPACING.SPACE_2}; padding:{SPACING.SPACE_1} {SPACING.SPACE_3}; background:rgba({status_rgb},0.2); color:{status_color}; border:1px solid rgba({status_rgb},0.4); border-radius:{BORDERS.RADIUS_FULL}; font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;"> <span style="width:8px;height:8px;border-radius:50%; background:{status_color}; animation:{ANIMATIONS.PULSE};"></span> {_escape(mission_status)} </span> </div> </div> <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};flex-wrap:wrap;"> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM}; border:1px solid {_PANEL_BORDER};border-radius:{BORDERS.RADIUS_MD}; padding:{SPACING.SPACE_1} {SPACING.SPACE_3};" title="Search conversations">🔍 Search…</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM}; border:1px solid {_PANEL_BORDER};border-radius:{BORDERS.RADIUS_MD}; padding:{SPACING.SPACE_1} {SPACING.SPACE_3};" title="Command palette">⌘K Command</span> <span style="color:{COLORS.TEXT_MUTED};font-size:1rem;cursor:pointer;" title="Notifications">🔔</span> <span style="color:{COLORS.TEXT_MUTED};font-size:1rem;cursor:pointer;" title="Fullscreen">⛶</span> </div> </div> <div style="display:flex;gap:{SPACING.SPACE_2};flex-wrap:wrap;">{stat_chips}</div> </div>""", unsafe_allow_html=True)
 
 
 def _status_hex_rgb(status: str) -> str:
@@ -319,26 +258,7 @@ def chat_context_strip() -> None:
         """
         for c in MOCK_CONTEXT_STRIP
     )
-    st.markdown(
-        f"""
-        <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};flex-wrap:wrap;
-                    padding:{SPACING.SPACE_2} {SPACING.SPACE_4};
-                    background:{COLORS.GLASS_LIGHT};
-                    border:1px solid {_GLASS_PANEL_BORDER};
-                    border-radius:{BORDERS.RADIUS_LG};
-                    margin-bottom:{SPACING.SPACE_4};
-                    backdrop-filter:blur(10px);
-                    overflow-x:auto;">
-            <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};
-                         font-weight:600;letter-spacing:1px;text-transform:uppercase;">
-                📍 Context
-            </span>
-            <span style="color:{COLORS.BORDER_LIGHT};">|</span>
-            {badges}
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(f"""<div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};flex-wrap:wrap; padding:{SPACING.SPACE_2} {SPACING.SPACE_4}; background:{COLORS.GLASS_LIGHT}; border:1px solid {_GLASS_PANEL_BORDER}; border-radius:{BORDERS.RADIUS_LG}; margin-bottom:{SPACING.SPACE_4}; backdrop-filter:blur(10px); overflow-x:auto;"> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM}; font-weight:600;letter-spacing:1px;text-transform:uppercase;"> 📍 Context </span> <span style="color:{COLORS.BORDER_LIGHT};">|</span> {badges} </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -569,103 +489,14 @@ def chat_message(
     )
 
     if is_user:
-        st.markdown(
-            f"""
-            <div style="display:flex;justify-content:flex-end;margin-bottom:{SPACING.SPACE_4};
-                        animation:fadeIn {ANIMATIONS.DURATION_NORMAL} {ANIMATIONS.EASE_OUT};">
-                <div style="max-width:80%;">
-                    <div style="background:{bubble_bg};border-radius:{bubble_radius};
-                                padding:{SPACING.SPACE_4} {SPACING.SPACE_5};box-shadow:{SHADOWS.CARD};">
-                        <p style="color:{bubble_text};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_BASE};
-                                  line-height:1.6;">{rendered}</p>
-                    </div>
-                    <div style="display:flex;justify-content:flex-end;gap:{SPACING.SPACE_3};
-                                margin-top:{SPACING.SPACE_1};padding-right:{SPACING.SPACE_1};">
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};
-                                     cursor:pointer;">📋 Copy</span>
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};
-                                     cursor:pointer;">✏️ Edit</span>
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};
-                                     cursor:pointer;">🔄 Retry</span>
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};
-                                     cursor:pointer;">🔖 Bookmark</span>
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{ts}</span>
-                    </div>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown(f"""<div style="display:flex;justify-content:flex-end;margin-bottom:{SPACING.SPACE_4}; animation:fadeIn {ANIMATIONS.DURATION_NORMAL} {ANIMATIONS.EASE_OUT};"> <div style="max-width:80%;"> <div style="background:{bubble_bg};border-radius:{bubble_radius}; padding:{SPACING.SPACE_4} {SPACING.SPACE_5};box-shadow:{SHADOWS.CARD};"> <p style="color:{bubble_text};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_BASE}; line-height:1.6;">{rendered}</p> </div> <div style="display:flex;justify-content:flex-end;gap:{SPACING.SPACE_3}; margin-top:{SPACING.SPACE_1};padding-right:{SPACING.SPACE_1};"> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS}; cursor:pointer;">📋 Copy</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS}; cursor:pointer;">✏️ Edit</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS}; cursor:pointer;">🔄 Retry</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS}; cursor:pointer;">🔖 Bookmark</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{ts}</span> </div> </div> </div>""", unsafe_allow_html=True)
     else:
-        st.markdown(
-            f"""
-            <div style="display:flex;gap:{SPACING.SPACE_3};margin-bottom:{SPACING.SPACE_4};
-                        animation:fadeIn {ANIMATIONS.DURATION_NORMAL} {ANIMATIONS.EASE_OUT};">
-                <div style="width:36px;height:36px;border-radius:50%;background:{avatar_bg};
-                            display:flex;align-items:center;justify-content:center;flex-shrink:0;
-                            box-shadow:{SHADOWS.GLOW_PRIMARY};">{icon}</div>
-                <div style="flex:1;max-width:80%;">
-                    <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};
-                                margin-bottom:{SPACING.SPACE_1};">{type_badge}</div>
-                    <div style="background:{bubble_bg};border:1px solid {_GLASS_PANEL_BORDER};
-                                border-radius:{bubble_radius};padding:{SPACING.SPACE_4} {SPACING.SPACE_5};">
-                        <div style="color:{bubble_text};font-size:{TYPOGRAPHY.FONT_SIZE_BASE};
-                                    line-height:1.65;">{rendered}</div>
-                    </div>
-                    <div style="display:flex;gap:{SPACING.SPACE_3};margin-top:{SPACING.SPACE_1};
-                                padding-left:{SPACING.SPACE_1};">
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};
-                                     cursor:pointer;">📋 Copy</span>
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};
-                                     cursor:pointer;">🔄 Regenerate</span>
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};
-                                     cursor:pointer;">↩️ Continue</span>
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};
-                                     cursor:pointer;">🔖 Bookmark</span>
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};
-                                     cursor:pointer;">🧵 Thread</span>
-                        <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{ts}</span>
-                    </div>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown(f"""<div style="display:flex;gap:{SPACING.SPACE_3};margin-bottom:{SPACING.SPACE_4}; animation:fadeIn {ANIMATIONS.DURATION_NORMAL} {ANIMATIONS.EASE_OUT};"> <div style="width:36px;height:36px;border-radius:50%;background:{avatar_bg}; display:flex;align-items:center;justify-content:center;flex-shrink:0; box-shadow:{SHADOWS.GLOW_PRIMARY};">{icon}</div> <div style="flex:1;max-width:80%;"> <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2}; margin-bottom:{SPACING.SPACE_1};">{type_badge}</div> <div style="background:{bubble_bg};border:1px solid {_GLASS_PANEL_BORDER}; border-radius:{bubble_radius};padding:{SPACING.SPACE_4} {SPACING.SPACE_5};"> <div style="color:{bubble_text};font-size:{TYPOGRAPHY.FONT_SIZE_BASE}; line-height:1.65;">{rendered}</div> </div> <div style="display:flex;gap:{SPACING.SPACE_3};margin-top:{SPACING.SPACE_1}; padding-left:{SPACING.SPACE_1};"> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS}; cursor:pointer;">📋 Copy</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS}; cursor:pointer;">🔄 Regenerate</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS}; cursor:pointer;">↩️ Continue</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS}; cursor:pointer;">🔖 Bookmark</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS}; cursor:pointer;">🧵 Thread</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{ts}</span> </div> </div> </div>""", unsafe_allow_html=True)
 
 
 def typing_indicator() -> None:
     """Display AI typing indicator with animated dots."""
-    st.markdown(
-        f"""
-        <div style="display:flex;gap:{SPACING.SPACE_3};margin-bottom:{SPACING.SPACE_4};
-                    animation:fadeIn {ANIMATIONS.DURATION_NORMAL} {ANIMATIONS.EASE_OUT};">
-            <div style="width:36px;height:36px;border-radius:50%;
-                        background:linear-gradient(135deg,{COLORS.PRIMARY},{COLORS.ACCENT});
-                        display:flex;align-items:center;justify-content:center;flex-shrink:0;
-                        animation:{ANIMATIONS.GLOW};">🤖</div>
-            <div style="background:rgba({COLORS.SURFACE_RGB},0.85);
-                        border:1px solid {_GLASS_PANEL_BORDER};
-                        border-radius:4px 16px 16px 16px;
-                        padding:{SPACING.SPACE_4} {SPACING.SPACE_6};">
-                <div style="display:flex;gap:{SPACING.SPACE_2};align-items:center;">
-                    <div style="width:8px;height:8px;border-radius:50%;background:{COLORS.PRIMARY};
-                                animation:typingBounce 1.4s infinite ease-in-out both;"></div>
-                    <div style="width:8px;height:8px;border-radius:50%;background:{COLORS.PRIMARY};
-                                animation:typingBounce 1.4s infinite ease-in-out both;animation-delay:0.16s;"></div>
-                    <div style="width:8px;height:8px;border-radius:50%;background:{COLORS.PRIMARY};
-                                animation:typingBounce 1.4s infinite ease-in-out both;animation-delay:0.32s;"></div>
-                </div>
-            </div>
-        </div>
-        <style>
-            @keyframes typingBounce {{
-                0%,80%,100% {{ transform: scale(0); opacity: 0.4; }}
-                40% {{ transform: scale(1); opacity: 1; }}
-            }}
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(f"""<div style="display:flex;gap:{SPACING.SPACE_3};margin-bottom:{SPACING.SPACE_4}; animation:fadeIn {ANIMATIONS.DURATION_NORMAL} {ANIMATIONS.EASE_OUT};"> <div style="width:36px;height:36px;border-radius:50%; background:linear-gradient(135deg,{COLORS.PRIMARY},{COLORS.ACCENT}); display:flex;align-items:center;justify-content:center;flex-shrink:0; animation:{ANIMATIONS.GLOW};">🤖</div> <div style="background:rgba({COLORS.SURFACE_RGB},0.85); border:1px solid {_GLASS_PANEL_BORDER}; border-radius:4px 16px 16px 16px; padding:{SPACING.SPACE_4} {SPACING.SPACE_6};"> <div style="display:flex;gap:{SPACING.SPACE_2};align-items:center;"> <div style="width:8px;height:8px;border-radius:50%;background:{COLORS.PRIMARY}; animation:typingBounce 1.4s infinite ease-in-out both;"></div> <div style="width:8px;height:8px;border-radius:50%;background:{COLORS.PRIMARY}; animation:typingBounce 1.4s infinite ease-in-out both;animation-delay:0.16s;"></div> <div style="width:8px;height:8px;border-radius:50%;background:{COLORS.PRIMARY}; animation:typingBounce 1.4s infinite ease-in-out both;animation-delay:0.32s;"></div> </div> </div> </div> <style> @keyframes typingBounce {{ 0%,80%,100% {{ transform: scale(0); opacity: 0.4; }} 40% {{ transform: scale(1); opacity: 1; }} }} </style>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -699,14 +530,7 @@ def prompt_editor() -> None:
         """
         for t in MOCK_PROMPT_EDITOR_TOOLS
     )
-    st.markdown(
-        f"""
-        <div style="display:flex;gap:{SPACING.SPACE_2};flex-wrap:wrap;margin-bottom:{SPACING.SPACE_2};">
-            {tool_chips}
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(f"""<div style="display:flex;gap:{SPACING.SPACE_2};flex-wrap:wrap;margin-bottom:{SPACING.SPACE_2};"> {tool_chips} </div>""", unsafe_allow_html=True)
 
     col1, col2 = st.columns([6, 1])
 
@@ -730,20 +554,7 @@ def prompt_editor() -> None:
     token_count = len(prompt.split()) if prompt else 0
     set_chat_data("chat_token_count", token_count)
     set_chat_data("chat_prompt_text", prompt or "")
-    st.markdown(
-        f"""
-        <div style="display:flex;justify-content:space-between;align-items:center;
-                    margin-top:{SPACING.SPACE_2};flex-wrap:wrap;gap:{SPACING.SPACE_2};">
-            <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">
-                💡 Tip: Use <code style="color:{COLORS.SECONDARY};">/</code> for slash commands
-            </span>
-            <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">
-                🔢 Tokens: <strong style="color:{COLORS.PRIMARY};">{token_count}</strong> / 16K
-            </span>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(f"""<div style="display:flex;justify-content:space-between;align-items:center; margin-top:{SPACING.SPACE_2};flex-wrap:wrap;gap:{SPACING.SPACE_2};"> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};"> 💡 Tip: Use <code style="color:{COLORS.SECONDARY};">/</code> for slash commands </span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};"> 🔢 Tokens: <strong style="color:{COLORS.PRIMARY};">{token_count}</strong> / 16K </span> </div>""", unsafe_allow_html=True)
 
     # Suggested prompts
     section_header("Suggested Prompts", icon="💡")
@@ -773,18 +584,7 @@ def prompt_editor() -> None:
         """
         for v in MOCK_PROMPT_VARIABLES
     )
-    st.markdown(
-        f"""
-        <div style="margin-top:{SPACING.SPACE_3};">
-            <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM};
-                         font-weight:600;">🔧 Variables:</span>
-            <div style="display:flex;gap:{SPACING.SPACE_2};flex-wrap:wrap;margin-top:{SPACING.SPACE_2};">
-                {var_chips}
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(f"""<div style="margin-top:{SPACING.SPACE_3};"> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_SM}; font-weight:600;">🔧 Variables:</span> <div style="display:flex;gap:{SPACING.SPACE_2};flex-wrap:wrap;margin-top:{SPACING.SPACE_2};"> {var_chips} </div> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -928,24 +728,7 @@ def quick_actions_grid() -> None:
     cols = st.columns(4)
     for i, action in enumerate(MOCK_QUICK_ACTIONS):
         with cols[i % 4]:
-            st.markdown(
-                f"""
-                <div style="text-align:center;padding:{SPACING.SPACE_3} {SPACING.SPACE_2};
-                            background:rgba({COLORS.SURFACE_RGB},0.5);
-                            border:1px solid {COLORS.BORDER};
-                            border-radius:{BORDERS.RADIUS_MD};
-                            margin-bottom:{SPACING.SPACE_2};cursor:pointer;
-                            transition:all {ANIMATIONS.DURATION_NORMAL} {ANIMATIONS.EASE_OUT};">
-                    <span style="font-size:1.5rem;">{action['icon']}</span>
-                    <p style="color:{COLORS.TEXT_PRIMARY};margin:0.4rem 0 0.2rem;
-                              font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(action['name'])}</p>
-                    <p style="color:{COLORS.TEXT_MUTED};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_XS};">
-                        {_escape(action['description'])}
-                    </p>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+            st.markdown(f"""<div style="text-align:center;padding:{SPACING.SPACE_3} {SPACING.SPACE_2}; background:rgba({COLORS.SURFACE_RGB},0.5); border:1px solid {COLORS.BORDER}; border-radius:{BORDERS.RADIUS_MD}; margin-bottom:{SPACING.SPACE_2};cursor:pointer; transition:all {ANIMATIONS.DURATION_NORMAL} {ANIMATIONS.EASE_OUT};"> <span style="font-size:1.5rem;">{action['icon']}</span> <p style="color:{COLORS.TEXT_PRIMARY};margin:0.4rem 0 0.2rem; font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(action['name'])}</p> <p style="color:{COLORS.TEXT_MUTED};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_XS};"> {_escape(action['description'])} </p> </div>""", unsafe_allow_html=True)
 
 
 def quick_actions_premium() -> None:
@@ -954,26 +737,7 @@ def quick_actions_premium() -> None:
     cols = st.columns(4)
     for i, action in enumerate(MOCK_QUICK_ACTIONS_PREMIUM):
         with cols[i % 4]:
-            st.markdown(
-                f"""
-                <div style="text-align:center;padding:{SPACING.SPACE_4} {SPACING.SPACE_2};
-                            background:linear-gradient(135deg,rgba({COLORS.SURFACE_RGB},0.6) 0%,rgba({COLORS.PRIMARY_RGB},0.08) 100%);
-                            border:1px solid {_GLASS_PANEL_BORDER};
-                            border-radius:{BORDERS.RADIUS_MD};
-                            margin-bottom:{SPACING.SPACE_2};cursor:pointer;
-                            transition:all {ANIMATIONS.DURATION_NORMAL} {ANIMATIONS.EASE_OUT};">
-                    <span style="font-size:1.6rem;display:inline-block;">{action['icon']}</span>
-                    <p style="color:{COLORS.TEXT_PRIMARY};margin:0.5rem 0 0.2rem;
-                              font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">
-                        {_escape(action['name'])}
-                    </p>
-                    <p style="color:{COLORS.TEXT_MUTED};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_XS};">
-                        {_escape(action['description'])}
-                    </p>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+            st.markdown(f"""<div style="text-align:center;padding:{SPACING.SPACE_4} {SPACING.SPACE_2}; background:linear-gradient(135deg,rgba({COLORS.SURFACE_RGB},0.6) 0%,rgba({COLORS.PRIMARY_RGB},0.08) 100%); border:1px solid {_GLASS_PANEL_BORDER}; border-radius:{BORDERS.RADIUS_MD}; margin-bottom:{SPACING.SPACE_2};cursor:pointer; transition:all {ANIMATIONS.DURATION_NORMAL} {ANIMATIONS.EASE_OUT};"> <span style="font-size:1.6rem;display:inline-block;">{action['icon']}</span> <p style="color:{COLORS.TEXT_PRIMARY};margin:0.5rem 0 0.2rem; font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;"> {_escape(action['name'])} </p> <p style="color:{COLORS.TEXT_MUTED};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_XS};"> {_escape(action['description'])} </p> </div>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -1011,25 +775,7 @@ def prompt_library() -> None:
 
 def ai_thinking_panel() -> None:
     """Display AI thinking panel (back-compatible, token-styled)."""
-    st.markdown(
-        f"""
-        <div style="
-            background:linear-gradient(135deg,rgba({COLORS.PRIMARY_RGB},0.15) 0%,rgba({COLORS.SURFACE_RGB},0.95) 100%);
-            border:1px solid {_GLASS_PANEL_BORDER};
-            border-radius:{BORDERS.RADIUS_XL};
-            padding:{SPACING.SPACE_5};
-            margin-bottom:{SPACING.SPACE_4};
-        ">
-            <div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};margin-bottom:{SPACING.SPACE_4};">
-                <div style="width:36px;height:36px;border-radius:50%;
-                            background:linear-gradient(135deg,{COLORS.PRIMARY},{COLORS.ACCENT});
-                            display:flex;align-items:center;justify-content:center;font-size:1.25rem;
-                            animation:glow 2s infinite;"></div>
-                <h4 style="color:{COLORS.TEXT_PRIMARY};margin:0;">AI Thinking</h4>
-            </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(f"""<div style=" background:linear-gradient(135deg,rgba({COLORS.PRIMARY_RGB},0.15) 0%,rgba({COLORS.SURFACE_RGB},0.95) 100%); border:1px solid {_GLASS_PANEL_BORDER}; border-radius:{BORDERS.RADIUS_XL}; padding:{SPACING.SPACE_5}; margin-bottom:{SPACING.SPACE_4}; "> <div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};margin-bottom:{SPACING.SPACE_4};"> <div style="width:36px;height:36px;border-radius:50%; background:linear-gradient(135deg,{COLORS.PRIMARY},{COLORS.ACCENT}); display:flex;align-items:center;justify-content:center;font-size:1.25rem; animation:glow 2s infinite;"></div> <h4 style="color:{COLORS.TEXT_PRIMARY};margin:0;">AI Thinking</h4> </div>""", unsafe_allow_html=True)
     thinking_items = [
         ("Current Thought", "Analyzing sidebar visibility issue…", COLORS.PRIMARY),
         ("Confidence", "94%", COLORS.SUCCESS),
@@ -1039,19 +785,7 @@ def ai_thinking_panel() -> None:
         ("Next Step", "Generate updated test case", COLORS.PRIMARY),
     ]
     for label, value, color in thinking_items:
-        st.markdown(
-            f"""
-            <div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.BORDER_RGB},0.5);
-                        border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};">
-                <p style="color:{color};margin:0 0 {SPACING.SPACE_1};font-size:{TYPOGRAPHY.FONT_SIZE_XS};
-                          font-weight:500;text-transform:uppercase;letter-spacing:1px;">{label}</p>
-                <p style="color:{COLORS.TEXT_PRIMARY};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_SM};">
-                    {_escape(value)}
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.BORDER_RGB},0.5); border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};"> <p style="color:{color};margin:0 0 {SPACING.SPACE_1};font-size:{TYPOGRAPHY.FONT_SIZE_XS}; font-weight:500;text-transform:uppercase;letter-spacing:1px;">{label}</p> <p style="color:{COLORS.TEXT_PRIMARY};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_SM};"> {_escape(value)} </p> </div>""", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
 
@@ -1064,42 +798,7 @@ def ai_context_panel() -> None:
     """
     c = MOCK_AI_CONTEXT
     conf_color = get_confidence_color(c["confidence"])
-    st.markdown(
-        f"""
-        <div style="
-            background:linear-gradient(135deg,rgba({COLORS.PRIMARY_RGB},0.18) 0%,rgba({COLORS.SURFACE_RGB},0.95) 100%);
-            border:1px solid {_GLASS_PANEL_BORDER};
-            border-radius:{BORDERS.RADIUS_XL};
-            padding:{SPACING.SPACE_5};
-            margin-bottom:{SPACING.SPACE_4};
-        ">
-            <div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};margin-bottom:{SPACING.SPACE_4};">
-                <div style="width:40px;height:40px;border-radius:50%;
-                            background:linear-gradient(135deg,{COLORS.PRIMARY},{COLORS.ACCENT});
-                            display:flex;align-items:center;justify-content:center;font-size:1.35rem;
-                            box-shadow:{SHADOWS.GLOW_PRIMARY};
-                            animation:glow 2s infinite;">🤖</div>
-                <div>
-                    <h4 style="color:{COLORS.TEXT_PRIMARY};margin:0;">AI Intelligence</h4>
-                    <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">
-                        Live reasoning · <span style="color:{conf_color};font-weight:600;">{c['confidence']}% confidence</span>
-                    </span>
-                </div>
-            </div>
-            <div style="margin-bottom:{SPACING.SPACE_3};">
-                <p style="color:{COLORS.TEXT_MUTED};margin:0 0 {SPACING.SPACE_1};font-size:{TYPOGRAPHY.FONT_SIZE_XS};
-                          text-transform:uppercase;letter-spacing:1px;">Current Thought</p>
-                <div style="background:rgba({COLORS.PRIMARY_RGB},0.1);border:1px solid rgba({COLORS.PRIMARY_RGB},0.25);
-                            border-radius:{BORDERS.RADIUS_MD};padding:{SPACING.SPACE_3};">
-                    <p style="color:{COLORS.TEXT_PRIMARY};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_SM};">
-                        {_escape(c['current_thought'])}
-                    </p>
-                </div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(f"""<div style=" background:linear-gradient(135deg,rgba({COLORS.PRIMARY_RGB},0.18) 0%,rgba({COLORS.SURFACE_RGB},0.95) 100%); border:1px solid {_GLASS_PANEL_BORDER}; border-radius:{BORDERS.RADIUS_XL}; padding:{SPACING.SPACE_5}; margin-bottom:{SPACING.SPACE_4}; "> <div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};margin-bottom:{SPACING.SPACE_4};"> <div style="width:40px;height:40px;border-radius:50%; background:linear-gradient(135deg,{COLORS.PRIMARY},{COLORS.ACCENT}); display:flex;align-items:center;justify-content:center;font-size:1.35rem; box-shadow:{SHADOWS.GLOW_PRIMARY}; animation:glow 2s infinite;">🤖</div> <div> <h4 style="color:{COLORS.TEXT_PRIMARY};margin:0;">AI Intelligence</h4> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};"> Live reasoning · <span style="color:{conf_color};font-weight:600;">{c['confidence']}% confidence</span> </span> </div> </div> <div style="margin-bottom:{SPACING.SPACE_3};"> <p style="color:{COLORS.TEXT_MUTED};margin:0 0 {SPACING.SPACE_1};font-size:{TYPOGRAPHY.FONT_SIZE_XS}; text-transform:uppercase;letter-spacing:1px;">Current Thought</p> <div style="background:rgba({COLORS.PRIMARY_RGB},0.1);border:1px solid rgba({COLORS.PRIMARY_RGB},0.25); border-radius:{BORDERS.RADIUS_MD};padding:{SPACING.SPACE_3};"> <p style="color:{COLORS.TEXT_PRIMARY};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_SM};"> {_escape(c['current_thought'])} </p> </div> </div> </div>""", unsafe_allow_html=True)
     items = [
         ("Reasoning", c["reasoning"], COLORS.SECONDARY),
         ("Evidence", c["evidence"], COLORS.WARNING),
@@ -1112,19 +811,7 @@ def ai_context_panel() -> None:
         ("Recommendation", c["recommendation"], COLORS.ACCENT),
     ]
     for label, value, color in items:
-        st.markdown(
-            f"""
-            <div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.BORDER_RGB},0.5);
-                        border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};">
-                <p style="color:{color};margin:0 0 {SPACING.SPACE_1};font-size:{TYPOGRAPHY.FONT_SIZE_XS};
-                          font-weight:500;text-transform:uppercase;letter-spacing:1px;">{label}</p>
-                <p style="color:{COLORS.TEXT_PRIMARY};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_SM};">
-                    {_escape(value)}
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown(f"""<div style="padding:{SPACING.SPACE_3};background:rgba({COLORS.BORDER_RGB},0.5); border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_2};"> <p style="color:{color};margin:0 0 {SPACING.SPACE_1};font-size:{TYPOGRAPHY.FONT_SIZE_XS}; font-weight:500;text-transform:uppercase;letter-spacing:1px;">{label}</p> <p style="color:{COLORS.TEXT_PRIMARY};margin:0;font-size:{TYPOGRAPHY.FONT_SIZE_SM};"> {_escape(value)} </p> </div>""", unsafe_allow_html=True)
 
     # Live reasoning stages (timeline via foundation timeline_item)
     section_header("Reasoning Stages", icon="🔬")
@@ -1174,38 +861,7 @@ def browser_frame(frame: Optional[Dict[str, Any]] = None) -> None:
     f = frame if frame is not None else MOCK_BROWSER_FRAME
     glass_panel(title="Browser", icon="🌐")
     conf_color = get_confidence_color(f["confidence"])
-    st.markdown(
-        f"""
-        <div style="border:1px solid {COLORS.BORDER};border-radius:{BORDERS.RADIUS_MD};overflow:hidden;">
-            <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};padding:{SPACING.SPACE_2} {SPACING.SPACE_3};
-                        background:rgba({COLORS.SURFACE_RGB},0.7);">
-                <span style="color:{COLORS.ERROR};">●</span>
-                <span style="color:{COLORS.WARNING};">●</span>
-                <span style="color:{COLORS.SUCCESS};">●</span>
-                <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};margin-left:{SPACING.SPACE_2};
-                             font-family:{TYPOGRAPHY.FONT_MONO};">{_escape(f['url'])}</span>
-            </div>
-            <div style="padding:{SPACING.SPACE_6};background:{COLORS.BACKGROUND_ALT};min-height:160px;
-                        display:flex;align-items:center;justify-content:center;position:relative;">
-                <div style="position:absolute;border:2px solid {COLORS.PRIMARY};border-radius:{BORDERS.RADIUS_MD};
-                            padding:{SPACING.SPACE_4} {SPACING.SPACE_6};background:rgba({COLORS.PRIMARY_RGB},0.15);
-                            box-shadow:{SHADOWS.GLOW_PRIMARY};">
-                    <span style="font-size:2rem;">{f['text']}</span>
-                </div>
-                <span style="position:absolute;top:{SPACING.SPACE_2};right:{SPACING.SPACE_3};
-                              color:{conf_color};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;">
-                    🎯 {f['confidence']}% · {f['action']}
-                </span>
-            </div>
-            <div style="padding:{SPACING.SPACE_2} {SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.7);
-                        display:flex;justify-content:space-between;font-size:{TYPOGRAPHY.FONT_SIZE_XS};">
-                <span style="color:{COLORS.TEXT_MUTED};">Locator: <code style="color:{COLORS.SECONDARY};">{f['locator']}</code></span>
-                <span style="color:{COLORS.TEXT_MUTED};">Role: {f['role']}</span>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(f"""<div style="border:1px solid {COLORS.BORDER};border-radius:{BORDERS.RADIUS_MD};overflow:hidden;"> <div style="display:flex;align-items:center;gap:{SPACING.SPACE_2};padding:{SPACING.SPACE_2} {SPACING.SPACE_3}; background:rgba({COLORS.SURFACE_RGB},0.7);"> <span style="color:{COLORS.ERROR};">●</span> <span style="color:{COLORS.WARNING};">●</span> <span style="color:{COLORS.SUCCESS};">●</span> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};margin-left:{SPACING.SPACE_2}; font-family:{TYPOGRAPHY.FONT_MONO};">{_escape(f['url'])}</span> </div> <div style="padding:{SPACING.SPACE_6};background:{COLORS.BACKGROUND_ALT};min-height:160px; display:flex;align-items:center;justify-content:center;position:relative;"> <div style="position:absolute;border:2px solid {COLORS.PRIMARY};border-radius:{BORDERS.RADIUS_MD}; padding:{SPACING.SPACE_4} {SPACING.SPACE_6};background:rgba({COLORS.PRIMARY_RGB},0.15); box-shadow:{SHADOWS.GLOW_PRIMARY};"> <span style="font-size:2rem;">{f['text']}</span> </div> <span style="position:absolute;top:{SPACING.SPACE_2};right:{SPACING.SPACE_3}; color:{conf_color};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;"> 🎯 {f['confidence']}% · {f['action']} </span> </div> <div style="padding:{SPACING.SPACE_2} {SPACING.SPACE_3};background:rgba({COLORS.SURFACE_RGB},0.7); display:flex;justify-content:space-between;font-size:{TYPOGRAPHY.FONT_SIZE_XS};"> <span style="color:{COLORS.TEXT_MUTED};">Locator: <code style="color:{COLORS.SECONDARY};">{f['locator']}</code></span> <span style="color:{COLORS.TEXT_MUTED};">Role: {f['role']}</span> </div> </div>""", unsafe_allow_html=True)
 
 
 def _bottom_tab_placeholder(label: str, icon: str) -> None:
@@ -1272,13 +928,7 @@ def loading_skeleton(rows: int = 3) -> None:
         """
         for i in range(rows)
     )
-    st.markdown(
-        f"""
-        <div style="padding:{SPACING.SPACE_4};">{bars}</div>
-        <style>@keyframes shimmer {{0%{{background-position:200% 0;}}100%{{background-position:-200% 0;}}}}</style>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(f"""<div style="padding:{SPACING.SPACE_4};">{bars}</div> <style>@keyframes shimmer {{0%{{background-position:200% 0;}}100%{{background-position:-200% 0;}}}}</style>""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -1308,9 +958,4 @@ def message_types_legend() -> None:
         """
         for m in MOCK_MESSAGE_TYPE_EXAMPLES
     )
-    st.markdown(
-        f"""
-        <div style="display:flex;flex-wrap:wrap;gap:{SPACING.SPACE_2};">{badges}</div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(f"""<div style="display:flex;flex-wrap:wrap;gap:{SPACING.SPACE_2};">{badges}</div>""", unsafe_allow_html=True)

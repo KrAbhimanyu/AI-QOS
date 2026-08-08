@@ -135,7 +135,7 @@ def render_page() -> None:
     spacer(1)
 
     # Main 3-column layout: DOM Tree | Browser Digital Twin | AI Inspector
-    left_col, center_col, right_col = st.columns([0.25, 1, 0.4], gap="medium")
+    left_col, center_col, right_col = st.columns([1, 2, 1], gap="medium")
     with left_col:
         render_left_panel()
     with center_col:

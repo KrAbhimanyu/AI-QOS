@@ -35,91 +35,47 @@ from components.explorer_components import (
     select_page,
     clear_selection,
 )
+from themes.tokens import (
+    COLORS, SPACING, TYPOGRAPHY, BORDERS, SHADOWS, ANIMATIONS,
+    get_health_color, get_confidence_color,
+)
 
 
 def render_header(info: dict[str, Any]) -> None:
     """Render the page header with application info."""
-    st.markdown("""
-    <style>
-    .explorer-header {
-        background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
-        border: 1px solid rgba(148, 163, 184, 0.1);
-        border-radius: 16px;
-        padding: 24px;
-        margin-bottom: 24px;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="explorer-header">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-            <div>
-                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 8px;">
-                    <span style="font-size: 48px;">🏪</span>
-                    <div>
-                        <h1 style="margin: 0; font-size: 28px; color: #f8fafc;">
-                            Application Explorer
-                        </h1>
-                        <p style="margin: 4px 0 0; font-size: 14px; color: #64748b;">
-                            Digital Twin • AI-Discovered • Real-Time
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div style="display: flex; gap: 12px;">
-                <span style="
-                    padding: 6px 14px;
-                    background: rgba(99, 102, 241, 0.2);
-                    border: 1px solid rgba(99, 102, 241, 0.3);
-                    border-radius: 20px;
-                    font-size: 12px;
-                    color: #818cf8;
-                ">
-                    v{}
-                </span>
-                <span style="
-                    padding: 6px 14px;
-                    background: rgba(16, 185, 129, 0.2);
-                    border: 1px solid rgba(16, 185, 129, 0.3);
-                    border-radius: 20px;
-                    font-size: 12px;
-                    color: #10b981;
-                ">
-                    {}
-                </span>
-            </div>
-        </div>
-    </div>
-    """.format(info.get("version", "1.0.0"), info.get("environment", "Production")), unsafe_allow_html=True)
-    
-    # Stats row
-    col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
-    
-    with col1:
+    last_scan = info.get("last_scan", datetime.now())
+    time_diff = datetime.now() - last_scan
+    if time_diff < timedelta(hours=1):
+        scan_str = f"{int(time_diff.total_seconds() / 60)}m ago"
+    else:
+        scan_str = f"{int(time_diff.total_seconds() / 3600)}h ago"
+
+    tech = info.get("technology", "Unknown")
+    tech_str = tech.value if hasattr(tech, 'value') else str(tech)
+
+    st.markdown(f"""<div style=" background: linear-gradient(135deg, rgba({COLORS.SURFACE_RGB}, 0.95), rgba({COLORS.PRIMARY_RGB}, 0.12)); border: {BORDERS.WIDTH_THIN} solid {COLORS.GLASS_BORDER}; border-radius: {BORDERS.RADIUS_XL}; padding: {SPACING.SPACE_6}; margin-bottom: {SPACING.SPACE_4}; box-sizing: border-box; max-width: 100%; "> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:{SPACING.SPACE_4}; box-sizing:border-box; min-width:0;"> <div style="display:flex; align-items:center; gap:{SPACING.SPACE_4}; min-width:0; flex:1; flex-wrap:wrap;"> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_3XL}; flex-shrink:0;">🏪</span> <div style="min-width:0;"> <h1 style="margin:0; font-size:{TYPOGRAPHY.FONT_SIZE_2XL}; color:{COLORS.TEXT_PRIMARY}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"> Application Explorer </h1> <p style="margin:{SPACING.SPACE_1} 0 0; font-size:{TYPOGRAPHY.FONT_SIZE_SM}; color:{COLORS.TEXT_MUTED};"> Digital Twin • AI-Discovered • Real-Time </p> </div> </div> <div style="display:flex; gap:{SPACING.SPACE_3}; flex-shrink:0; flex-wrap:wrap;"> <span style=" padding:{SPACING.SPACE_1} {SPACING.SPACE_3}; background: rgba({COLORS.PRIMARY_RGB}, 0.2); border: {BORDERS.WIDTH_THIN} solid rgba({COLORS.PRIMARY_RGB}, 0.3); border-radius: {BORDERS.RADIUS_FULL}; font-size: {TYPOGRAPHY.FONT_SIZE_XS}; color: {COLORS.PRIMARY}; white-space:nowrap; "> v{info.get("version", "1.0.0")} </span> <span style=" padding:{SPACING.SPACE_1} {SPACING.SPACE_3}; background: rgba({COLORS.SUCCESS_RGB}, 0.2); border: {BORDERS.WIDTH_THIN} solid rgba({COLORS.SUCCESS_RGB}, 0.3); border-radius: {BORDERS.RADIUS_FULL}; font-size: {TYPOGRAPHY.FONT_SIZE_XS}; color: {COLORS.SUCCESS}; white-space:nowrap; "> {info.get("environment", "Production")} </span> </div> </div> </div>""", unsafe_allow_html=True)
+
+    # Stats row — 4 columns x 2 rows to avoid label truncation
+    coverage = info.get("coverage", 0)
+    risk = info.get("risk_score", 0)
+    r1c1, r1c2, r1c3, r1c4 = st.columns(4)
+    with r1c1:
         st.metric("Pages", info.get("total_pages", 0))
-    with col2:
+    with r1c2:
         st.metric("Components", info.get("total_components", 0))
-    with col3:
+    with r1c3:
         st.metric("Forms", info.get("total_forms", 0))
-    with col4:
+    with r1c4:
         st.metric("APIs", info.get("total_apis", 0))
-    with col5:
-        coverage = info.get("coverage", 0)
+
+    r2c1, r2c2, r2c3, r2c4 = st.columns(4)
+    with r2c1:
         st.metric("Coverage", f"{coverage:.1f}%")
-    with col6:
-        risk = info.get("risk_score", 0)
+    with r2c2:
         st.metric("Risk", risk)
-    with col7:
-        tech = info.get("technology", "Unknown")
-        st.metric("Tech", tech.value if hasattr(tech, 'value') else str(tech))
-    with col8:
-        last_scan = info.get("last_scan", datetime.now())
-        time_diff = datetime.now() - last_scan
-        if time_diff < timedelta(hours=1):
-            scan_str = f"{int(time_diff.total_seconds() / 60)}m ago"
-        else:
-            scan_str = f"{int(time_diff.total_seconds() / 3600)}h ago"
+    with r2c3:
+        st.metric("Tech", tech_str)
+    with r2c4:
         st.metric("Last Scan", scan_str)
 
 
@@ -310,15 +266,18 @@ def render_bottom_panel() -> None:
 
 def render_page() -> None:
     """Main page render function."""
-    
+
     # Initialize state
     init_explorer_state()
-    
+
+    # Global layout-stabilization CSS for the explorer page
+    st.markdown("""<style> /* Prevent horizontal page overflow; make all flex/grid children respect parent width */ [data-testid="stAppViewContainer"], [data-testid="stMainBlockContainer"], .stMainBlockContainer { max-width: 100%; overflow-x: hidden; } .stColumn { min-width: 0; } .stMetric { min-width: 0; } .stMetric label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } [data-testid="stMetricValue"] { white-space: nowrap; } /* Ensure all explorer markdown containers don't overflow */ .stMarkdown div, .stMarkdown span { max-width: 100%; } </style>""", unsafe_allow_html=True)
+
     # Header
     render_header(APPLICATION_INFO)
     
-    # Main layout: 3 columns
-    left_col, center_col, right_col = st.columns([0.25, 1, 0.35], gap="medium")
+    # Main layout: 3 columns — balanced ratios for tree / gallery / inspector
+    left_col, center_col, right_col = st.columns([3, 7, 3], gap="medium")
     
     # Left Sidebar
     with left_col:

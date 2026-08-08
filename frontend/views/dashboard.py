@@ -79,7 +79,7 @@ def render_dashboard() -> None:
                 bordercolor="#6366F1",
             ),
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="dashboard_perf_chart")
         
         # Mission Distribution
         st.markdown("### Mission Distribution")
@@ -105,7 +105,7 @@ def render_dashboard() -> None:
                 font=dict(color="#94A3B8"),
             ),
         )
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, use_container_width=True, key="dashboard_mission_chart")
     
     with right_col:
         # Recent Missions
@@ -119,26 +119,7 @@ def render_dashboard() -> None:
         ]
         
         for mission in recent_missions:
-            st.markdown(
-                f"""
-                <div style="
-                    background: #1E1E3F;
-                    border-radius: 8px;
-                    padding: 0.75rem 1rem;
-                    margin-bottom: 0.5rem;
-                    border-left: 3px solid {'#10B981' if mission['status'] == 'completed' else '#6366F1' if mission['status'] == 'running' else '#F59E0B'};
-                ">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <p style="margin: 0; color: #F1F5F9; font-size: 0.875rem; font-weight: 500;">{mission['title']}</p>
-                            <p style="margin: 0.25rem 0 0; color: #64748B; font-size: 0.75rem;">{mission['desc']}</p>
-                        </div>
-                        <span style="color: #64748B; font-size: 0.7rem;">{mission['time']}</span>
-                    </div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+            st.markdown(f"""<div style=" background: #1E1E3F; border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 0.5rem; border-left: 3px solid {'#10B981' if mission['status'] == 'completed' else '#6366F1' if mission['status'] == 'running' else '#F59E0B'}; "> <div style="display: flex; justify-content: space-between; align-items: center;"> <div> <p style="margin: 0; color: #F1F5F9; font-size: 0.875rem; font-weight: 500;">{mission['title']}</p> <p style="margin: 0.25rem 0 0; color: #64748B; font-size: 0.75rem;">{mission['desc']}</p> </div> <span style="color: #64748B; font-size: 0.7rem;">{mission['time']}</span> </div> </div>""", unsafe_allow_html=True)
         
         # Quick Actions
         st.markdown("### Quick Actions")
