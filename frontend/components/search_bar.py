@@ -132,7 +132,7 @@ def search_bar(
     
     with col3:
         st.markdown("<div style='padding-top: 20px;'></div>", unsafe_allow_html=True)
-        if st.button("🔄 Reset", use_container_width=True):
+        if st.button("🔄 Reset", width='stretch'):
             search_query = ""
             selected_category = "All"
             selected_status = "All"

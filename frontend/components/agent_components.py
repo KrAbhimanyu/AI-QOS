@@ -37,6 +37,7 @@ try:
         glass_card, glass_panel, section_header, divider, spacer, pulse_dot,
         empty_state, metric_card, timeline_item, status_badge,
     )
+    from frontend.utils.responsive import metrics_row
 except ImportError:  # pragma: no cover - fallback for direct execution
     from themes.tokens import (
         COLORS, SPACING, TYPOGRAPHY, BORDERS, SHADOWS, ANIMATIONS,
@@ -194,13 +195,12 @@ def agent_header(
     """
     health_color = get_health_color(health)
     health_rgb = _hex_to_rgb(health_color)
-
     stat_chips = "".join(
         f'<div style="display:flex;flex-direction:column;align-items:center;gap:2px;'
         f'padding:{SPACING.SPACE_2} {SPACING.SPACE_4};'
         f'background:rgba({COLORS.SURFACE_RGB},0.7);'
         f'border:1px solid {_GLASS_PANEL_BORDER};'
-        f'border-radius:{BORDERS.RADIUS_MD};min-width:96px;">'
+        f'border-radius:{BORDERS.RADIUS_MD};min-width:0;>'
         f'<span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};'
         f'text-transform:uppercase;letter-spacing:1px;">{_escape(k["label"])}</span>'
         f'<span style="color:{_semantic(k["color"])};font-size:{TYPOGRAPHY.FONT_SIZE_SM};'
@@ -221,7 +221,7 @@ def kpi_strip() -> None:
     """Display the organization KPI strip as a MetricCard grid."""
     for i in range(0, len(MOCK_KPI_METRICS), 4):
         row = MOCK_KPI_METRICS[i:i + 4]
-        cols = st.columns(len(row))
+        cols = metrics_row(len(row))
         for col, m in zip(cols, row):
             with col:
                 metric_card(
@@ -249,7 +249,11 @@ def ai_swarm() -> None:
 
     for level in sorted(levels.keys()):
         agents = levels[level]
-        cols = st.columns(len(agents))
+        try:
+            from frontend.utils.responsive import metrics_row
+            cols = metrics_row(len(agents))
+        except Exception:
+            cols = st.columns(len(agents))
         for col, agent in zip(cols, agents):
             with col:
                 color = _semantic(agent["color"])
@@ -445,7 +449,11 @@ def communication_graph() -> None:
     )
     clusters = ["📋 Requirement", "🔍 Application", "📐 DOM", "🎯 Locator",
                 "🖥️ Frontend", "🔗 API", "📝 Docs", "🧠 Learning"]
-    cols = st.columns(len(clusters))
+    try:
+        from frontend.utils.responsive import metrics_row
+        cols = metrics_row(len(clusters))
+    except Exception:
+        cols = st.columns(len(clusters))
     for i, (col, name) in enumerate(zip(cols, clusters)):
         with col:
             pulse = f"animation:{ANIMATIONS.PULSE};" if i in [0, 4, 7] else ""
@@ -661,13 +669,13 @@ def mission_health() -> None:
 def quick_actions() -> None:
     """Display quick action glass buttons."""
     section_header("Quick Actions", icon="⚡")
-    cols = st.columns(5)
+    cols = st.columns(4)
     for i, action in enumerate(MOCK_QUICK_ACTIONS):
-        with cols[i % 5]:
+        with cols[i % 4]:
             if st.button(
                 f"{action['icon']} {action['name']}",
                 key=f"qa_{action['name']}",
-                use_container_width=True,
+                width='stretch',
                 help=action["description"],
             ):
                 st.info(f"{action['name']}: {action['description']}")
@@ -799,7 +807,7 @@ def bottom_workspace_tabs() -> None:
             st.markdown(
                 f'<div style="display:flex;gap:{SPACING.SPACE_2};padding:{SPACING.SPACE_2} 0;'
                 f'border-bottom:1px solid {COLORS.BORDER};">'
-                f'<span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};min-width:64px;">{_escape(ev["time"])}</span>'
+                f'<span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};min-width:0;">{_escape(ev["time"])}</span>'
                 f'<span style="font-size:1rem;">{ev["icon"]}</span>'
                 f'<span style="color:{COLORS.TEXT_SECONDARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};">{_escape(ev["title"])} — {_escape(ev["desc"])}</span>'
                 f'</div>',

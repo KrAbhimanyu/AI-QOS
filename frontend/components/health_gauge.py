@@ -79,7 +79,7 @@ def render_circular_gauge(
         font=dict(color='#94a3b8'),
     )
     
-    st.plotly_chart(fig, use_container_width=True, key="health_gauge")
+    st.plotly_chart(fig, width='stretch', key="health_gauge")
     
     st.markdown(f"""<div style="text-align: center; margin-top: -15px;"> <span style=" font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; ">{label}</span> </div>""", unsafe_allow_html=True)
 
@@ -95,8 +95,12 @@ def render_multi_metric_gauges(metrics: dict[str, float], title: str) -> None:
     """Render multiple metrics as small gauges in a row."""
     st.markdown(f"#### {title}")
     
-    cols = st.columns(len(metrics))
-    
+    try:
+        from frontend.utils.responsive import metrics_row
+        cols = metrics_row(len(metrics))
+    except Exception:
+        cols = st.columns(len(metrics))
+
     for i, (metric, value) in enumerate(metrics.items()):
         with cols[i]:
             color = get_health_color(value)

@@ -52,31 +52,31 @@ def render_execution_center() -> None:
     col1, col2, col3, col4, col5, col6 = st.columns([1, 1, 1, 1, 1, 1])
     
     with col1:
-        if st.button("⏸️ Pause", use_container_width=True):
+        if st.button("⏸️ Pause", width='stretch'):
             set_exec_data("exec_paused", True)
             st.rerun()
     
     with col2:
-        if st.button("▶️ Resume", use_container_width=True):
+        if st.button("▶️ Resume", width='stretch'):
             set_exec_data("exec_paused", False)
             st.rerun()
     
     with col3:
-        if st.button("⏹️ Stop", use_container_width=True):
+        if st.button("⏹️ Stop", width='stretch'):
             set_exec_data("exec_is_running", False)
             st.rerun()
     
     with col4:
-        if st.button("🔄 Restart", use_container_width=True):
+        if st.button("🔄 Restart", width='stretch'):
             reset_execution()
             st.rerun()
     
     with col5:
-        if st.button("📊 Generate Report", use_container_width=True):
+        if st.button("📊 Generate Report", width='stretch'):
             st.success("📊 Report generated successfully!")
     
     with col6:
-        if st.button("💬 AI Chat", use_container_width=True):
+        if st.button("💬 AI Chat", width='stretch'):
             st.info("💬 AI Chat panel coming soon!")
     
     st.markdown("<hr style='margin: 1rem 0; border-color: #334155;'>", unsafe_allow_html=True)

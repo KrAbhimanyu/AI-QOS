@@ -80,10 +80,14 @@ def page_header(
         st.markdown(f"<p style='color: #94A3B8; margin-top: 0;'>{subtitle}</p>", unsafe_allow_html=True)
     
     if actions:
-        cols = st.columns(len(actions))
+        try:
+            from frontend.utils.responsive import metrics_row
+            cols = metrics_row(len(actions))
+        except Exception:
+            cols = st.columns(len(actions))
         for i, action in enumerate(actions):
             with cols[i]:
-                st.button(action, use_container_width=True)
+                st.button(action, width='stretch')
 
 
 def search_bar(placeholder: str = "Search...") -> str:

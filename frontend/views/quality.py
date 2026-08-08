@@ -67,7 +67,7 @@ def render_quality() -> None:
             xaxis=dict(showgrid=False, color="#94A3B8"),
             yaxis=dict(showgrid=True, gridcolor="rgba(51, 65, 85, 0.5)", color="#94A3B8", range=[70, 100]),
         )
-        st.plotly_chart(fig, use_container_width=True, key="quality_risk_chart")
+        st.plotly_chart(fig, width='stretch', key="quality_risk_chart")
     
     with right_col:
         st.markdown("### Issue Distribution")
@@ -87,7 +87,7 @@ def render_quality() -> None:
             xaxis=dict(showgrid=False, color="#94A3B8"),
             yaxis=dict(showgrid=True, gridcolor="rgba(51, 65, 85, 0.5)", color="#94A3B8"),
         )
-        st.plotly_chart(fig2, use_container_width=True, key="quality_trend_chart")
+        st.plotly_chart(fig2, width='stretch', key="quality_trend_chart")
     
     st.markdown("---")
     

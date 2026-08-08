@@ -147,8 +147,8 @@ def release_hero_header() -> None:
 
     chips = "".join(
         f'<div style="display:flex;flex-direction:column;align-items:center;gap:2px;'
-        f'padding:{SPACING.SPACE_2} {SPACING.SPACE_4};background:rgba({COLORS.SURFACE_RGB},0.7);'
-        f'border:1px solid {_GLASS_BORDER};border-radius:{BORDERS.RADIUS_MD};min-width:96px;">'
+            f'padding:{SPACING.SPACE_2} {SPACING.SPACE_4};background:rgba({COLORS.SURFACE_RGB},0.7);'
+            f'border:1px solid {_GLASS_BORDER};border-radius:{BORDERS.RADIUS_MD};min-width:0;">'
         f'<span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};'
         f'text-transform:uppercase;letter-spacing:1px;">{_escape(k["label"])}</span>'
         f'<span style="color:{_semantic(k["color"])};font-size:{TYPOGRAPHY.FONT_SIZE_SM};'
@@ -183,7 +183,11 @@ def release_score_strip() -> None:
     """Render the release score strip as a MetricCard grid."""
     for i in range(0, len(RA_SCORE_METRICS), 4):
         row = RA_SCORE_METRICS[i:i + 4]
-        cols = st.columns(len(row))
+        try:
+            from frontend.utils.responsive import metrics_row
+            cols = metrics_row(len(row))
+        except Exception:
+            cols = st.columns(len(row))
         for col, m in zip(cols, row):
             with col:
                 _metric_card(title=m["title"], value=m["value"],
@@ -344,7 +348,7 @@ def risk_intelligence_panel(key_prefix: str = "ra") -> None:
             bg = f"rgba({COLORS.PRIMARY_RGB},0.22)" if is_sel else f"rgba({COLORS.SURFACE_RGB},0.5)"
             border_w = "2px" if is_sel else "1px"
             st.markdown(f"""<div style="padding:{SPACING.SPACE_2} {SPACING.SPACE_3};background:{bg};border-left:{border_w} solid {c};border-radius:0 {BORDERS.RADIUS_MD} {BORDERS.RADIUS_MD} 0;margin-bottom:{SPACING.SPACE_1};"> <div style="display:flex;justify-content:space-between;align-items:center;"> <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">{_escape(risk["risk"])}</span> <div style="display:flex;gap:{SPACING.SPACE_2};"> <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">P:{risk["probability"]}%</span> <span style="color:{c};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;text-transform:uppercase;">{_escape(risk["severity"])}</span> </div> </div> </div>""", unsafe_allow_html=True)
-            if st.button("Select", key=f"{key_prefix}_risk_sel_{i}", use_container_width=True, help=f"Inspect {risk['risk']}"):
+            if st.button("Select", key=f"{key_prefix}_risk_sel_{i}", width='stretch', help=f"Inspect {risk['risk']}"):
                 st.session_state.ra_selected_risk = i
                 st.rerun()
     with col_detail:
@@ -378,7 +382,12 @@ def risk_heatmap_panel(key_prefix: str = "ra") -> None:
                           and str(r["impact_level"]).lower() == imp.lower()]
             count = len(risks_here)
             label = ", ".join(r["risk"].replace(" Risk", "") for r in risks_here) if risks_here else "—"
-            cells += f'<td style="padding:{SPACING.SPACE_2};background:rgba({_hex_to_rgb(cc)},0.12);border:1px solid rgba({_hex_to_rgb(cc)},0.3);border-radius:{BORDERS.RADIUS_SM};text-align:center;min-width:90px;"><div style="color:{cc};font-weight:700;font-size:{TYPOGRAPHY.FONT_SIZE_LG};">{count}</div><div style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(label)}</div></td>'
+            cells += (
+                f'<td style="padding:{SPACING.SPACE_2};background:rgba({_hex_to_rgb(cc)},0.12);border:1px solid rgba({_hex_to_rgb(cc)},0.3);border-radius:{BORDERS.RADIUS_SM};text-align:center;min-width:0;">'
+                f'<div style="color:{cc};font-weight:700;font-size:{TYPOGRAPHY.FONT_SIZE_LG};">{count}</div>'
+                f'<div style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(label)}</div>'
+                f'</td>'
+            )
         rows += f'<tr><td style="padding:{SPACING.SPACE_2};color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};text-transform:uppercase;font-weight:600;">{prob}</td>{cells}</tr>'
     st.markdown(f"""<div style="overflow-x:auto;"> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;margin-bottom:{SPACING.SPACE_2};text-align:center;">Impact →</div> <table style="width:100%;border-collapse:separate;border-spacing:4px;"> <thead><tr><th></th>{header}</tr></thead> <tbody>{rows}</tbody> </table> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};text-transform:uppercase;margin-top:{SPACING.SPACE_2};">↑ Probability</div> </div>""", unsafe_allow_html=True)
 
@@ -410,7 +419,7 @@ def coverage_intelligence_panel(key_prefix: str = "ra") -> None:
                             line=dict(color=COLORS.WARNING, dash="dash", width=2)))
     fig.update_layout(barmode="group")
     _apply_chart_theme(fig, height=320, show_legend=True)
-    st.plotly_chart(fig, use_container_width=True, key=f"{key_prefix}_coverage_chart")
+    st.plotly_chart(fig, width='stretch', key=f"{key_prefix}_coverage_chart")
 
     for c in RA_COVERAGE:
         col = _semantic(c["color"])
@@ -439,7 +448,7 @@ def business_impact_panel(key_prefix: str = "ra") -> None:
             border_w = "2px" if is_sel else "1px"
             block_badge = f'<span style="color:{COLORS.ERROR};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;">BLOCKING</span>' if flow["blocking"] else ""
             st.markdown(f"""<div style="padding:{SPACING.SPACE_2} {SPACING.SPACE_3};background:{bg};border-left:{border_w} solid {c};border-radius:0 {BORDERS.RADIUS_MD} {BORDERS.RADIUS_MD} 0;margin-bottom:{SPACING.SPACE_1};"> <div style="display:flex;justify-content:space-between;align-items:center;"> <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">{flow["icon"]} {_escape(flow["flow"])}</span> <div style="display:flex;gap:{SPACING.SPACE_2};align-items:center;"> {block_badge} <span style="color:{c};font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:600;text-transform:uppercase;">{_escape(flow["risk"])}</span> </div> </div> </div>""", unsafe_allow_html=True)
-            if st.button("Select", key=f"{key_prefix}_flow_sel_{flow['flow']}", use_container_width=True, help=f"Inspect {flow['flow']}"):
+            if st.button("Select", key=f"{key_prefix}_flow_sel_{flow['flow']}", width='stretch', help=f"Inspect {flow['flow']}"):
                 st.session_state.ra_selected_flow = flow["flow"]
                 st.rerun()
     with col_detail:
@@ -597,7 +606,7 @@ def release_quick_actions(key_prefix: str = "ra") -> None:
                 if st.button(
                     f"{action['icon']} {action['name']}",
                     key=f"{key_prefix}_qa_{i}_{action['name']}",
-                    use_container_width=True, help=action["description"],
+                    width='stretch', help=action["description"],
                 ):
                     st.toast(action["description"], icon=action["icon"])
 

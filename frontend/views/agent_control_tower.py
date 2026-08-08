@@ -55,18 +55,18 @@ def render_agent_control_tower() -> None:
     # Action Buttons (Toolbar)
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        if st.button("🔄 Refresh", use_container_width=True):
+        if st.button("🔄 Refresh", width='stretch'):
             st.rerun()
     with col2:
         st.selectbox("Status", ["All", "Running", "Idle", "Paused", "Failed"], label_visibility="collapsed")
     with col3:
         st.selectbox("Category", ["All Categories", "Intelligence", "Testing", "Documentation", "Security", "Learning", "Support"], label_visibility="collapsed")
     with col4:
-        if st.button("🔍 Search Agents", use_container_width=True):
+        if st.button("🔍 Search Agents", width='stretch'):
             st.info("Search functionality")
 
     # Main Content - Three Column Layout: AI Swarm | Collaboration Graph | Model Router
-    left_col, center_col, right_col = st.columns([1, 1.5, 1])
+    left_col, center_col, right_col = st.columns([1.2, 1.8, 1.2], gap="medium")
 
     with left_col:
         ai_swarm()
@@ -78,7 +78,7 @@ def render_agent_control_tower() -> None:
         ai_model_panel()
 
     # Second row: Active Agents | Event Stream | Memory Utilization
-    active_col, event_col, mem_col = st.columns([1.5, 1, 1])
+    active_col, event_col, mem_col = st.columns([1.6, 1.1, 1.1], gap="medium")
 
     with active_col:
         _active_agents_panel()
@@ -90,7 +90,7 @@ def render_agent_control_tower() -> None:
         memory_utilization()
 
     # Third row: Queue | Resource Monitor | Mission Health
-    q_col, r_col, h_col = st.columns([1, 1, 1])
+    q_col, r_col, h_col = st.columns([1.1, 1.1, 1.0], gap="medium")
 
     with q_col:
         agent_queue()
@@ -121,7 +121,7 @@ def _active_agents_panel() -> None:
     for i, agent in enumerate(filtered_agents[:8]):
         with cols[i % 2]:
             agent_card(agent)
-            if st.button("Details", key=f"agent_{agent['id']}", use_container_width=True):
+            if st.button("Details", key=f"agent_{agent['id']}", width='stretch'):
                 set_agent_data("selected_agent", agent["id"])
 
 

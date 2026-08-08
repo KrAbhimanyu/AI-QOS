@@ -70,7 +70,7 @@ def card(
     # Build footer HTML
     footer_html = f'<div style="border-top: 1px solid {COLORS.BORDER}; padding-top: {SPACING.SPACE_4}; margin-top: {SPACING.SPACE_4};">{footer}</div>' if footer else ""
     
-    st.markdown(f"""<div style=" background: {COLORS.GLASS}; border: {BORDERS.WIDTH_THIN} solid {COLORS.BORDER}; border-radius: {BORDERS.RADIUS_LG}; padding: {SPACING.SPACE_6}; margin-bottom: {SPACING.SPACE_4}; box-sizing: border-box; max-width: 100%; min-width: 0; "> <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: {SPACING.SPACE_3}; gap: {SPACING.SPACE_3}; min-width: 0;"> <div style="display: flex; align-items: center; gap: {SPACING.SPACE_3}; min-width: 0;"> {icon_html} <h3 style="color: {COLORS.TEXT_PRIMARY}; margin: 0; font-size: {TYPOGRAPHY.FONT_SIZE_LG}; font-weight: 600; overflow-wrap: anywhere; min-width: 0;"> {title} </h3> </div> {badge_html} </div> {content_html} {footer_html} </div>""", unsafe_allow_html=True)
+    st.markdown(f"""<div style=" background: {COLORS.GLASS}; border: {BORDERS.WIDTH_THIN} solid {COLORS.BORDER}; border-radius: {BORDERS.RADIUS_LG}; padding: {SPACING.SPACE_6}; margin-bottom: {SPACING.SPACE_4}; box-sizing: border-box; max-width: 100%; min-width: 0; overflow: hidden; "> <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: {SPACING.SPACE_3}; gap: {SPACING.SPACE_3}; min-width: 0; flex-wrap: wrap;"> <div style="display: flex; align-items: center; gap: {SPACING.SPACE_3}; min-width: 0; flex: 1 1 auto;"> {icon_html} <h3 style="color: {COLORS.TEXT_PRIMARY}; margin: 0; font-size: {TYPOGRAPHY.FONT_SIZE_LG}; font-weight: 600; overflow-wrap: break-word; word-break: normal; min-width: 0;"> {title} </h3> </div> {badge_html} </div> {content_html} {footer_html} </div>""", unsafe_allow_html=True)
 
 
 def metric_card(
@@ -93,7 +93,7 @@ def metric_card(
     """
     trend_color = COLORS.SUCCESS if trend.startswith("+") else COLORS.ERROR if trend.startswith("-") else COLORS.TEXT_MUTED
     
-    st.markdown(f"""<div style=" background: linear-gradient(135deg, {COLORS.SURFACE} 0%, rgba({COLORS.PRIMARY_RGB}, 0.1) 100%); border: {BORDERS.WIDTH_THIN} solid {COLORS.BORDER}; border-radius: {BORDERS.RADIUS_LG}; padding: {SPACING.SPACE_6}; text-align: center; margin-bottom: {SPACING.SPACE_4}; box-sizing: border-box; max-width: 100%; min-width: 0; "> <div style="font-size: {TYPOGRAPHY.FONT_SIZE_XS}; color: {COLORS.TEXT_MUTED}; text-transform: uppercase; letter-spacing: 1px; margin-bottom: {SPACING.SPACE_2}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"> {title} </div> <div style="display: flex; align-items: center; justify-content: center; gap: {SPACING.SPACE_3}; min-width: 0;"> <div style="font-size: {TYPOGRAPHY.FONT_SIZE_2XL}; font-weight: 700; color: {COLORS.TEXT_PRIMARY}; font-family: {TYPOGRAPHY.FONT_MONO}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;"> {value} </div> {f'<span style="font-size: 1.5rem; flex-shrink: 0;">{icon}</span>' if icon else ''} </div> {f'<div style="font-size: {TYPOGRAPHY.FONT_SIZE_SM}; color: {COLORS.TEXT_SECONDARY}; margin-top: {SPACING.SPACE_2}; overflow-wrap: anywhere;">{subtitle}</div>' if subtitle else ''} {f'<div style="font-size: {TYPOGRAPHY.FONT_SIZE_SM}; font-weight: 600; color: {trend_color}; margin-top: {SPACING.SPACE_2}; white-space: nowrap;">{trend}</div>' if trend else ''} </div>""", unsafe_allow_html=True)
+    st.markdown(f"""<div style=" background: linear-gradient(135deg, {COLORS.SURFACE} 0%, rgba({COLORS.PRIMARY_RGB}, 0.1) 100%); border: {BORDERS.WIDTH_THIN} solid {COLORS.BORDER}; border-radius: {BORDERS.RADIUS_LG}; padding: {SPACING.SPACE_6}; text-align: center; margin-bottom: {SPACING.SPACE_4}; box-sizing: border-box; max-width: 100%; min-width: 220px; overflow: hidden; "> <div style="font-size: {TYPOGRAPHY.FONT_SIZE_XS}; color: {COLORS.TEXT_MUTED}; text-transform: uppercase; letter-spacing: 1px; margin-bottom: {SPACING.SPACE_2}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"> {title} </div> <div style="display: flex; align-items: center; justify-content: center; gap: {SPACING.SPACE_3}; min-width: 0;"> <div style="font-size: {TYPOGRAPHY.FONT_SIZE_2XL}; font-weight: 700; color: {COLORS.TEXT_PRIMARY}; font-family: {TYPOGRAPHY.FONT_MONO}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;"> {value} </div> {f'<span style="font-size: 1.5rem; flex-shrink: 0;">{icon}</span>' if icon else ''} </div> {f'<div style="font-size: {TYPOGRAPHY.FONT_SIZE_SM}; color: {COLORS.TEXT_SECONDARY}; margin-top: {SPACING.SPACE_2}; overflow-wrap: break-word; word-break: normal;">{subtitle}</div>' if subtitle else ''} {f'<div style="font-size: {TYPOGRAPHY.FONT_SIZE_SM}; font-weight: 600; color: {trend_color}; margin-top: {SPACING.SPACE_2}; white-space: nowrap;">{trend}</div>' if trend else ''} </div>""", unsafe_allow_html=True)
 
 
 def glass_card(
@@ -296,7 +296,7 @@ def header(
         subtitle: Optional subtitle
         icon: Optional icon
     """
-    st.markdown(f"""<div style="margin-bottom: {SPACING.SPACE_6}; min-width: 0;"> <div style="display: flex; align-items: center; gap: {SPACING.SPACE_3}; margin-bottom: {SPACING.SPACE_2}; min-width: 0;"> {f'<span style="font-size: 2rem; flex-shrink: 0;">{icon}</span>' if icon else ''} <h1 style=" font-size: {TYPOGRAPHY.FONT_SIZE_2XL}; font-weight: 600; color: {COLORS.TEXT_PRIMARY}; margin: 0; min-width: 0; overflow-wrap: anywhere; "> {title} </h1> </div> {f'<p style="color: {COLORS.TEXT_SECONDARY}; font-size: {TYPOGRAPHY.FONT_SIZE_BASE}; margin: 0; overflow-wrap: anywhere;">{subtitle}</p>' if subtitle else ''} </div>""", unsafe_allow_html=True)
+    st.markdown(f"""<div style="margin-bottom: {SPACING.SPACE_6}; min-width: 0;"> <div style="display: flex; align-items: center; gap: {SPACING.SPACE_3}; margin-bottom: {SPACING.SPACE_2}; min-width: 0; flex-wrap: wrap;"> {f'<span style="font-size: 2rem; flex-shrink: 0;">{icon}</span>' if icon else ''} <h1 style=" font-size: {TYPOGRAPHY.FONT_SIZE_2XL}; font-weight: 600; color: {COLORS.TEXT_PRIMARY}; margin: 0; min-width: 0; overflow-wrap: break-word; word-break: normal; "> {title} </h1> </div> {f'<p style="color: {COLORS.TEXT_SECONDARY}; font-size: {TYPOGRAPHY.FONT_SIZE_BASE}; margin: 0; overflow-wrap: break-word; word-break: normal;">{subtitle}</p>' if subtitle else ''} </div>""", unsafe_allow_html=True)
 
 
 def section_header(
@@ -311,7 +311,7 @@ def section_header(
         icon: Optional icon
         action: Optional action HTML
     """
-    st.markdown(f"""<div style=" display: flex; justify-content: space-between; align-items: center; margin-bottom: {SPACING.SPACE_4}; padding-bottom: {SPACING.SPACE_3}; border-bottom: 1px solid {COLORS.BORDER}; gap: {SPACING.SPACE_3}; flex-wrap: wrap; min-width: 0; "> <h3 style=" color: {COLORS.TEXT_PRIMARY}; font-size: {TYPOGRAPHY.FONT_SIZE_LG}; font-weight: 600; margin: 0; display: flex; align-items: center; gap: {SPACING.SPACE_2}; min-width: 0; overflow-wrap: anywhere; "> {f'<span style="flex-shrink: 0;">{icon}</span>' if icon else ''} {title} </h3> {action if action else ''} </div> """ if action else f""" <h3 style=" color: {COLORS.TEXT_PRIMARY}; font-size: {TYPOGRAPHY.FONT_SIZE_LG}; font-weight: 600; margin: 0 0 {SPACING.SPACE_4}; display: flex; align-items: center; gap: {SPACING.SPACE_2}; min-width: 0; overflow-wrap: anywhere; "> {f'<span style="flex-shrink: 0;">{icon}</span>' if icon else ''} {title} </h3>""", unsafe_allow_html=True)
+    st.markdown(f"""<div style=" display: flex; justify-content: space-between; align-items: center; margin-bottom: {SPACING.SPACE_4}; padding-bottom: {SPACING.SPACE_3}; border-bottom: 1px solid {COLORS.BORDER}; gap: {SPACING.SPACE_3}; flex-wrap: wrap; min-width: 0; "> <h3 style=" color: {COLORS.TEXT_PRIMARY}; font-size: {TYPOGRAPHY.FONT_SIZE_LG}; font-weight: 600; margin: 0; display: flex; align-items: center; gap: {SPACING.SPACE_2}; min-width: 0; overflow-wrap: break-word; word-break: normal; "> {f'<span style="flex-shrink: 0;">{icon}</span>' if icon else ''} {title} </h3> {action if action else ''} </div> """ if action else f""" <h3 style=" color: {COLORS.TEXT_PRIMARY}; font-size: {TYPOGRAPHY.FONT_SIZE_LG}; font-weight: 600; margin: 0 0 {SPACING.SPACE_4}; display: flex; align-items: center; gap: {SPACING.SPACE_2}; min-width: 0; overflow-wrap: break-word; word-break: normal; "> {f'<span style="flex-shrink: 0;">{icon}</span>' if icon else ''} {title} </h3>""", unsafe_allow_html=True)
 
 
 # =============================================================================
@@ -354,11 +354,9 @@ def button_primary(
     icon: str = "",
     key: str = None,
 ) -> None:
-    """Render a primary button."""
-    cols = st.columns([1, 1, 2])
-    with cols[2]:
-        if st.button(f"{icon} {label}" if icon else label, key=key, type="primary"):
-            pass
+    """Render a stable primary button."""
+    if st.button(f"{icon} {label}" if icon else label, key=key, type="primary"):
+        pass
 
 
 def button_secondary(
@@ -366,11 +364,9 @@ def button_secondary(
     icon: str = "",
     key: str = None,
 ) -> None:
-    """Render a secondary button."""
-    cols = st.columns([1, 1, 2])
-    with cols[2]:
-        if st.button(f"{icon} {label}" if icon else label, key=key):
-            pass
+    """Render a stable secondary button."""
+    if st.button(f"{icon} {label}" if icon else label, key=key):
+        pass
 
 
 # =============================================================================
@@ -404,7 +400,7 @@ def stat_item(
         value: Stat value
         icon: Optional icon
     """
-    st.markdown(f"""<div style=" padding: {SPACING.SPACE_3}; background: {COLORS.GLASS_LIGHT}; border-radius: {BORDERS.RADIUS_MD}; box-sizing: border-box; max-width: 100%; min-width: 0; "> <div style="display: flex; align-items: center; gap: {SPACING.SPACE_2}; margin-bottom: {SPACING.SPACE_1}; min-width: 0;"> {f'<span style="font-size: 1rem; flex-shrink: 0;">{icon}</span>' if icon else ''} <span style="color: {COLORS.TEXT_MUTED}; font-size: {TYPOGRAPHY.FONT_SIZE_SM}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;">{label}</span> </div> <div style="color: {COLORS.TEXT_PRIMARY}; font-size: {TYPOGRAPHY.FONT_SIZE_LG}; font-weight: 600; overflow-wrap: anywhere; word-break: normal;"> {value} </div> </div>""", unsafe_allow_html=True)
+    st.markdown(f"""<div style=" padding: {SPACING.SPACE_3}; background: {COLORS.GLASS_LIGHT}; border-radius: {BORDERS.RADIUS_MD}; box-sizing: border-box; max-width: 100%; min-width: 0; "> <div style="display: flex; align-items: center; gap: {SPACING.SPACE_2}; margin-bottom: {SPACING.SPACE_1}; min-width: 0;"> {f'<span style="font-size: 1rem; flex-shrink: 0;">{icon}</span>' if icon else ''} <span style="color: {COLORS.TEXT_MUTED}; font-size: {TYPOGRAPHY.FONT_SIZE_SM}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;">{label}</span> </div> <div style="color: {COLORS.TEXT_PRIMARY}; font-size: {TYPOGRAPHY.FONT_SIZE_LG}; font-weight: 600; overflow-wrap: break-word; word-break: normal;"> {value} </div> </div>""", unsafe_allow_html=True)
 
 
 # =============================================================================

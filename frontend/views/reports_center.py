@@ -181,7 +181,7 @@ def render_quality_tab() -> None:
             height=300, paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
             font=dict(color=COLORS.TEXT_PRIMARY), showlegend=False, yaxis=dict(range=[0, 100]),
         )
-        st.plotly_chart(fig, use_container_width=True, key="reports_quality_category_bar")
+        st.plotly_chart(fig, width='stretch', key="reports_quality_category_bar")
     with col2:
         section_header("Defect Distribution", icon="📉")
         for defect in QUALITY_REPORT["defect_distribution"]:
@@ -247,7 +247,7 @@ def render_ai_performance_tab() -> None:
         height=300, paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
         font=dict(color=COLORS.TEXT_PRIMARY), showlegend=False,
     )
-    st.plotly_chart(fig, use_container_width=True, key="reports_ai_perf_by_type")
+    st.plotly_chart(fig, width='stretch', key="reports_ai_perf_by_type")
 
 
 def render_flaky_tests_tab() -> None:
@@ -281,7 +281,7 @@ def render_flaky_tests_tab() -> None:
             textfont=dict(color=COLORS.TEXT_PRIMARY),
         ))
         fig.update_layout(height=300, paper_bgcolor="rgba(0,0,0,0)")
-        st.plotly_chart(fig, use_container_width=True, key="reports_flaky_root_causes")
+        st.plotly_chart(fig, width='stretch', key="reports_flaky_root_causes")
     with col2:
         section_header("By Module", icon="📦")
         for module in FLAKY_REPORT["by_module"]:

@@ -51,7 +51,7 @@ def render_metric_gauge(
         font=dict(color='#94a3b8'),
     )
     
-    st.plotly_chart(fig, use_container_width=True, key="resource_cpu_chart")
+    st.plotly_chart(fig, width='stretch', key="resource_cpu_chart")
     st.markdown(f"""<div style="text-align: center; margin-top: -10px;"> <span style=" font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; ">{label}</span> </div>""", unsafe_allow_html=True)
 
 
@@ -110,7 +110,7 @@ def render_token_usage_chart(token_data: dict[str, int]) -> None:
         marker=dict(line=dict(color='transparent')),
     )
     
-    st.plotly_chart(fig, use_container_width=True, key="resource_memory_chart")
+    st.plotly_chart(fig, width='stretch', key="resource_memory_chart")
 
 
 def render_latency_chart(latency_data: dict[str, float]) -> None:
@@ -150,7 +150,7 @@ def render_latency_chart(latency_data: dict[str, float]) -> None:
         ),
     )
     
-    st.plotly_chart(fig, use_container_width=True, key="resource_disk_chart")
+    st.plotly_chart(fig, width='stretch', key="resource_disk_chart")
 
 
 def render_queue_chart(queue_data: dict[str, int]) -> None:
@@ -214,7 +214,7 @@ def render_queue_chart(queue_data: dict[str, int]) -> None:
         ),
     )
     
-    st.plotly_chart(fig, use_container_width=True, key="resource_network_chart")
+    st.plotly_chart(fig, width='stretch', key="resource_network_chart")
 
 
 def resource_panel(metrics: dict[str, Any]) -> None:

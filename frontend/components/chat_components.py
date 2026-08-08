@@ -190,7 +190,7 @@ def chat_header(
                     padding:{SPACING.SPACE_2} {SPACING.SPACE_4};
                     background:rgba({COLORS.SURFACE_RGB},0.7);
                     border:1px solid {_GLASS_PANEL_BORDER};
-                    border-radius:{BORDERS.RADIUS_MD};min-width:96px;">
+                    border-radius:{BORDERS.RADIUS_MD};min-width:0;">
             <span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};
                          text-transform:uppercase;letter-spacing:1px;">{s['label']}</span>
             <span style="color:{_semantic(s['color'])};font-size:{TYPOGRAPHY.FONT_SIZE_SM};
@@ -217,18 +217,18 @@ def chat_action_buttons() -> None:
     col1, col2, col3, col4, col5 = st.columns([1, 1, 1, 1, 1])
 
     with col1:
-        if st.button("➕ New Chat", use_container_width=True, key="chat_new"):
+        if st.button("➕ New Chat", width='stretch', key="chat_new"):
             st.info("Starting new conversation...")
     with col2:
-        if st.button("📥 Export", use_container_width=True, key="chat_export"):
+        if st.button("📥 Export", width='stretch', key="chat_export"):
             st.success("Chat exported successfully!")
     with col3:
-        if st.button("🗑️ Clear", use_container_width=True, key="chat_clear"):
+        if st.button("🗑️ Clear", width='stretch', key="chat_clear"):
             st.warning("Chat cleared")
     with col4:
-        st.button("🔍 Search", use_container_width=True, key="chat_search")
+        st.button("🔍 Search", width='stretch', key="chat_search")
     with col5:
-        st.button("⚙️ Settings", use_container_width=True, key="chat_settings")
+        st.button("⚙️ Settings", width='stretch', key="chat_settings")
 
 
 # ============================================================================
@@ -306,7 +306,7 @@ def conversation_sidebar() -> None:
     spacer(SPACING.SPACE_3)
 
     # New chat action
-    if st.button("➕ New Chat", use_container_width=True, key="conv_new_chat", type="primary"):
+    if st.button("➕ New Chat", width='stretch', key="conv_new_chat", type="primary"):
         st.info("Starting new conversation…")
     spacer(SPACING.SPACE_3)
 
@@ -545,7 +545,7 @@ def prompt_editor() -> None:
 
     with col2:
         st.markdown("<br>", unsafe_allow_html=True)
-        if st.button("🚀", use_container_width=True, help="Send message", key="prompt_send"):
+        if st.button("🚀", width='stretch', help="Send message", key="prompt_send"):
             if prompt:
                 st.info("Sending message to AI...")
                 st.rerun()
@@ -566,7 +566,7 @@ def prompt_editor() -> None:
     ]
     for col, suggestion in zip([col1, col2, col3], suggestions):
         with col:
-            if st.button(f"💬 {suggestion}", use_container_width=True, key=f"suggestion_{suggestion[:6]}"):
+            if st.button(f"💬 {suggestion}", width='stretch', key=f"suggestion_{suggestion[:6]}"):
                 st.info(f"Selected: {suggestion}")
 
     # Variables panel (composed from tokens)

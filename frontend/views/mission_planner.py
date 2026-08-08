@@ -538,22 +538,22 @@ def render_step_3() -> None:
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        if st.button("🔥 Critical\n(Smoke + API)", use_container_width=True):
+        if st.button("🔥 Critical\n(Smoke + API)", width='stretch'):
             set_wizard_data("testing_types", ["Smoke", "API"])
             st.rerun()
     
     with col2:
-        if st.button("📋 Standard\n(Smoke + Sanity + Regression)", use_container_width=True):
+        if st.button("📋 Standard\n(Smoke + Sanity + Regression)", width='stretch'):
             set_wizard_data("testing_types", ["Smoke", "Sanity", "Regression"])
             st.rerun()
     
     with col3:
-        if st.button("🎯 Full\n(All Types)", use_container_width=True):
+        if st.button("🎯 Full\n(All Types)", width='stretch'):
             set_wizard_data("testing_types", [t["name"] for t in testing_types])
             st.rerun()
     
     with col4:
-        if st.button("🔒 Security\n(Security + API)", use_container_width=True):
+        if st.button("🔒 Security\n(Security + API)", width='stretch'):
             set_wizard_data("testing_types", ["Security", "API"])
             st.rerun()
     
@@ -593,7 +593,7 @@ def render_step_4() -> None:
             if st.button(
                 f"{mode['icon']}\n{mode['label']}",
                 key=f"exec_mode_{mode['label']}",
-                use_container_width=True,
+                width='stretch',
             ):
                 set_wizard_data("execution_mode", mode["label"])
                 st.rerun()

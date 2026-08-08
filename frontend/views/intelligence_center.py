@@ -84,33 +84,33 @@ def render_page_header() -> None:
     col1, col2, col3, col4, col5, col6, col7 = st.columns([1, 1, 1, 1, 1, 1, 1])
     
     with col1:
-        if st.button("⏸️ Pause", use_container_width=True):
+        if st.button("⏸️ Pause", width='stretch'):
             set_intel_data("intel_paused", True)
             st.rerun()
     
     with col2:
-        if st.button("▶️ Resume", use_container_width=True):
+        if st.button("▶️ Resume", width='stretch'):
             set_intel_data("intel_paused", False)
             st.rerun()
     
     with col3:
-        if st.button("🔄 Restart", use_container_width=True):
+        if st.button("🔄 Restart", width='stretch'):
             reset_intelligence()
             st.rerun()
     
     with col4:
-        if st.button("📥 Export Blueprint", use_container_width=True):
+        if st.button("📥 Export Blueprint", width='stretch'):
             st.success("📥 Blueprint exported successfully!")
     
     with col5:
-        st.button("📊 Generate Report", use_container_width=True)
+        st.button("📊 Generate Report", width='stretch')
     
     with col6:
-        if st.button("❓ Help", use_container_width=True):
+        if st.button("❓ Help", width='stretch'):
             set_intel_data("show_help", not get_intel_data("show_help", False))
     
     with col7:
-        if st.button("🤖 Continue to Automation →", type="primary", use_container_width=True):
+        if st.button("🤖 Continue to Automation →", type="primary", width='stretch'):
             st.info("🚀 Moving to Automation Phase...")
 
 

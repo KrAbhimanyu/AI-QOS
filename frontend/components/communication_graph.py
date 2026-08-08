@@ -327,7 +327,7 @@ def render_communication_graph(
             ],
         )
     
-    st.plotly_chart(fig, use_container_width=True, key="comm_graph")
+    st.plotly_chart(fig, width='stretch', key="comm_graph")
 
 
 def render_simple_communication_flow(

@@ -3,7 +3,7 @@
 This module provides responsive layout helpers for creating
 layouts that work across desktop, laptop, tablet, and mobile.
 """
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, Dict, Any
 import streamlit as st
 
 
@@ -378,7 +378,7 @@ def responsive_chart(
     height_mobile: int = 250,
     height_tablet: int = 350,
     height_desktop: int = 450,
-) -> Dict[str, int]:
+) -> dict[str, int]:
     """Get responsive chart height based on viewport.
     
     Note: Streamlit doesn't support dynamic viewport detection.

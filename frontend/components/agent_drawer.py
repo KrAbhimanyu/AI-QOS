@@ -107,7 +107,7 @@ def render_execution_history(history: list[dict[str, Any]]) -> None:
                 "Status": "✓" if h["success"] else "✗",
             })
         df = pd.DataFrame(data)
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
     else:
         st.info("No execution history available")
 
@@ -143,7 +143,7 @@ def render_health_history_chart(history: list[dict[str, Any]]) -> None:
             yaxis=dict(showgrid=True, gridcolor='rgba(148, 163, 184, 0.1)', color='#64748b', range=[0, 1], title=None),
         )
         
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
     else:
         st.info("No health history available")
 

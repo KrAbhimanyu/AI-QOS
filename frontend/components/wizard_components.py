@@ -306,7 +306,11 @@ def config_card(
     """Render a configuration selection card with options."""
     st.markdown(f"""<div style=" background: rgba(30, 30, 63, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; "> <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;"> <span style="font-size: 1.5rem;">{icon}</span> <div> <h4 style="color: #F1F5F9; margin: 0;">{title}</h4> <p style="color: #94A3B8; margin: 0; font-size: 0.8rem;">{description}</p> </div> </div> <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">""", unsafe_allow_html=True)
     
-    cols = st.columns(len(options))
+    try:
+        from frontend.utils.responsive import metrics_row
+        cols = metrics_row(len(options))
+    except Exception:
+        cols = st.columns(len(options))
     result = selected
     
     for i, opt in enumerate(options):
@@ -458,23 +462,23 @@ def wizard_actions(
     
     with col1:
         if current_step > 1:
-            if st.button("← Previous", use_container_width=True, key="btn_prev"):
+            if st.button("← Previous", width='stretch', key="btn_prev"):
                 action = "prev"
     
     with col2:
-        if st.button("💾 Save Draft", use_container_width=True, key="btn_save"):
+        if st.button("💾 Save Draft", width='stretch', key="btn_save"):
             action = "save"
     
     with col3:
-        if st.button("Cancel", use_container_width=True, key="btn_cancel"):
+        if st.button("Cancel", width='stretch', key="btn_cancel"):
             action = "cancel"
     
     with col4:
         if current_step < total_steps:
-            if st.button("Next →", use_container_width=True, type="primary", key="btn_next"):
+            if st.button("Next →", width='stretch', type="primary", key="btn_next"):
                 action = "next"
         elif show_launch:
-            if st.button("🚀 Launch Mission", use_container_width=True, type="primary", key="btn_launch"):
+            if st.button("🚀 Launch Mission", width='stretch', type="primary", key="btn_launch"):
                 action = "launch"
     
     return action

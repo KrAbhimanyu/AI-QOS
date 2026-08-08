@@ -280,7 +280,7 @@ def coverage_chart(data: list[dict[str, Any]], title: str = "Test Coverage") -> 
         xaxis_title="Coverage %", yaxis_title="", showlegend=False,
     )
     fig.update_traces(marker_line_color=COLORS.SURFACE, marker_line_width=1)
-    st.plotly_chart(fig, use_container_width=True, key=f"reports_cov_chart_{title}")
+    st.plotly_chart(fig, width='stretch', key=f"reports_cov_chart_{title}")
 
 
 # ============================================================================
@@ -305,7 +305,7 @@ def trend_chart(data: list[dict[str, Any]], title: str = "Trend", color: str = C
         fillcolor=f"rgba({color_rgb}, 0.1)",
     ))
     _apply_chart_theme(fig, height=300)
-    st.plotly_chart(fig, use_container_width=True, key=f"reports_trend_chart_{title}_{color}")
+    st.plotly_chart(fig, width='stretch', key=f"reports_trend_chart_{title}_{color}")
 
 
 # ============================================================================
@@ -326,7 +326,7 @@ def pie_chart(data: dict[str, Any], title: str = "Distribution") -> None:
         textfont=dict(color=COLORS.TEXT_PRIMARY),
     ))
     _apply_chart_theme(fig, height=300)
-    st.plotly_chart(fig, use_container_width=True, key=f"reports_pie_chart_{title}")
+    st.plotly_chart(fig, width='stretch', key=f"reports_pie_chart_{title}")
 
 
 # ============================================================================
@@ -420,7 +420,7 @@ def report_generator(templates: list[dict[str, Any]]) -> None:
             "Checkout", "Payment", "Search", "User Profile",
         ], default=["Authentication", "Product Catalog", "Shopping Cart"])
         format_type = st.selectbox("Export Format", options=["HTML", "PDF", "CSV", "JSON"])
-    if st.button("🚀 Generate Report", use_container_width=True, key="reports_generate_btn"):
+    if st.button("🚀 Generate Report", width='stretch', key="reports_generate_btn"):
         st.success(f"Report generation started: {report_type}")
         st.info(f"Report will be exported as {format_type}")
 
@@ -455,7 +455,7 @@ def scheduled_reports_table(scheduled: list[dict[str, Any]]) -> None:
                     unsafe_allow_html=True,
                 )
             with col4:
-                if st.button("Run Now", key=f"run_{report['id']}", use_container_width=True):
+                if st.button("Run Now", key=f"run_{report['id']}", width='stretch'):
                     st.toast(f"Running {report.get('title')}", icon="⏰")
             st.markdown("---")
 
@@ -473,10 +473,14 @@ def export_panel() -> None:
         ("📋 JSON", "Exporting as JSON..."),
         ("📧 Email", "Email export configured..."),
     ]
-    cols = st.columns(len(formats))
+    try:
+        from frontend.utils.responsive import metrics_row
+        cols = metrics_row(len(formats))
+    except Exception:
+        cols = st.columns(len(formats))
     for col, (label, msg) in zip(cols, formats):
         with col:
-            if st.button(label, use_container_width=True, key=f"export_{label}"):
+            if st.button(label, width='stretch', key=f"export_{label}"):
                 st.toast(msg, icon="📤")
 
 
@@ -508,7 +512,7 @@ def comparison_chart(data: dict[str, list], title: str = "Comparison") -> None:
             line=dict(color=colors[i % len(colors)], width=2), marker=dict(size=6),
         ))
     _apply_chart_theme(fig, height=300, show_legend=True)
-    st.plotly_chart(fig, use_container_width=True, key=f"reports_comparison_{title}")
+    st.plotly_chart(fig, width='stretch', key=f"reports_comparison_{title}")
 
 
 # ============================================================================
@@ -529,7 +533,7 @@ def reports_hero_header(info: dict[str, Any]) -> None:
         f'padding:{SPACING.SPACE_2} {SPACING.SPACE_4};'
         f'background:rgba({COLORS.SURFACE_RGB},0.7);'
         f'border:1px solid {_GLASS_PANEL_BORDER};'
-        f'border-radius:{BORDERS.RADIUS_MD};min-width:96px;">'
+        f'border-radius:{BORDERS.RADIUS_MD};min-width:0;>'
         f'<span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};'
         f'text-transform:uppercase;letter-spacing:1px;">{_escape(k["label"])}</span>'
         f'<span style="color:{_semantic(k["color"])};font-size:{TYPOGRAPHY.FONT_SIZE_SM};'
@@ -546,7 +550,11 @@ def reports_kpi_strip() -> None:
     """Display the executive KPI strip as a MetricCard grid."""
     for i in range(0, len(REPORTS_KPI_METRICS), 4):
         row = REPORTS_KPI_METRICS[i:i + 4]
-        cols = st.columns(len(row))
+        try:
+            from frontend.utils.responsive import metrics_row
+            cols = metrics_row(len(row))
+        except Exception:
+            cols = st.columns(len(row))
         for col, m in zip(cols, row):
             with col:
                 metric_card(
@@ -659,7 +667,7 @@ def quality_trend_center(key_prefix: str = "reports_trend") -> None:
         fill="tonexty", fillcolor=f"rgba({_hex_to_rgb(sel_color)}, 0.1)",
     ))
     _apply_chart_theme(fig, height=320)
-    st.plotly_chart(fig, use_container_width=True, key=f"{key_prefix}_chart_{view}_{sel_key}")
+    st.plotly_chart(fig, width='stretch', key=f"{key_prefix}_chart_{view}_{sel_key}")
 
     # Multi-metric comparison
     st.markdown("#### Multi-Metric Comparison")
@@ -671,7 +679,7 @@ def quality_trend_center(key_prefix: str = "reports_trend") -> None:
             line=dict(color=color, width=2), marker=dict(size=5),
         ))
     _apply_chart_theme(fig2, height=300, show_legend=True)
-    st.plotly_chart(fig2, use_container_width=True, key=f"{key_prefix}_multi_{view}")
+    st.plotly_chart(fig2, width='stretch', key=f"{key_prefix}_multi_{view}")
 
 
 def coverage_intelligence(key_prefix: str = "reports") -> None:
@@ -705,7 +713,7 @@ def coverage_intelligence(key_prefix: str = "reports") -> None:
     fig.add_trace(go.Bar(name="Missing", x=areas, y=[c["missing"] for c in COVERAGE_INTELLIGENCE], marker_color=COLORS.ERROR))
     fig.update_layout(barmode="stack")
     _apply_chart_theme(fig, height=320, show_legend=True)
-    st.plotly_chart(fig, use_container_width=True, key=f"{key_prefix}_coverage_gap_viz")
+    st.plotly_chart(fig, width='stretch', key=f"{key_prefix}_coverage_gap_viz")
 
 
 def business_flow_quality() -> None:
@@ -725,7 +733,7 @@ def business_flow_quality() -> None:
             bg = f"rgba({COLORS.PRIMARY_RGB},0.22)" if is_sel else f"rgba({COLORS.SURFACE_RGB},0.5)"
             border_w = "2px" if is_sel else "1px"
             st.markdown(f"""<div style="padding:{SPACING.SPACE_2} {SPACING.SPACE_3};background:{bg};border-left:{border_w} solid {risk_c};border-radius:0 {BORDERS.RADIUS_MD} {BORDERS.RADIUS_MD} 0;margin-bottom:{SPACING.SPACE_1};"> <div style="display:flex;justify-content:space-between;align-items:center;"> <span style="color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:500;">{flow["icon"]} {_escape(flow["name"])}</span> <div style="display:flex;gap:{SPACING.SPACE_2};"> <span style="color:{cov_c};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{flow["coverage"]}%</span> <span style="color:{risk_c};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(flow["risk"]).upper()}</span> </div> </div> </div>""", unsafe_allow_html=True)
-            if st.button("Select", key=f"flow_sel_{flow['id']}", use_container_width=True, help=f"Inspect {flow['name']}"):
+            if st.button("Select", key=f"flow_sel_{flow['id']}", width='stretch', help=f"Inspect {flow['name']}"):
                 st.session_state.reports_selected_flow = flow["id"]
                 st.rerun()
     with col_detail:
@@ -763,7 +771,7 @@ def bug_intelligence(key_prefix: str = "reports") -> None:
             textfont=dict(color=COLORS.TEXT_PRIMARY),
         ))
         _apply_chart_theme(fig, height=280)
-        st.plotly_chart(fig, use_container_width=True, key=f"{key_prefix}_bug_severity")
+        st.plotly_chart(fig, width='stretch', key=f"{key_prefix}_bug_severity")
     with col2:
         st.markdown("#### Bug Trend")
         fig = go.Figure(go.Scatter(
@@ -773,7 +781,7 @@ def bug_intelligence(key_prefix: str = "reports") -> None:
             marker=dict(size=8, color=COLORS.ERROR),
         ))
         _apply_chart_theme(fig, height=280)
-        st.plotly_chart(fig, use_container_width=True, key=f"{key_prefix}_bug_trend")
+        st.plotly_chart(fig, width='stretch', key=f"{key_prefix}_bug_trend")
 
     col1, col2 = st.columns(2)
     with col1:
@@ -785,7 +793,7 @@ def bug_intelligence(key_prefix: str = "reports") -> None:
             text=[m["count"] for m in BUG_INTELLIGENCE["by_module"]], textposition="outside",
         ))
         _apply_chart_theme(fig, height=280)
-        st.plotly_chart(fig, use_container_width=True, key=f"{key_prefix}_bug_module")
+        st.plotly_chart(fig, width='stretch', key=f"{key_prefix}_bug_module")
     with col2:
         st.markdown("#### Root Causes")
         fig = go.Figure(go.Bar(
@@ -795,7 +803,7 @@ def bug_intelligence(key_prefix: str = "reports") -> None:
             text=[r["count"] for r in BUG_INTELLIGENCE["root_causes"]], textposition="outside",
         ))
         _apply_chart_theme(fig, height=280)
-        st.plotly_chart(fig, use_container_width=True, key=f"{key_prefix}_bug_rootcause")
+        st.plotly_chart(fig, width='stretch', key=f"{key_prefix}_bug_rootcause")
 
     st.markdown("#### Top Recurring Defects")
     for bug in BUG_INTELLIGENCE["top_recurring"]:
@@ -845,7 +853,7 @@ def execution_intelligence(key_prefix: str = "reports") -> None:
         fig.add_trace(go.Scatter(x=[t["date"] for t in EXECUTION_INTELLIGENCE["trend"]], y=[t["executions"] for t in EXECUTION_INTELLIGENCE["trend"]], mode="lines+markers", name="Executions", line=dict(color=COLORS.PRIMARY, width=2)))
         fig.add_trace(go.Scatter(x=[t["date"] for t in EXECUTION_INTELLIGENCE["trend"]], y=[t["passed"] for t in EXECUTION_INTELLIGENCE["trend"]], mode="lines+markers", name="Passed", line=dict(color=COLORS.SUCCESS, width=2)))
         _apply_chart_theme(fig, height=280, show_legend=True)
-        st.plotly_chart(fig, use_container_width=True, key=f"{key_prefix}_exec_trend")
+        st.plotly_chart(fig, width='stretch', key=f"{key_prefix}_exec_trend")
     with col2:
         st.markdown("#### Browser Distribution")
         fig = go.Figure(go.Pie(
@@ -856,7 +864,7 @@ def execution_intelligence(key_prefix: str = "reports") -> None:
             textfont=dict(color=COLORS.TEXT_PRIMARY),
         ))
         _apply_chart_theme(fig, height=280)
-        st.plotly_chart(fig, use_container_width=True, key=f"{key_prefix}_exec_browser")
+        st.plotly_chart(fig, width='stretch', key=f"{key_prefix}_exec_browser")
 
     st.markdown("#### Environment Distribution")
     env_data = {e["env"]: e["count"] for e in EXECUTION_INTELLIGENCE["env_distribution"]}
@@ -895,7 +903,7 @@ def ai_performance_intelligence(key_prefix: str = "reports") -> None:
             text=[t["count"] for t in AI_PERFORMANCE_INTEL["tool_usage"]], textposition="outside",
         ))
         _apply_chart_theme(fig, height=280)
-        st.plotly_chart(fig, use_container_width=True, key=f"{key_prefix}_ai_tools")
+        st.plotly_chart(fig, width='stretch', key=f"{key_prefix}_ai_tools")
 
     st.markdown("---")
     col1, col2 = st.columns(2)
@@ -954,7 +962,11 @@ def release_readiness_panel() -> None:
 
     st.markdown("---")
     st.markdown("#### Readiness Breakdown")
-    cols = st.columns(len(r["readiness_breakdown"]))
+    try:
+        from frontend.utils.responsive import metrics_row
+        cols = metrics_row(len(r["readiness_breakdown"]))
+    except Exception:
+        cols = st.columns(len(r["readiness_breakdown"]))
     for col, item in zip(cols, r["readiness_breakdown"]):
         c = _semantic(item["color"])
         with col:
@@ -1014,10 +1026,10 @@ def report_library_panel(key_prefix: str = "reports") -> None:
             st.markdown(f"""<div style="padding:{SPACING.SPACE_4};background:rgba({COLORS.SURFACE_RGB},0.6);border-radius:{BORDERS.RADIUS_LG};margin-bottom:{SPACING.SPACE_3};border:1px solid rgba({c_rgb},0.3);"> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:{SPACING.SPACE_2};"> <span style="color:{c};font-size:{TYPOGRAPHY.FONT_SIZE_SM};font-weight:600;">{_escape(report["category"])}</span> <span style="padding:2px 8px;background:rgba({_hex_to_rgb(status_c)},0.2);color:{status_c};border-radius:{BORDERS.RADIUS_SM};font-size:{TYPOGRAPHY.FONT_SIZE_XS};">{_escape(report["status"]).upper()}</span> </div> <div style="color:{COLORS.TEXT_PRIMARY};font-weight:600;margin-bottom:{SPACING.SPACE_1};">{_escape(report["name"])}</div> <div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};margin-bottom:{SPACING.SPACE_2};">👤 {_escape(report["author"])} • {_escape(report["created"])}</div> <div style="display:flex;gap:{SPACING.SPACE_3};font-size:{TYPOGRAPHY.FONT_SIZE_XS};"> <span style="color:{COLORS.TEXT_SECONDARY};">📊 Coverage: {report["coverage"]}%</span> <span style="color:{COLORS.TEXT_SECONDARY};">✅ Quality: {report["quality"]}</span> </div> </div>""", unsafe_allow_html=True)
             bcol1, bcol2 = st.columns(2)
             with bcol1:
-                if st.button("View", key=f"{key_prefix}_lib_view_{report['name']}", use_container_width=True):
+                if st.button("View", key=f"{key_prefix}_lib_view_{report['name']}", width='stretch'):
                     st.toast(f"Viewing {report['name']}", icon="📄")
             with bcol2:
-                if st.button("Export", key=f"{key_prefix}_lib_export_{report['name']}", use_container_width=True):
+                if st.button("Export", key=f"{key_prefix}_lib_export_{report['name']}", width='stretch'):
                     st.toast(f"Exporting {report['name']}", icon="📤")
 
 
@@ -1043,7 +1055,7 @@ def report_generator_panel(key_prefix: str = "reports") -> None:
         inc_logs = st.checkbox("Include Logs", value=True, key=f"{key_prefix}_gen_logs")
         inc_ai = st.checkbox("Include AI Summary", value=True, key=f"{key_prefix}_gen_ai")
         inc_recs = st.checkbox("Include Recommendations", value=True, key=f"{key_prefix}_gen_recs")
-    if st.button("🚀 Generate Report", use_container_width=True, type="primary", key=f"{key_prefix}_gen_btn"):
+    if st.button("🚀 Generate Report", width='stretch', type="primary", key=f"{key_prefix}_gen_btn"):
         st.toast(f"Generating {report_type} for {application}", icon="🚀")
         st.success(f"Report generation started: {report_type} ({date_range}, {environment})")
 
@@ -1062,7 +1074,7 @@ def export_center(key_prefix: str = "reports") -> None:
     cols = st.columns(3)
     for i, (fmt, icon, desc) in enumerate(formats):
         with cols[i % 3]:
-            if st.button(f"{icon} {fmt}", key=f"{key_prefix}_export_center_{fmt}", use_container_width=True, help=desc):
+            if st.button(f"{icon} {fmt}", key=f"{key_prefix}_export_center_{fmt}", width='stretch', help=desc):
                 st.toast(f"Exporting as {fmt}...", icon=icon)
                 st.success(f"Mock export: {fmt} prepared ({desc})")
 
@@ -1106,7 +1118,7 @@ def reports_quick_actions() -> None:
                 if st.button(
                     f"{action['icon']} {action['name']}",
                     key=f"reports_qa_{i}_{action['name']}",
-                    use_container_width=True, help=action["description"],
+                    width='stretch', help=action["description"],
                 ):
                     st.toast(action["description"], icon=action["icon"])
 

@@ -34,6 +34,7 @@ try:
         glass_card, glass_panel, section_header, divider, spacer, pulse_dot,
         empty_state, metric_card, status_badge,
     )
+    from frontend.utils.responsive import metrics_row
 except ImportError:  # pragma: no cover - fallback for direct execution
     from themes.tokens import (
         COLORS, SPACING, TYPOGRAPHY, BORDERS, SHADOWS, ANIMATIONS,
@@ -184,7 +185,7 @@ def dom_header(info: dict) -> None:
         f'padding:{SPACING.SPACE_2} {SPACING.SPACE_4};'
         f'background:rgba({COLORS.SURFACE_RGB},0.7);'
         f'border:1px solid {_GLASS_PANEL_BORDER};'
-        f'border-radius:{BORDERS.RADIUS_MD};min-width:96px;">'
+            f'border-radius:{BORDERS.RADIUS_MD};min-width:0;">'
         f'<span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};'
         f'text-transform:uppercase;letter-spacing:1px;">{_escape(k["label"])}</span>'
         f'<span style="color:{_semantic(k["color"])};font-size:{TYPOGRAPHY.FONT_SIZE_SM};'
@@ -205,7 +206,7 @@ def dom_kpi_strip() -> None:
     """Display the DOM KPI strip as a MetricCard grid."""
     for i in range(0, len(DOM_KPI_METRICS), 4):
         row = DOM_KPI_METRICS[i:i + 4]
-        cols = st.columns(len(row))
+        cols = metrics_row(len(row))
         for col, m in zip(cols, row):
             with col:
                 metric_card(
@@ -269,7 +270,7 @@ def render_dom_node(node: dict[str, Any], level: int = 0) -> None:
         if len(button_label) > 60:
             button_label = button_label[:57] + "..."
 
-        if st.button(button_label, key=f"dom_{node_id}", use_container_width=True):
+        if st.button(button_label, key=f"dom_{node_id}", width='stretch'):
             if has_children:
                 toggle_dom_node(node_id)
             select_dom_node(node_id)
@@ -421,16 +422,16 @@ def browser_visualizer(node: Optional[dict[str, Any]], title: str = "Live DOM") 
     # Controls
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        if st.button("🔍 Zoom In", use_container_width=True):
+        if st.button("🔍 Zoom In", width='stretch'):
             st.info("Zoom in")
     with col2:
-        if st.button("🔍 Zoom Out", use_container_width=True):
+        if st.button("🔍 Zoom Out", width='stretch'):
             st.info("Zoom out")
     with col3:
-        if st.button("📱 Fullscreen", use_container_width=True):
+        if st.button("📱 Fullscreen", width='stretch'):
             st.info("Fullscreen mode")
     with col4:
-        if st.button("📍 Toggle Grid", use_container_width=True):
+        if st.button("📍 Toggle Grid", width='stretch'):
             st.info("Toggle grid overlay")
 
 
@@ -732,7 +733,11 @@ def dom_metrics(metrics: dict[str, Any], title: str = "DOM Metrics") -> None:
     ]
     for i in range(0, len(grid_data), 4):
         row = grid_data[i:i + 4]
-        cols = st.columns(len(row))
+        try:
+            from frontend.utils.responsive import metrics_row
+            cols = metrics_row(len(row))
+        except Exception:
+            cols = st.columns(len(row))
         for col, (t, v, icon) in zip(cols, row):
             with col:
                 metric_card(title=t, value=v, icon=icon)
@@ -810,10 +815,14 @@ def quick_actions(title: str = "Quick Actions") -> None:
 
     for i in range(0, len(DOM_QUICK_ACTIONS), 4):
         row = DOM_QUICK_ACTIONS[i:i + 4]
-        cols = st.columns(len(row))
+        try:
+            from frontend.utils.responsive import metrics_row
+            cols = metrics_row(len(row))
+        except Exception:
+            cols = st.columns(len(row))
         for col, action in zip(cols, row):
             with col:
-                if st.button(f"{action['icon']} {action['name']}", key=f"dom_action_{i}_{action['name']}", use_container_width=True, help=action["description"]):
+                if st.button(f"{action['icon']} {action['name']}", key=f"dom_action_{i}_{action['name']}", width='stretch', help=action["description"]):
                     st.info(action["description"])
                     st.rerun()
 
@@ -1055,7 +1064,7 @@ def _render_events_tab() -> None:
         c_rgb = _hex_to_rgb(c)
         st.markdown(
             f'<div style="display:flex;align-items:center;gap:{SPACING.SPACE_3};padding:{SPACING.SPACE_2} {SPACING.SPACE_3};background:rgba({c_rgb},0.1);border-radius:{BORDERS.RADIUS_MD};margin-bottom:{SPACING.SPACE_1};border-left:3px solid {c};">'
-            f'<span style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:700;color:{c};min-width:64px;">{ev["event"]}</span>'
+            f'<span style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};font-weight:700;color:{c};min-width:0;">{ev["event"]}</span>'
             f'<span style="flex:1;font-family:{TYPOGRAPHY.FONT_MONO};font-size:{TYPOGRAPHY.FONT_SIZE_SM};color:{COLORS.TEXT_PRIMARY};">{_escape(ev["target"])}</span>'
             f'<span style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};">{_escape(ev["time"])}</span>'
             f'</div>',

@@ -86,39 +86,39 @@ def review_action_buttons() -> None:
     col1, col2, col3, col4, col5, col6, col7 = st.columns([1, 1, 1, 1, 1, 1, 1])
     
     with col1:
-        if st.button("✅ Approve", type="primary", use_container_width=True, key="review_approve"):
+        if st.button("✅ Approve", type="primary", width='stretch', key="review_approve"):
             set_review_data("review_decision", "approved")
             st.success("✅ Test approved! Continuing execution...")
             st.rerun()
     
     with col2:
-        if st.button("🔄 Retry", use_container_width=True, key="review_retry"):
+        if st.button("🔄 Retry", width='stretch', key="review_retry"):
             set_review_data("review_decision", "retry")
             st.info("🔄 Retrying test...")
             st.rerun()
     
     with col3:
-        if st.button("❌ Fail", use_container_width=True, key="review_fail"):
+        if st.button("❌ Fail", width='stretch', key="review_fail"):
             set_review_data("review_decision", "failed")
             st.error("❌ Test marked as failed")
             st.rerun()
     
     with col4:
-        if st.button("✏️ Modify", use_container_width=True, key="review_modify"):
+        if st.button("✏️ Modify", width='stretch', key="review_modify"):
             set_review_data("show_modify_panel", True)
     
     with col5:
-        if st.button("🐛 Bug", use_container_width=True, key="review_bug"):
+        if st.button("🐛 Bug", width='stretch', key="review_bug"):
             set_review_data("show_bug_panel", True)
     
     with col6:
-        if st.button("⏭️ Skip", use_container_width=True, key="review_skip"):
+        if st.button("⏭️ Skip", width='stretch', key="review_skip"):
             set_review_data("review_decision", "skipped")
             st.info("⏭️ Test skipped")
             st.rerun()
     
     with col7:
-        if st.button("⏸️ Pause", use_container_width=True, key="review_pause"):
+        if st.button("⏸️ Pause", width='stretch', key="review_pause"):
             st.warning("⏸️ Mission paused by user")
 
 
@@ -180,19 +180,19 @@ def browser_comparison(key_prefix: str = "browser") -> None:
     col1, col2, col3, col4, col5, col6, col7 = st.columns([1, 1, 1, 2, 1, 1, 1])
 
     with col1:
-        st.button("⬅️ Back", use_container_width=True, key=f"{key_prefix}_back")
+        st.button("⬅️ Back", width='stretch', key=f"{key_prefix}_back")
     with col2:
-        st.button("➡️ Forward", use_container_width=True, key=f"{key_prefix}_forward")
+        st.button("➡️ Forward", width='stretch', key=f"{key_prefix}_forward")
     with col3:
-        st.button("🔄 Refresh", use_container_width=True, key=f"{key_prefix}_refresh")
+        st.button("🔄 Refresh", width='stretch', key=f"{key_prefix}_refresh")
     with col4:
         st.selectbox("Zoom", ["50%", "75%", "100%", "125%", "150%"], label_visibility="collapsed", key=f"{key_prefix}_zoom")
     with col5:
         st.selectbox("Device", ["Desktop", "Tablet", "Mobile"], label_visibility="collapsed", key=f"{key_prefix}_device")
     with col6:
-        st.button("⛶ Fullscreen", use_container_width=True, key=f"{key_prefix}_fullscreen")
+        st.button("⛶ Fullscreen", width='stretch', key=f"{key_prefix}_fullscreen")
     with col7:
-        st.button("📐 Annotate", use_container_width=True, key=f"{key_prefix}_annotate")
+        st.button("📐 Annotate", width='stretch', key=f"{key_prefix}_annotate")
     
     # Current URL Display
     st.markdown("""<div style=" background: rgba(30, 30, 63, 0.8); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 8px; padding: 0.75rem 1rem; margin: 1rem 0; display: flex; align-items: center; gap: 0.5rem; "> <span style="color: #64748B;">🔒</span> <span style="color: #F1F5F9; font-family: monospace;">https://demo.app/dashboard</span> </div>""", unsafe_allow_html=True)
@@ -434,9 +434,9 @@ def modification_panel() -> None:
     
     col1, col2 = st.columns(2)
     with col1:
-        st.button("💾 Apply Changes", type="primary", use_container_width=True, key="modify_apply_changes")
+        st.button("💾 Apply Changes", type="primary", width='stretch', key="modify_apply_changes")
     with col2:
-        st.button("↩️ Reset", use_container_width=True, key="modify_reset")
+        st.button("↩️ Reset", width='stretch', key="modify_reset")
     
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -505,9 +505,9 @@ def review_tabs() -> None:
         st.markdown("""<div style="background: #0a0a0f; border-radius: 8px; padding: 1rem; font-family: monospace; font-size: 0.8rem;"> <p style="color: #64748B; margin: 0;">[10:00:25] Test started</p> <p style="color: #64748B; margin: 0;">[10:00:26] Navigating to /login</p> <p style="color: #10B981; margin: 0;">[10:00:27] Login page loaded</p> <p style="color: #64748B; margin: 0;">[10:00:28] Entering credentials</p> <p style="color: #10B981; margin: 0;">[10:00:29] Authentication successful</p> <p style="color: #64748B; margin: 0;">[10:00:30] Navigating to /dashboard</p> <p style="color: #10B981; margin: 0;">[10:00:32] Dashboard loaded</p> <p style="color: #F59E0B; margin: 0;">[10:00:33] WARNING: Sidebar not visible</p> <p style="color: #EF4444; margin: 0;">[10:00:34] ASSERTION FAILED: sidebar.visible</p> </div>""", unsafe_allow_html=True)
         col1, col2 = st.columns(2)
         with col1:
-            st.button("📥 Download Logs", use_container_width=True, key="logs_download")
+            st.button("📥 Download Logs", width='stretch', key="logs_download")
         with col2:
-            st.button("🗑️ Clear Logs", use_container_width=True, key="logs_clear")
+            st.button("🗑️ Clear Logs", width='stretch', key="logs_clear")
     
     with tabs[6]:
         st.markdown("### Screenshots")
@@ -530,11 +530,11 @@ def review_tabs() -> None:
         st.markdown("""<div style="background: rgba(30, 30, 63, 0.8); border-radius: 12px; padding: 2rem; text-align: center;"> <span style="font-size: 4rem;">🎥</span> <p style="color: #F1F5F9; margin: 1rem 0;">Video Recording Available</p> <p style="color: #64748B; margin: 0;">Duration: 00:34 seconds</p> <p style="color: #64748B; margin: 0;">Size: 2.4 MB</p> </div>""", unsafe_allow_html=True)
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.button("▶️ Play", use_container_width=True, key="video_play")
+            st.button("▶️ Play", width='stretch', key="video_play")
         with col2:
-            st.button("📥 Download", use_container_width=True, key="video_download")
+            st.button("📥 Download", width='stretch', key="video_download")
         with col3:
-            st.button("🔗 Share", use_container_width=True, key="video_share")
+            st.button("🔗 Share", width='stretch', key="video_share")
     
     with tabs[8]:
         st.markdown("### Accessibility")

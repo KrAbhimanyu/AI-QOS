@@ -246,7 +246,7 @@ def kg_header(info: dict) -> None:
         f'padding:{SPACING.SPACE_2} {SPACING.SPACE_4};'
         f'background:rgba({COLORS.SURFACE_RGB},0.7);'
         f'border:1px solid {_GLASS_PANEL_BORDER};'
-        f'border-radius:{BORDERS.RADIUS_MD};min-width:96px;">'
+            f'border-radius:{BORDERS.RADIUS_MD};min-width:0;">'
         f'<span style="color:{COLORS.TEXT_MUTED};font-size:{TYPOGRAPHY.FONT_SIZE_XS};'
         f'text-transform:uppercase;letter-spacing:1px;">{_escape(k["label"])}</span>'
         f'<span style="color:{_semantic(k["color"])};font-size:{TYPOGRAPHY.FONT_SIZE_SM};'
@@ -270,7 +270,11 @@ def kg_kpi_strip() -> None:
     """Display the knowledge KPI strip as a MetricCard grid."""
     for i in range(0, len(KG_KPI_METRICS), 4):
         row = KG_KPI_METRICS[i:i + 4]
-        cols = st.columns(len(row))
+        try:
+            from frontend.utils.responsive import metrics_row
+            cols = metrics_row(len(row))
+        except Exception:
+            cols = st.columns(len(row))
         for col, m in zip(cols, row):
             with col:
                 metric_card(
@@ -309,7 +313,7 @@ def knowledge_navigator(nodes: list[dict[str, Any]], title: str = "Knowledge Nav
             if st.button(
                 f"{'▼' if is_expanded else '▶'} {icon} {type_name}",
                 key=f"kg_cat_{node_type}",
-                use_container_width=True,
+                width='stretch',
             ):
                 toggle_category(node_type)
                 st.rerun()
@@ -348,7 +352,7 @@ def _render_node_card(node: dict[str, Any], accent_color: str) -> None:
     if st.button(
         "Inspect",
         key=f"kg_select_{node['id']}",
-        use_container_width=True,
+        width='stretch',
         help=f"Inspect {_escape(node['name'])}",
     ):
         select_kg_node(node["id"])
@@ -437,20 +441,20 @@ def knowledge_graph_canvas(
         yaxis=dict(showgrid=False, zeroline=False, showticklabels=False, range=[-2, 2]),
     )
 
-    st.plotly_chart(fig, use_container_width=True, key=f"kg_canvas_{title}")
+    st.plotly_chart(fig, width='stretch', key=f"kg_canvas_{title}")
 
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        if st.button("🔍 Zoom In", key="kg_zoom_in", use_container_width=True):
+        if st.button("🔍 Zoom In", key="kg_zoom_in", width='stretch'):
             st.toast("Zoom in", icon="🔍")
     with col2:
-        if st.button("🔍 Zoom Out", key="kg_zoom_out", use_container_width=True):
+        if st.button("🔍 Zoom Out", key="kg_zoom_out", width='stretch'):
             st.toast("Zoom out", icon="🔍")
     with col3:
-        if st.button("📐 Fit View", key="kg_fit_view", use_container_width=True):
+        if st.button("📐 Fit View", key="kg_fit_view", width='stretch'):
             st.toast("Fit to view", icon="📐")
     with col4:
-        if st.button("🎯 Focus Selected", key="kg_focus", use_container_width=True):
+        if st.button("🎯 Focus Selected", key="kg_focus", width='stretch'):
             st.toast("Focusing selected node", icon="🎯")
 
     legend_items = [
@@ -823,13 +827,17 @@ def kg_quick_actions(title: str = "Quick Actions") -> None:
 
     for i in range(0, len(KG_QUICK_ACTIONS), 4):
         row = KG_QUICK_ACTIONS[i:i + 4]
-        cols = st.columns(len(row))
+        try:
+            from frontend.utils.responsive import metrics_row
+            cols = metrics_row(len(row))
+        except Exception:
+            cols = st.columns(len(row))
         for col, action in zip(cols, row):
             with col:
                 if st.button(
                     f"{action['icon']} {action['name']}",
                     key=f"kg_action_{i}_{action['name']}",
-                    use_container_width=True,
+                    width='stretch',
                     help=action["description"],
                 ):
                     st.toast(action["description"], icon=action["icon"])
@@ -904,7 +912,7 @@ def mini_map(graph_data: dict[str, Any], selected_node: Optional[str] = None, ti
         yaxis=dict(showgrid=False, zeroline=False, showticklabels=False, range=[-2, 2]),
     )
 
-    st.plotly_chart(fig, use_container_width=True, key=f"kg_minimap_{title}")
+    st.plotly_chart(fig, width='stretch', key=f"kg_minimap_{title}")
 
 
 # ============================================================================
@@ -1009,7 +1017,7 @@ def graph_timeline_panel(timeline_data: list[dict[str, Any]], title: str = "Grap
         yaxis=dict(showgrid=True, gridcolor=f"rgba({COLORS.BORDER_RGB},0.2)"),
     )
 
-    st.plotly_chart(fig, use_container_width=True, key=f"kg_timeline_{title}")
+    st.plotly_chart(fig, width='stretch', key=f"kg_timeline_{title}")
 
     st.markdown("**Version History:**")
     for t in timeline_data:

@@ -87,7 +87,7 @@ def render_reports() -> None:
             yaxis=dict(showgrid=True, gridcolor="rgba(51, 65, 85, 0.5)", color="#94A3B8"),
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         )
-        st.plotly_chart(fig, use_container_width=True, key="reports_chart")
+        st.plotly_chart(fig, width='stretch', key="reports_chart")
     
     with right_col:
         # Recent Reports

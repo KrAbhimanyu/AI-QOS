@@ -67,7 +67,7 @@ def render_model_pie_chart(model_usage: dict[str, int]) -> None:
         ],
     )
     
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
 
 def render_routing_visualization(model_usage: dict[str, int]) -> None:
@@ -84,7 +84,12 @@ def render_routing_visualization(model_usage: dict[str, int]) -> None:
     st.markdown("""<div style=" width: 60px; height: 3px; background: linear-gradient(90deg, #6366f1, #22d3ee); position: relative; "> <div style=" position: absolute; right: -8px; top: -4px; border-left: 10px solid #22d3ee; border-top: 6px solid transparent; border-bottom: 6px solid transparent; "></div> </div>""", unsafe_allow_html=True)
     
     # Model badges
-    cols = st.columns(len(model_usage))
+    try:
+        from frontend.utils.responsive import metrics_row
+        cols = metrics_row(len(model_usage))
+    except Exception:
+        cols = st.columns(len(model_usage))
+
     for i, (model, count) in enumerate(sorted(model_usage.items(), key=lambda x: -x[1])):
         with cols[i]:
             percentage = (count / total * 100) if total > 0 else 0

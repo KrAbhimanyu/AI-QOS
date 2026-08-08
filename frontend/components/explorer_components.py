@@ -122,7 +122,7 @@ def render_tree_node(
 
     # Interaction button (full-width, stable height) — separate from the visual row
     button_label = f"{expand_glyph} {icon} {node['name']}"
-    if st.button(button_label, key=f"tree_{node_id}", use_container_width=True):
+    if st.button(button_label, key=f"tree_{node_id}", width='stretch'):
         if has_children:
             toggle_node_expansion(node_id)
         else:
@@ -201,20 +201,20 @@ def page_card(page: dict[str, Any], columns: int = 3) -> None:
         # Single-line HTML to prevent Streamlit code-block rendering of indented markup
         st.markdown(
             f'<div style="height:120px;background:linear-gradient(135deg,rgba({COLORS.PRIMARY_RGB},0.1),rgba({COLORS.SECONDARY_RGB},0.1));border:{BORDERS.WIDTH_THIN} solid rgba({COLORS.BORDER_RGB},0.2);border-radius:{BORDERS.RADIUS_LG} {BORDERS.RADIUS_LG} 0 0;display:flex;align-items:center;justify-content:center;font-size:{TYPOGRAPHY.FONT_SIZE_3XL};box-sizing:border-box;overflow:hidden;">{icon}</div>'
-            f'<div style="padding:{SPACING.SPACE_4};background:{COLORS.GLASS_LIGHT};border:{BORDERS.WIDTH_THIN} solid rgba({COLORS.BORDER_RGB},0.15);border-top:none;border-radius:0 0 {BORDERS.RADIUS_LG} {BORDERS.RADIUS_LG};box-sizing:border-box;min-width:0;max-width:100%;">'
+            f'<div style="padding:{SPACING.SPACE_4};background:{COLORS.GLASS_LIGHT};border:{BORDERS.WIDTH_THIN} solid rgba({COLORS.BORDER_RGB},0.15);border-top:none;border-radius:0 0 {BORDERS.RADIUS_LG} {BORDERS.RADIUS_LG};box-sizing:border-box;min-width:0;max-width:100%;overflow:hidden;">'
             f'<h4 style="margin:0 0 {SPACING.SPACE_2};color:{COLORS.TEXT_PRIMARY};font-size:{TYPOGRAPHY.FONT_SIZE_BASE};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{name}</h4>'
             f'<div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.TEXT_MUTED};margin-bottom:{SPACING.SPACE_3};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:{TYPOGRAPHY.FONT_MONO};">{url}</div>'
             f'<div style="display:flex;gap:{SPACING.SPACE_2};margin-bottom:{SPACING.SPACE_3};flex-wrap:wrap;min-width:0;">'
             f'<span style="padding:2px {SPACING.SPACE_2};background:rgba({cov_rgb},0.15);border-radius:{BORDERS.RADIUS_SM};font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{cov_color};white-space:nowrap;">{coverage:.0f}% Covered</span>'
             f'<span style="padding:2px {SPACING.SPACE_2};background:rgba({risk_rgb},0.15);border-radius:{BORDERS.RADIUS_SM};font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{risk_color};white-space:nowrap;">{risk} Risk</span>'
             f'</div>'
-            f'<div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.PRIMARY};font-family:{TYPOGRAPHY.FONT_MONO};white-space:nowrap;">Confidence: {conf:.0f}%</div>'
+            f'<div style="font-size:{TYPOGRAPHY.FONT_SIZE_XS};color:{COLORS.PRIMARY};font-family:{TYPOGRAPHY.FONT_MONO};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Confidence: {conf:.0f}%</div>'
             f'</div>',
             unsafe_allow_html=True,
         )
 
         # Action button — stable full width
-        if st.button("Inspect →", key=f"inspect_{page['id']}", use_container_width=True):
+        if st.button("Inspect →", key=f"inspect_{page['id']}", width='stretch'):
             select_page(page)
             st.rerun()
 
@@ -421,7 +421,7 @@ def application_map(connections: list[dict[str, Any]], title: str = "Application
         yaxis=dict(showgrid=False, zeroline=False, showticklabels=False, range=[-0.5, 3.5]),
     )
     
-    st.plotly_chart(fig, use_container_width=True, key="app_map_chart")
+    st.plotly_chart(fig, width='stretch', key="app_map_chart")
     
     # Legend
     st.markdown(f"""<div style="display:flex; gap:{SPACING.SPACE_4}; justify-content:center; margin-top:{SPACING.SPACE_3}; flex-wrap:wrap; box-sizing:border-box; min-width:0;"> <span style="display:flex; align-items:center; gap:{SPACING.SPACE_2};"> <span style="width:20px; height:3px; background:{COLORS.PRIMARY}; border-radius:2px; flex-shrink:0;"></span> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_SECONDARY}; white-space:nowrap;">Navigation</span> </span> <span style="display:flex; align-items:center; gap:{SPACING.SPACE_2};"> <span style="width:20px; height:3px; background:{COLORS.SECONDARY}; border-radius:2px; flex-shrink:0;"></span> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_SECONDARY}; white-space:nowrap;">Action</span> </span> <span style="display:flex; align-items:center; gap:{SPACING.SPACE_2};"> <span style="width:20px; height:3px; background:{COLORS.WARNING}; border-radius:2px; flex-shrink:0;"></span> <span style="font-size:{TYPOGRAPHY.FONT_SIZE_XS}; color:{COLORS.TEXT_SECONDARY}; white-space:nowrap;">Auth</span> </span> </div>""", unsafe_allow_html=True)
@@ -568,7 +568,7 @@ def quick_actions_panel(actions: list[dict[str, Any]], title: str = "Quick Actio
                 if st.button(
                     f"{action['icon']} {action['name']}",
                     key=f"action_{action['id']}",
-                    use_container_width=True,
+                    width='stretch',
                 ):
                     st.info(f"Action: {action['name']}")
                     st.rerun()

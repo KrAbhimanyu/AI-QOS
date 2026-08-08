@@ -79,7 +79,7 @@ def render_dashboard() -> None:
                 bordercolor="#6366F1",
             ),
         )
-        st.plotly_chart(fig, use_container_width=True, key="dashboard_perf_chart")
+        st.plotly_chart(fig, width='stretch', key="dashboard_perf_chart")
         
         # Mission Distribution
         st.markdown("### Mission Distribution")
@@ -105,7 +105,7 @@ def render_dashboard() -> None:
                 font=dict(color="#94A3B8"),
             ),
         )
-        st.plotly_chart(fig2, use_container_width=True, key="dashboard_mission_chart")
+        st.plotly_chart(fig2, width='stretch', key="dashboard_mission_chart")
     
     with right_col:
         # Recent Missions
@@ -133,6 +133,6 @@ def render_dashboard() -> None:
         for icon, label, color in quick_actions:
             st.button(
                 f"{icon} {label}",
-                use_container_width=True,
+                width='stretch',
                 type="secondary",
             )

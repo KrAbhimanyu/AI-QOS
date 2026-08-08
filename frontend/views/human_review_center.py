@@ -78,7 +78,7 @@ def render_human_review_center() -> None:
             st.subheader("🐛 Generate Bug Report")
             bug_preview_panel()
         else:
-            if st.button("🐛 Generate Bug Report", use_container_width=True):
+            if st.button("🐛 Generate Bug Report", width='stretch'):
                 set_review_data("show_bug_panel", True)
     
     with col2:
@@ -86,5 +86,5 @@ def render_human_review_center() -> None:
             st.subheader("✏️ Modify Test")
             modification_panel()
         else:
-            if st.button("✏️ Modify Test", use_container_width=True):
+            if st.button("✏️ Modify Test", width='stretch'):
                 set_review_data("show_modify_panel", True)

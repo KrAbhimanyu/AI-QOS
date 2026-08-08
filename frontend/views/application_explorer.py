@@ -115,7 +115,7 @@ def render_center_workspace() -> None:
         page_detail = generate_page_detail(page["id"])
         
         # Back button
-        if st.button("← Back to Gallery", use_container_width=True):
+        if st.button("← Back to Gallery", width='stretch'):
             clear_selection()
             st.rerun()
         
@@ -237,14 +237,14 @@ def render_bottom_panel() -> None:
     with action_cols[0]:
         st.markdown("**📝 Generation**")
         for action in gen_actions[:4]:
-            if st.button(f"{action['icon']} {action['name']}", key=f"gen_{action['id']}", use_container_width=True):
+            if st.button(f"{action['icon']} {action['name']}", key=f"gen_{action['id']}", width='stretch'):
                 st.session_state[f"action_{action['id']}"] = True
     
     # AI actions
     with action_cols[1]:
         st.markdown("**🤖 AI**")
         for action in ai_actions[:4]:
-            if st.button(f"{action['icon']} {action['name']}", key=f"ai_{action['id']}", use_container_width=True):
+            if st.button(f"{action['icon']} {action['name']}", key=f"ai_{action['id']}", width='stretch'):
                 st.session_state[f"action_{action['id']}"] = True
     
     # Explorer actions
@@ -252,7 +252,7 @@ def render_bottom_panel() -> None:
         explorer_actions = [a for a in other_actions if a.get("category") == "explorer"]
         st.markdown("**🔍 Explorer**")
         for action in explorer_actions[:4]:
-            if st.button(f"{action['icon']} {action['name']}", key=f"exp_{action['id']}", use_container_width=True):
+            if st.button(f"{action['icon']} {action['name']}", key=f"exp_{action['id']}", width='stretch'):
                 st.session_state[f"action_{action['id']}"] = True
     
     # Other actions
@@ -260,7 +260,7 @@ def render_bottom_panel() -> None:
         other = [a for a in other_actions if a.get("category") not in ["explorer"]]
         st.markdown("**🛠️ Other**")
         for action in other[:4]:
-            if st.button(f"{action['icon']} {action['name']}", key=f"oth_{action['id']}", use_container_width=True):
+            if st.button(f"{action['icon']} {action['name']}", key=f"oth_{action['id']}", width='stretch'):
                 st.session_state[f"action_{action['id']}"] = True
 
 
@@ -277,7 +277,7 @@ def render_page() -> None:
     render_header(APPLICATION_INFO)
     
     # Main layout: 3 columns — balanced ratios for tree / gallery / inspector
-    left_col, center_col, right_col = st.columns([3, 7, 3], gap="medium")
+    left_col, center_col, right_col = st.columns([2.6, 6.2, 3.2], gap="medium")
     
     # Left Sidebar
     with left_col:

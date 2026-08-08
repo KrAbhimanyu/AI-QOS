@@ -73,7 +73,7 @@ def render_monitoring() -> None:
             yaxis=dict(showgrid=True, gridcolor="rgba(51, 65, 85, 0.5)", color="#94A3B8"),
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         )
-        st.plotly_chart(fig, use_container_width=True, key="monitoring_chart")
+        st.plotly_chart(fig, width='stretch', key="monitoring_chart")
         
         # Throughput Chart
         st.markdown("### Request Throughput")
@@ -100,7 +100,7 @@ def render_monitoring() -> None:
             xaxis=dict(showgrid=False, color="#94A3B8", showticklabels=False),
             yaxis=dict(showgrid=True, gridcolor="rgba(51, 65, 85, 0.5)", color="#94A3B8"),
         )
-        st.plotly_chart(fig2, use_container_width=True, key="monitoring_chart2")
+        st.plotly_chart(fig2, width='stretch', key="monitoring_chart2")
     
     with right_col:
         # Agent Status

@@ -51,14 +51,14 @@ def render_refresh_controls(auto_refresh: bool, refresh_interval: int) -> None:
     with col1:
         if st.button(
             "▶️ Start" if not auto_refresh else "⏸️ Pause",
-            use_container_width=True,
+            width='stretch',
             type="secondary"
         ):
             st.session_state.auto_refresh = not auto_refresh
             st.rerun()
     
     with col2:
-        if st.button("🔄 Refresh", use_container_width=True, type="secondary"):
+        if st.button("🔄 Refresh", width='stretch', type="secondary"):
             st.rerun()
     
     with col3:
@@ -71,5 +71,5 @@ def render_refresh_controls(auto_refresh: bool, refresh_interval: int) -> None:
         st.session_state.refresh_interval = selected_interval
     
     with col4:
-        if st.button("📊 Export", use_container_width=True, type="secondary"):
+        if st.button("📊 Export", width='stretch', type="secondary"):
             st.info("Export functionality coming soon!")
