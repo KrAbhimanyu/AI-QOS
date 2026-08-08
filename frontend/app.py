@@ -68,6 +68,7 @@ def sidebar_navigation() -> str:
             "🌐 DOM Explorer": "dom_explorer",
             "🕸️ Knowledge Graph": "knowledge_graph",
             "📊 Reports & Analytics": "reports_center",
+            "🚀 Release Advisor": "release_advisor",
             "🎯 Mission Planner": "mission_planner",
             "🔬 Intelligence Center": "intelligence_center",
             "🚀 Live Execution": "execution_center",
@@ -130,6 +131,7 @@ def main() -> None:
         from .views.dom_explorer import render_page as render_dom_explorer
         from .views.knowledge_graph import render_page as render_knowledge_graph
         from .views.reports_center import render_reports_center
+        from .views.release_advisor import render_page as render_release_advisor
         from .views.mission_planner import render_mission_planner
         from .views.intelligence_center import render_intelligence_center
         from .views.execution_center import render_execution_center
@@ -148,6 +150,7 @@ def main() -> None:
         from views.dom_explorer import render_page as render_dom_explorer
         from views.knowledge_graph import render_page as render_knowledge_graph
         from views.reports_center import render_reports_center
+        from views.release_advisor import render_page as render_release_advisor
         from views.mission_planner import render_mission_planner
         from views.intelligence_center import render_intelligence_center
         from views.execution_center import render_execution_center
@@ -171,6 +174,8 @@ def main() -> None:
         render_knowledge_graph()
     elif current_page == "reports_center":
         render_reports_center()
+    elif current_page == "release_advisor":
+        render_release_advisor()
     elif current_page == "mission_planner":
         render_mission_planner()
     elif current_page == "intelligence_center":
